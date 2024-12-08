@@ -1,6 +1,6 @@
 .app {
     background-color: black;
-    min-height: 100vh;
+    min-height: var(--tg-viewport-stable-height);
     display: flex;
     flex-direction: column;
     justify-content: center;
