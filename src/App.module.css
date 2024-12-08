@@ -2,7 +2,6 @@
     background-color: black;
     min-height: var(--tg-viewport-height);
     width: 100vw;
-    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
