@@ -8,6 +8,7 @@ import { store } from './state/store.ts';
 import { Provider } from 'react-redux';
 
 WebApp.ready();
+WebApp.expand();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

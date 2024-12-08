@@ -1,20 +1,10 @@
-import { useEffect } from 'react';
-import WebApp from '@twa-dev/sdk';
+import styles from './App.module.css'
 
 function App() {
-  useEffect(() => {
-    WebApp.ready();
-    WebApp.expand();
-
-    return () => {
-      WebApp.close();
-    };
-  }, []);
-
   return (
-    <>
+    <div className={styles.app}>
       <p>Hello world!</p>
-    </>
+    </div>
   );
 }
 
