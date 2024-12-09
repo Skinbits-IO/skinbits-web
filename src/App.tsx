@@ -10,9 +10,7 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.content}>
-        <p>Hello world!</p>
-      </div>
+      <p>Hello world!</p>
     </div>
   );
 }
