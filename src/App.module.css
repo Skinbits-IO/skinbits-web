@@ -1,7 +1,7 @@
 .app {
     background-color: #010101;
     min-height: var(--tg-viewport-height);
-    width: 100vw;
+    min-width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;

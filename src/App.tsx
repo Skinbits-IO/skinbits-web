@@ -4,10 +4,9 @@ import WebApp from '@twa-dev/sdk';
 
 function App() {
   useEffect(() => {
+    WebApp.setHeaderColor('#010101');
     WebApp.ready();
     WebApp.expand();
-
-    WebApp.setHeaderColor('#010101');
   }, []);
 
   return (
