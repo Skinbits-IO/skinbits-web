@@ -6,6 +6,8 @@ function App() {
   useEffect(() => {
     WebApp.ready();
     WebApp.expand();
+
+    WebApp.setHeaderColor('#010101');
   }, []);
 
   return (
