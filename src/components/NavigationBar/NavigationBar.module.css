@@ -1,0 +1,42 @@
+.background {
+    left: 25px;
+    right: 25px;
+    bottom: 20px;
+    position: fixed;
+    background-color: rgba(217, 217, 217, 0.02);
+    min-width: calc(100%-50px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 13px 14px;
+    border-radius: 16px;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 38px;
+    width: 38px;
+    border-radius: 38px;
+}
+
+.itemActive {
+    height: 38px;
+    width: 38px;
+    background-color: white;
+    border-radius: 38px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    color: rgba(217, 217, 217, 0.4);
+}
+
+.iconActive {
+    width: 24px;
+    height: 24px;
+    color: black;
+}
