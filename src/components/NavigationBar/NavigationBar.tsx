@@ -29,11 +29,9 @@ function NavigationBar() {
             to={value.href}
             className={`${styles.item} ${isActive ? styles.itemActive : ''}`}
           >
-            <div className={styles.icon}>
-              {React.cloneElement(value.icon as JSX.Element, {
-                className: isActive ? styles.iconActive : styles.icon,
-              })}
-            </div>
+            {React.cloneElement(value.icon as JSX.Element, {
+              className: isActive ? styles.iconActive : styles.icon,
+            })}
           </Link>
         );
       })}

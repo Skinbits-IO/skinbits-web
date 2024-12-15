@@ -32,11 +32,13 @@
 .icon {
     width: 24px;
     height: 24px;
-    color: rgba(217, 217, 217, 0.4);
+    color: white;
+    opacity: 40%;
 }
 
 .iconActive {
     width: 24px;
     height: 24px;
+    opacity: 100%;
     color: black;
 }
