@@ -1,6 +1,4 @@
 .app {
-    top: var(--tg-content-safe-area-inset-top);
-    bottom: var(--tg-content-safe-area-inset-bottom);
     min-width: 100vw;
     display: flex;
     flex-direction: column;

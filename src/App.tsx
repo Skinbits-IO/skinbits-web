@@ -10,14 +10,29 @@ import Task from './pages/Task';
 import Account from './pages/Account';
 
 function App() {
+  let top = 0;
+  let bottom = 0;
+  let stableHeight = 0;
+
   useEffect(() => {
     WebApp.setHeaderColor('#000000');
     WebApp.ready();
     WebApp.expand();
+
+    top = WebApp.safeAreaInset.top;
+    bottom = WebApp.safeAreaInset.bottom;
+    stableHeight = WebApp.viewportStableHeight;
   }, []);
 
   return (
-    <div className={styles.app}>
+    <div
+      className={styles.app}
+      style={{
+        top: top,
+        bottom: bottom,
+        minHeight: stableHeight - top - bottom,
+      }}
+    >
       <Routes>
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/task" element={<Task />} />
