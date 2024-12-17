@@ -2,7 +2,7 @@
     background-color: black;
     top: var(--tg-content-safe-area-inset-top);
     bottom: var(--tg-content-safe-area-inset-bottom);
-    min-height: calc(var(--tg-viewport-height)-(--tg-content-safe-area-inset-top) - (--tg-content-safe-area-inset-bottom));
+    min-height: calc(var(--tg-viewport-height)- var(--tg-content-safe-area-inset-top) - var(--tg-content-safe-area-inset-bottom));
     min-width: 100vw;
     display: flex;
     flex-direction: column;
