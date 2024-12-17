@@ -9,6 +9,7 @@ import { Link, useLocation } from 'react-router';
 import React from 'react';
 
 function NavigationBar() {
+  const { pathname } = useLocation();
   const links: { href: string; icon: ReactNode }[] = [
     { href: '/marketplace', icon: <MarketplaceIcon /> },
     { href: '/task', icon: <TaskIcon /> },
@@ -16,8 +17,6 @@ function NavigationBar() {
     { href: '/referrals', icon: <ReferralsIcon /> },
     { href: '/account', icon: <AccountIcon /> },
   ];
-
-  const { pathname } = useLocation();
 
   return (
     <nav className={styles.background}>
