@@ -25,14 +25,7 @@ function App() {
   }, []);
 
   return (
-    <div
-      className={styles.app}
-      style={{
-        top: `${top}px`,
-        bottom: `${bottom}px`,
-        minHeight: `${stableHeight - top - bottom}px`,
-      }}
-    >
+    <div className={styles.app}>
       <Routes>
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/task" element={<Task />} />

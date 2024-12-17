@@ -1,4 +1,12 @@
 .app {
+    position: absolute;
+    top: var(--tg-content-safe-area-inset-top);
+    bottom: var(--tg-content-safe-area-inset-bottom);
+    min-height: calc(
+        (var(--tg-viewport-stable-height, 100vh)) - 
+        (var(--tg-content-safe-area-inset-top, 0px)) - 
+        (var(--tg-content-safe-area-inset-bottom, 0px))
+    );
     min-width: 100vw;
     display: flex;
     flex-direction: column;
