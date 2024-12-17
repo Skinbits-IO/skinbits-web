@@ -40,6 +40,9 @@ function App() {
         <Route path="/referrals" element={<Referrals />} />
         <Route path="/account" element={<Account />} />
       </Routes>
+      <div>
+        {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
+      </div>
       <NavigationBar />
     </div>
   );
