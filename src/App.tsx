@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './App.module.css';
 import WebApp from '@twa-dev/sdk';
 import NavigationBar from './components/NavigationBar/NavigationBar';
@@ -10,27 +10,27 @@ import Task from './pages/Task';
 import Account from './pages/Account';
 
 function App() {
-  let top = 0;
-  let bottom = 0;
-  let stableHeight = 0;
+  const [top, setTop] = useState(0);
+  const [bottom, setBottom] = useState(0);
+  const [stableHeight, setStableHeight] = useState(0);
 
   useEffect(() => {
     WebApp.setHeaderColor('#000000');
     WebApp.ready();
     WebApp.expand();
 
-    top = WebApp.safeAreaInset.top;
-    bottom = WebApp.safeAreaInset.bottom;
-    stableHeight = WebApp.viewportStableHeight;
+    setTop(WebApp.safeAreaInset.top);
+    setBottom(WebApp.safeAreaInset.bottom);
+    setStableHeight(WebApp.viewportStableHeight);
   }, []);
 
   return (
     <div
       className={styles.app}
       style={{
-        top: top,
-        bottom: bottom,
-        minHeight: stableHeight - top - bottom,
+        top: `${top}px`,
+        bottom: `${bottom}px`,
+        minHeight: `${stableHeight - top - bottom}px`,
       }}
     >
       <Routes>
