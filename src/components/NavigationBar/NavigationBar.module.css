@@ -2,8 +2,8 @@
     left: 1.5625rem;
     right: 1.5625rem;
     bottom: 1.25rem;
-    position: fixed;
-    background-color: rgba(217, 217, 217, 0.02);
+    position: absolute;
+    background-color: blue;/*rgba(217, 217, 217, 0.02);*/
     min-width: calc(100%-3.125rem);
     display: flex;
     flex-direction: row;

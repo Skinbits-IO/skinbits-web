@@ -25,18 +25,20 @@ function App() {
   }, []);
 
   return (
-    <div className={styles.app}>
-      <Routes>
-        <Route path="/marketplace" element={<Marketplace />} />
-        <Route path="/task" element={<Task />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/referrals" element={<Referrals />} />
-        <Route path="/account" element={<Account />} />
-      </Routes>
-      <div>
-        {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
+    <div className={styles.safeArea}>
+      <div className={styles.app}>
+        <Routes>
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/task" element={<Task />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/referrals" element={<Referrals />} />
+          <Route path="/account" element={<Account />} />
+        </Routes>
+        <div>
+          {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
+        </div>
+        <NavigationBar />
       </div>
-      <NavigationBar />
     </div>
   );
 }

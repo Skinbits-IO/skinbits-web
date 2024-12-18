@@ -1,5 +1,5 @@
-.app {
-    position: absolute;
+.safeArea {
+    position: fixed;
     top: var(--tg-content-safe-area-inset-top);
     bottom: var(--tg-content-safe-area-inset-bottom);
     min-height: calc(
@@ -7,16 +7,17 @@
         (var(--tg-content-safe-area-inset-top, 0px)) - 
         (var(--tg-content-safe-area-inset-bottom, 0px))
     );
+    background-color: green;
+}
+
+.app {
+    min-height: 100%;
     min-width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
     color: green;
+    background-color: red;
     font-size: 1.25rem;
-}
-
-.content {
-    min-height: 100%;
-    min-width: 100vw;
 }
