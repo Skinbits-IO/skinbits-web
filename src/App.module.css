@@ -1,18 +1,18 @@
 .safeArea {
     position: fixed;
-    top: var(--tg-safe-area-inset-top, 0px);
-    bottom: var(--tg-safe-area-inset-bottom, 0px);
+    top: var(--tg-safe-area-inset-top, 0rem);
+    bottom: var(--tg-safe-area-inset-bottom, 0rem);
     min-height: calc(
         (var(--tg-viewport-stable-height, 100vh)) - 
-        (var(--tg-safe-area-inset-top, 0px)) - 
-        (var(--tg-safe-area-inset-bottom, 0px))
+        (var(--tg-safe-area-inset-top, 0rem)) - 
+        (var(--tg-safe-area-inset-bottom, 0rem))
     );
 }
 
 .app {
     position: absolute;
-    top: var(--tg-content-safe-area-inset-top, 0px);
-    bottom: var(--tg-content-safe-area-inset-bottom, 0px);
+    top: var(--tg-content-safe-area-inset-top, 0rem);
+    bottom: var(--tg-content-safe-area-inset-bottom, 0rem);
     min-width: 100vw;
     display: flex;
     flex-direction: column;

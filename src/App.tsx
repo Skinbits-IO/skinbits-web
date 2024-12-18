@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './App.module.css';
 import WebApp from '@twa-dev/sdk';
 import NavigationBar from './components/NavigationBar/NavigationBar';
@@ -10,22 +10,10 @@ import Task from './pages/Task';
 import Account from './pages/Account';
 
 function App() {
-  const [top, setTop] = useState(0);
-  const [bottom, setBottom] = useState(0);
-  const [contentTop, setContentTop] = useState(0);
-  const [contentBottom, setContentBottom] = useState(0);
-  const [stableHeight, setStableHeight] = useState(0);
-
   useEffect(() => {
     WebApp.setHeaderColor('#000000');
     WebApp.ready();
     WebApp.expand();
-
-    setTop(WebApp.safeAreaInset.top);
-    setBottom(WebApp.safeAreaInset.bottom);
-    setStableHeight(WebApp.viewportStableHeight);
-    setContentTop(WebApp.contentSafeAreaInset.top);
-    setContentBottom(WebApp.contentSafeAreaInset.bottom);
   }, []);
 
   return (
@@ -38,12 +26,6 @@ function App() {
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/account" element={<Account />} />
         </Routes>
-        <div>
-          {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
-        </div>
-        <div>
-          {'top content: ' + contentTop + ', bottom content: ' + contentBottom}
-        </div>
         <NavigationBar />
       </div>
     </div>
