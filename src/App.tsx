@@ -12,6 +12,8 @@ import Account from './pages/Account';
 function App() {
   const [top, setTop] = useState(0);
   const [bottom, setBottom] = useState(0);
+  const [contentTop, setContentTop] = useState(0);
+  const [contentBottom, setContentBottom] = useState(0);
   const [stableHeight, setStableHeight] = useState(0);
 
   useEffect(() => {
@@ -22,6 +24,8 @@ function App() {
     setTop(WebApp.safeAreaInset.top);
     setBottom(WebApp.safeAreaInset.bottom);
     setStableHeight(WebApp.viewportStableHeight);
+    setContentTop(WebApp.contentSafeAreaInset.top);
+    setContentBottom(WebApp.contentSafeAreaInset.bottom);
   }, []);
 
   return (
@@ -37,6 +41,7 @@ function App() {
         <div>
           {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
         </div>
+        <div>{'top content: ' + top + ', bottom content: ' + bottom}</div>
         <NavigationBar />
       </div>
     </div>

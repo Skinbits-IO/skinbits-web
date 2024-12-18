@@ -11,6 +11,7 @@
 }
 
 .app {
+    position: absolute;
     top: var(--tg-content-safe-area-inset-top, 0px);
     bottom: var(--tg-content-safe-area-inset-bottom, 0px);
     min-height: 100%;
