@@ -41,7 +41,9 @@ function App() {
         <div>
           {'top: ' + top + ', bottom: ' + bottom + ', height: ' + stableHeight}
         </div>
-        <div>{'top content: ' + top + ', bottom content: ' + bottom}</div>
+        <div>
+          {'top content: ' + contentTop + ', bottom content: ' + contentBottom}
+        </div>
         <NavigationBar />
       </div>
     </div>
