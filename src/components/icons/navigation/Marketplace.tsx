@@ -4,7 +4,10 @@ interface MarketplaceIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const MarketplaceIcon = ({ className, ...props }: MarketplaceIconProps) => (
+export const MarketplaceIcon = ({
+  className,
+  ...props
+}: MarketplaceIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -23,4 +26,3 @@ const MarketplaceIcon = ({ className, ...props }: MarketplaceIconProps) => (
     <circle cx={17.5} cy={20} r={1.5} fill="currentColor" />
   </svg>
 );
-export default MarketplaceIcon;

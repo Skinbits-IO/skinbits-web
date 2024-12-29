@@ -4,7 +4,7 @@ interface TaskIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const TaskIcon = ({ className, ...props }: TaskIconProps) => (
+export const TaskIcon = ({ className, ...props }: TaskIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -21,4 +21,3 @@ const TaskIcon = ({ className, ...props }: TaskIconProps) => (
     />
   </svg>
 );
-export default TaskIcon;

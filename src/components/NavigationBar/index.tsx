@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
-import AccountIcon from '../icons/navigation/Account';
-import HomeIcon from '../icons/navigation/Home';
-import MarketplaceIcon from '../icons/navigation/Marketplace';
-import ReferralsIcon from '../icons/navigation/Referrals';
-import TaskIcon from '../icons/navigation/Tasks';
 import styles from './NavigationBar.module.css';
 import { Link, useLocation } from 'react-router';
 import React from 'react';
+import { MarketplaceIcon } from '../icons/navigation/Marketplace';
+import { TaskIcon } from '../icons/navigation/Tasks';
+import { HomeIcon } from '../icons/navigation/Home';
+import { ReferralsIcon } from '../icons/navigation/Referrals';
+import { AccountIcon } from '../icons/navigation/Account';
 
-function NavigationBar() {
+export const NavigationBar = () => {
   const { pathname } = useLocation();
   const links: { href: string; icon: ReactNode }[] = [
     { href: '/marketplace', icon: <MarketplaceIcon /> },
@@ -36,6 +36,4 @@ function NavigationBar() {
       })}
     </nav>
   );
-}
-
-export default NavigationBar;
+};

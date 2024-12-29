@@ -4,7 +4,7 @@ interface ReferralsIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const ReferralsIcon = ({ className, ...props }: ReferralsIconProps) => (
+export const ReferralsIcon = ({ className, ...props }: ReferralsIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -37,4 +37,3 @@ const ReferralsIcon = ({ className, ...props }: ReferralsIconProps) => (
     />
   </svg>
 );
-export default ReferralsIcon;

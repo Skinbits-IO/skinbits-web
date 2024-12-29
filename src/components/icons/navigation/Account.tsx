@@ -4,7 +4,7 @@ interface AccountIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const AccountIcon = ({ className, ...props }: AccountIconProps) => (
+export const AccountIcon = ({ className, ...props }: AccountIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -30,4 +30,3 @@ const AccountIcon = ({ className, ...props }: AccountIconProps) => (
     />
   </svg>
 );
-export default AccountIcon;

@@ -4,7 +4,7 @@ interface HomeIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const HomeIcon = ({ className, ...props }: HomeIconProps) => (
+export const HomeIcon = ({ className, ...props }: HomeIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -21,4 +21,3 @@ const HomeIcon = ({ className, ...props }: HomeIconProps) => (
     />
   </svg>
 );
-export default HomeIcon;
