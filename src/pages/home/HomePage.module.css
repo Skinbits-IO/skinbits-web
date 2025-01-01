@@ -5,7 +5,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    margin: 3.0625rem 1.5625rem 0 1.5625rem;
+    margin: 1.5625rem 1.5625rem 0 1.5625rem;
     background-color: transparent;
 }
 
@@ -16,4 +16,11 @@
     justify-content: start;
     align-items: center;
     gap: 15px;
+}
+
+.upperSection {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 13px;
 }
