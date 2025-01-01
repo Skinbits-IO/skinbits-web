@@ -3,7 +3,6 @@
     height: 76px;
     width: 100%;
     padding: 15px;
-    background-image: url('/wallet-background.png');
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     display: flex;
@@ -11,6 +10,11 @@
     justify-content: space-between;
     align-items: start;
     overflow: hidden;
+    
+    background-image: url('/wallet-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .header {

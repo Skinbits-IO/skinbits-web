@@ -12,7 +12,7 @@ export const Rank = (props: RankProps) => {
         <h6
           style={{
             fontSize: '18px',
-            fontWeight: '700',
+            fontWeight: '400',
             color: '#FFFFFF',
             fontFamily: 'Bebas Neue',
           }}
