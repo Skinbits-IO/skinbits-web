@@ -6,13 +6,14 @@ import { GameRocketIcon } from '../../components';
 import { generatePositions } from './utils/rocketPositioning';
 
 export const GameWidget = () => {
-  const [amo, setAmo] = useState<number>(100);
+  const [amo, setAmo] = useState<number>(0);
   const [rocketPositions, setRocketPositions] = useState<
     { left: number; top: number }[]
   >([]);
   const gameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    setAmo(100);
     generatePositions(gameRef, setRocketPositions);
   }, []);
 
