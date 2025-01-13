@@ -1,0 +1,42 @@
+.background {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    background-image: url('/game-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+}
+
+.amo {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #AFAFAF;
+}
+
+.amoBold {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.game {
+    position: absolute;
+    top: 40px;
+    height: calc(100% - 105px);
+    width: 100%;
+    background-color: transparent;
+}

@@ -2,11 +2,11 @@ import { ReactNode } from 'react';
 import styles from './NavigationBar.module.css';
 import { Link, useLocation } from 'react-router';
 import React from 'react';
-import { MarketplaceIcon } from '../icons/navigation/Marketplace';
-import { TaskIcon } from '../icons/navigation/Tasks';
-import { HomeIcon } from '../icons/navigation/Home';
-import { ReferralsIcon } from '../icons/navigation/Referrals';
-import { AccountIcon } from '../icons/navigation/Account';
+import { MarketplaceIcon } from '../icons/navigation/MarketplaceIcon';
+import { TaskIcon } from '../icons/navigation/TasksIcon';
+import { HomeIcon } from '../icons/navigation/HomeIcon';
+import { ReferralsIcon } from '../icons/navigation/ReferralsIcon';
+import { AccountIcon } from '../icons/navigation/AccountIcon';
 
 export const NavigationBar = () => {
   const { pathname } = useLocation();

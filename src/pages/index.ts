@@ -1,5 +1,8 @@
-export { MarketplacePage } from './marketplace/index';
-export { TaskPage } from './task/index';
-export { HomePage } from './home/index';
-export { ReferralsPage } from './referrals/index';
-export { AccountPage } from './account/index';
+export { MarketplacePage } from './marketplace';
+export { TaskPage } from './task';
+
+export { HomePage } from './home';
+export { GameUpgradePage } from './game-upgrade';
+
+export { ReferralsPage } from './referrals';
+export { AccountPage } from './account';

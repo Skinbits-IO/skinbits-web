@@ -1,10 +1,10 @@
 .background {
     position: relative;
-    height: 76px;
+    height: 4.75rem;
     width: 100%;
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,20 +14,20 @@
 
 .lightning {
     position: absolute;
-    bottom: -107px;
-    height: 90px;
-    width: 90px;
-    border-radius: 45px;
+    bottom: -6.6875rem;
+    height: 5.625rem;
+    width: 5.625rem;
+    border-radius: 2.8125rem;
     background-color: #494949;
     z-index: -1;
-    filter: blur(57px);
+    filter: blur(3.5625rem);
 }
 
 .textBox{
     z-index: 1;
     height: 100%;
     width: 100%;
-    padding: 10px 15px;
+    padding: 0.625rem 0.9375rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -36,7 +36,7 @@
 }
 
 .rankText {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 500;
     color: #FFFFFF;
     opacity: 0.7;

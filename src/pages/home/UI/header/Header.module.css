@@ -15,14 +15,14 @@
 }
 
 .avatar {
-    height: 49px;
-    width: 49px;
-    border-radius: 24.5px;
+    height: 3.0625rem;
+    width: 3.0625rem;
+    border-radius: 1.5313rem;
 }
 
 .text {
-    margin-left: 15px;
-    font-size: 14px;
+    margin-left: 0.9375rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: #8E8E8E;
 }

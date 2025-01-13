@@ -1,1 +1,2 @@
-export { NotificationWidget } from './notifications/index';
+export { NotificationWidget } from './notifications';
+export { GameWidget } from './game';

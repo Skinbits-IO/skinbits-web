@@ -1,0 +1,62 @@
+.background {
+    position: relative;
+    height: 55px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 14px;
+}
+
+.progressBar {
+    position: absolute;
+    height: 100%;
+    background-color: rgba(217, 217, 217, 0.02);
+    border-radius: 14px;
+    z-index: 0;
+}
+
+.content {
+    width: 100%;
+    margin: 10px 15px;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.activeButtonText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.unavailableButtonText {
+    font-size: 14px;
+    font-weight: 500;
+    color: #B1B1B1;
+}
+
+.rocketContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.rocketText {
+    font-size: 14px;
+    font-weight: 800;
+    color: #000000;
+}
+
+.rocketIcon {
+    height: 37px;
+    width: 37px;
+    border-radius: 18.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
