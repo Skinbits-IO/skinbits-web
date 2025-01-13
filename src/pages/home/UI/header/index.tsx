@@ -10,7 +10,11 @@ export const Header = (props: HeaderProps) => {
   return (
     <div className={styles.background}>
       <div className={styles.greeting}>
-        <img className={styles.avatar} src={props.avatarUrl} />
+        <img
+          className={styles.avatar}
+          src={window.location.origin + props.avatarUrl}
+          alt="image"
+        />
         <h6 className={styles.text}>Hi, {props.username ?? 'unknown'} 👋</h6>
       </div>
       <NotificationWidget />

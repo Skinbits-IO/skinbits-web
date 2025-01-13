@@ -12,7 +12,7 @@ export const Wallet = (props: WalletProps) => {
     <div className={styles.background}>
       <h6 className={styles.header}>Balance</h6>
       <div className={styles.balance}>
-        <RocketIcon size={22} color="#FFFFFF" />
+        <RocketIcon size={24} color="#FFFFFF" />
         <h5 className={styles.balanceText}>{formattedBalance}</h5>
       </div>
     </div>
