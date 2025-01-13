@@ -7,22 +7,22 @@ export const UpgradeButton = () => {
         position: 'absolute',
         left: '50%',
         transform: 'translateX(-50%)',
-        bottom: '20px',
+        bottom: '1.25rem',
         height: 'fit-content',
         width: 'fit-content',
-        padding: '11px 15px',
+        padding: '0.6875rem 0.9375rem',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '5px',
+        gap: '0.3125rem',
         backgroundColor: '#FBFFE4',
-        borderRadius: '46px',
+        borderRadius: '2.875rem',
         border: 'none',
       }}
     >
       <h5
         style={{
-          fontSize: '18px',
+          fontSize: '1.125rem',
           fontFamily: 'Bebas Neue',
           lineHeight: '1.2',
           margin: '0',

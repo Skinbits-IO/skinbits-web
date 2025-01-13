@@ -2,8 +2,8 @@
     position: relative;
     height: 100%;
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.25rem;
     overflow: hidden;
 }
 
@@ -21,22 +21,22 @@
 
 .amo {
     position: absolute;
-    right: 18px;
-    top: 18px;
-    font-size: 12px;
+    right: 1.125rem;
+    top: 1.125rem;
+    font-size: 0.75rem;
     font-weight: 400;
     color: #AFAFAF;
 }
 
 .amoBold {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
 }
 
 .game {
     position: absolute;
-    top: 40px;
-    height: calc(100% - 105px);
+    top: 2.5rem;
+    height: calc(100% - 6.5625rem);
     width: 100%;
     background-color: transparent;
 }

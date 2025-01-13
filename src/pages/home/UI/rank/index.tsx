@@ -11,7 +11,7 @@ export const Rank = (props: RankProps) => {
         <h6 className={styles.rankText}>Rank</h6>
         <h6
           style={{
-            fontSize: '18px',
+            fontSize: '1.125rem',
             fontWeight: '400',
             color: '#FFFFFF',
             fontFamily: 'Bebas Neue',

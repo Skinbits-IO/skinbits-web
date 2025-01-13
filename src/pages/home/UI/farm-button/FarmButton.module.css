@@ -1,24 +1,24 @@
 .background {
     position: relative;
-    height: 55px;
+    height: 3.4375rem;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 14px;
+    border-radius: 0.875rem;
 }
 
 .progressBar {
     position: absolute;
     height: 100%;
     background-color: rgba(217, 217, 217, 0.02);
-    border-radius: 14px;
+    border-radius: 0.875rem;
     z-index: 0;
 }
 
 .content {
     width: 100%;
-    margin: 10px 15px;
+    margin: 0.625rem 0.9375rem;
     background-color: transparent;
     display: flex;
     justify-content: space-between;
@@ -27,13 +27,13 @@
 }
 
 .activeButtonText {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     color: #000000;
 }
 
 .unavailableButtonText {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     color: #B1B1B1;
 }
@@ -42,19 +42,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .rocketText {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 800;
     color: #000000;
 }
 
 .rocketIcon {
-    height: 37px;
-    width: 37px;
-    border-radius: 18.5px;
+    height: 2.3125rem;
+    width: 2.3125rem;
+    border-radius: 1.1563rem;
     display: flex;
     justify-content: center;
     align-items: center;

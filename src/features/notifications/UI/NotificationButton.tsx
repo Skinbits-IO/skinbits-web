@@ -4,10 +4,10 @@ export const NotificationButton = () => {
   return (
     <button
       style={{
-        height: '49px',
-        width: '49px',
-        border: '2px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '24.5px',
+        height: '3.0625rem',
+        width: '3.0625rem',
+        border: '0.125rem solid rgba(255, 255, 255, 0.1)',
+        borderRadius: '1.5313rem',
         backgroundColor: 'transparent',
         display: 'flex',
         justifyContent: 'center',

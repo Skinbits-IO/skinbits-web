@@ -38,8 +38,8 @@ export const GameWidget = () => {
         </div>
         <UpgradeButton />
       </div>
-      <Lighting left="54px" top="142px" />
-      <Lighting left="230px" top="300px" />
+      <Lighting left="3.375rem" top="8.875rem" />
+      <Lighting left="14.375rem" top="18.75rem" />
     </div>
   );
 };

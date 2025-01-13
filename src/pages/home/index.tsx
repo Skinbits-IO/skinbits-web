@@ -9,7 +9,7 @@ export const HomePage = () => {
   return (
     <div className={styles.background}>
       <div className={styles.header}>
-        <Header avatarUrl="/avatar.jpg" username="German" />
+        <Header avatarUrl="/avatar.png" username="German" />
         <div className={styles.upperSection}>
           <Rank rank="silver" />
           <Wallet balance={4500000} />
