@@ -7,7 +7,7 @@
     min-width: calc(100%-1.875rem);
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding: 0.8125rem 0.875rem;
     border-radius: 1rem;
