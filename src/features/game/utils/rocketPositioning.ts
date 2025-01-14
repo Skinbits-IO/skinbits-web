@@ -1,14 +1,16 @@
 import { MutableRefObject } from 'react';
+import { RocketPosition } from '../types/RocketPosition';
 
-const rocketSize = 44; // Rocket size in pixels
 const buffer = 20; // Buffer zone in pixels
+const edgeSpacing = 20; // Minimum spacing from edges in pixels
+let unavailable: boolean[][];
 
 const isValidPosition = (
-  newPos: { left: number; top: number },
-  unavailable: boolean[][],
+  newPos: RocketPosition,
   gridWidth: number,
-  gridHeight: number
-) => {
+  gridHeight: number,
+  rocketSize: number
+): boolean => {
   const startX = Math.max(0, Math.floor((newPos.left - buffer) / gridWidth));
   const endX = Math.min(
     Math.floor((newPos.left + rocketSize + buffer) / gridWidth),
@@ -27,15 +29,16 @@ const isValidPosition = (
       }
     }
   }
+
   return true;
 };
 
 const markUnavailableArea = (
-  pos: { left: number; top: number },
-  unavailable: boolean[][],
+  pos: RocketPosition,
   gridWidth: number,
-  gridHeight: number
-) => {
+  gridHeight: number,
+  rocketSize: number
+): void => {
   const startX = Math.max(0, Math.floor((pos.left - buffer) / gridWidth));
   const endX = Math.min(
     Math.floor((pos.left + rocketSize + buffer) / gridWidth),
@@ -54,53 +57,91 @@ const markUnavailableArea = (
   }
 };
 
-export const generatePositions = (
+export const computeGrid = (
   gameRef: MutableRefObject<HTMLDivElement | null>,
-  setRocketPositions: (
-    pc: {
-      left: number;
-      top: number;
-    }[]
-  ) => void
+  rocketSize: number
 ) => {
-  if (gameRef.current) {
-    const { offsetWidth: width, offsetHeight: height } = gameRef.current;
+  if (!gameRef.current) {
+    throw new Error('gameRef is not available');
+  }
 
-    const gridWidth = rocketSize + buffer * 2;
-    const gridHeight = rocketSize + buffer * 2;
+  const { offsetWidth: width, offsetHeight: height } = gameRef.current;
 
-    const cols = Math.ceil(width / gridWidth);
-    const rows = Math.ceil(height / gridHeight);
+  const gridWidth = rocketSize + buffer * 2;
+  const gridHeight = rocketSize + buffer * 2;
 
-    const unavailable = Array.from({ length: cols }, () =>
-      Array(rows).fill(false)
+  const cols = Math.ceil(width / gridWidth);
+  const rows = Math.ceil(height / gridHeight);
+
+  unavailable = Array.from({ length: cols }, () => Array(rows).fill(false));
+};
+
+export const generatePosition = (
+  gameRef: MutableRefObject<HTMLDivElement | null>,
+  rocketSize: number
+): RocketPosition => {
+  if (!gameRef.current) {
+    throw new Error('gameRef is not available');
+  }
+
+  const { offsetWidth: width, offsetHeight: height } = gameRef.current;
+  let attempts = 0;
+  let newPosition: RocketPosition;
+
+  do {
+    newPosition = {
+      left:
+        edgeSpacing + Math.random() * (width - rocketSize - edgeSpacing * 2),
+      top:
+        edgeSpacing + Math.random() * (height - rocketSize - edgeSpacing * 2),
+    };
+    attempts++;
+  } while (
+    attempts < 100 &&
+    !isValidPosition(
+      newPosition,
+      rocketSize + buffer * 2,
+      rocketSize + buffer * 2,
+      rocketSize
+    )
+  );
+
+  if (attempts < 100) {
+    markUnavailableArea(
+      newPosition,
+      rocketSize + buffer * 2,
+      rocketSize + buffer * 2,
+      rocketSize
     );
+    return newPosition;
+  } else {
+    throw new Error(
+      'Could not generate a valid rocket position without overlap'
+    );
+  }
+};
 
-    const positions: { left: number; top: number }[] = [];
+export const removeRocketPosition = (
+  pos: RocketPosition,
+  rocketSize: number
+) => {
+  const gridWidth = rocketSize + buffer * 2;
+  const gridHeight = rocketSize + buffer * 2;
 
-    for (let i = 0; i < 3; i++) {
-      let attempts = 0;
-      let newPosition;
+  const startX = Math.max(0, Math.floor((pos.left - buffer) / gridWidth));
+  const endX = Math.min(
+    Math.floor((pos.left + rocketSize + buffer) / gridWidth),
+    unavailable.length - 1
+  );
+  const startY = Math.max(0, Math.floor((pos.top - buffer) / gridHeight));
+  const endY = Math.min(
+    Math.floor((pos.top + rocketSize + buffer) / gridHeight),
+    unavailable[0].length - 1
+  );
 
-      do {
-        newPosition = {
-          left: Math.random() * (width - rocketSize),
-          top: Math.random() * (height - rocketSize),
-        };
-        attempts++;
-      } while (
-        attempts < 20 &&
-        !isValidPosition(newPosition, unavailable, gridWidth, gridHeight)
-      );
-
-      if (attempts < 20) {
-        positions.push(newPosition);
-        markUnavailableArea(newPosition, unavailable, gridWidth, gridHeight);
-      } else {
-        console.warn('Could not place all rockets without overlap');
-      }
+  for (let x = startX; x <= endX; x++) {
+    for (let y = startY; y <= endY; y++) {
+      unavailable[x][y] = false;
     }
-
-    setRocketPositions(positions);
   }
 };

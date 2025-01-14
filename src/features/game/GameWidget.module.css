@@ -35,8 +35,50 @@
 
 .game {
     position: absolute;
-    top: 2.5rem;
+    top: 30px;
+    margin: 10px;
     height: calc(100% - 6.5625rem);
     width: 100%;
     background-color: transparent;
 }
+
+
+
+/* Animations */
+@keyframes flyAway {
+    to {
+        transform: translate(30px, -30px); /* Slightly to the top-right */
+        opacity: 0; /* Gradually fade out */
+    }
+}
+  
+.rocket {
+    position: absolute;
+    transition: transform 0.4s ease, opacity 0.4s ease; /* Smooth transition */
+}
+  
+.rocket.fly-away {
+    animation: flyAway 0.4s forwards; /* Trigger the animation */
+}
+
+.plusOne {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFFFFF;
+    opacity: 1;
+    animation: fadeAndRise 1s forwards;
+    pointer-events: none;
+}
+  
+@keyframes fadeAndRise {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+  

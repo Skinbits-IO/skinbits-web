@@ -18,6 +18,7 @@ export const UpgradeButton = () => {
         backgroundColor: '#FBFFE4',
         borderRadius: '2.875rem',
         border: 'none',
+        zIndex: 1,
       }}
     >
       <h5
