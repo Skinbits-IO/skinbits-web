@@ -12,7 +12,7 @@ import { RocketPosition } from './types/RocketPosition';
 
 export const GameWidget = () => {
   const rocketSize = 44;
-  const [balance, setBalance] = useState<number>(0);
+  //const [balance, setBalance] = useState<number>(0);
   const [amo, setAmo] = useState<number>(0);
 
   const gameRef = useRef<HTMLDivElement | null>(null);
