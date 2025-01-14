@@ -38,38 +38,43 @@ export const GameWidget = () => {
 
   const handleRocketClick = (index: number) => {
     const clickedPosition = rocketPositions[index];
+    console.log(clickedPosition + ' index: ' + index);
 
     // Show "+1" at the rocket's position
-    setPlusOnePositions((prep) => {
-      prep.set(index, clickedPosition);
-      return prep;
+    setPlusOnePositions((prev) => {
+      const newMap = new Map(prev); // Create a new Map
+      newMap.set(index, clickedPosition);
+      return newMap;
     });
 
     // Mark the clicked rocket as flying
-    setFlyingRocketIndexes((prep) => {
-      prep.push(index);
-      return prep;
-    });
+    let flyingIndexes = flyingRocketIndexes;
+    flyingIndexes.push(index);
+    setFlyingRocketIndexes(flyingIndexes);
 
+    // Replace the rocket position with a new one
     let positions = rocketPositions;
     const newRocketPosition = generatePosition(gameRef, rocketSize);
     positions.push(newRocketPosition);
-
     setRocketPositions(positions);
 
     // Remove it after the animation ends
     setTimeout(() => {
       removeRocketPosition(clickedPosition, rocketSize);
+
+      // Update the rocket positions
       positions.splice(index, 1);
       setRocketPositions(positions);
 
-      setFlyingRocketIndexes((prep) => {
-        prep.splice(index, 1);
-        return prep;
-      });
-      setPlusOnePositions((prep) => {
-        prep.delete(index);
-        return prep;
+      // Remove the rocket index from flying
+      flyingIndexes.pop();
+      setFlyingRocketIndexes(flyingIndexes);
+
+      // Remove "+1" after animation
+      setPlusOnePositions((prev) => {
+        const newMap = new Map(prev);
+        newMap.delete(index);
+        return newMap;
       });
     }, 400); // Duration of the animation
   };
@@ -83,29 +88,33 @@ export const GameWidget = () => {
         </span>
         <div className={styles.game} ref={gameRef}>
           {rocketPositions.map((pos, index) => (
-            <div
-              key={index}
-              className={`${styles.rocket} ${
-                index === flyingRocketIndexes[flyingRocketIndexes.length - 1]
-                  ? styles['fly-away']
-                  : ''
-              }`}
-              style={{
-                left: `${pos.left}px`,
-                top: `${pos.top}px`,
-              }}
-              onClick={() => handleRocketClick(index)}
-            >
-              <GameRocketIcon />
+            <div key={index}>
               <div
-                className={styles.plusOne}
+                key={index}
+                className={`${styles.rocket} ${
+                  index === flyingRocketIndexes[flyingRocketIndexes.length - 1]
+                    ? styles['fly-away']
+                    : ''
+                }`}
                 style={{
-                  left: `${plusOnePositions.get(index)?.left}px`,
-                  top: `${plusOnePositions.get(index)?.top}px`,
+                  left: `${pos.left}px`,
+                  top: `${pos.top}px`,
                 }}
+                onClick={() => handleRocketClick(index)}
               >
-                +1
+                <GameRocketIcon />
               </div>
+              {plusOnePositions.get(index) && (
+                <div
+                  className={styles.plusOne}
+                  style={{
+                    left: `${plusOnePositions.get(index)!.left}px`,
+                    top: `${plusOnePositions.get(index)!.top}px`,
+                  }}
+                >
+                  +1
+                </div>
+              )}
             </div>
           ))}
         </div>
