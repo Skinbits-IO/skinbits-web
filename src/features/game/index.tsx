@@ -17,13 +17,10 @@ export const GameWidget = () => {
 
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
-  const [flyingRocketIndex, setFlyingRocketIndex] = useState<number | null>(
-    null
-  );
-  const [plusOnePosition, setPlusOnePosition] = useState<{
-    left: number;
-    top: number;
-  } | null>(null);
+  const [flyingRocketIndexes, setFlyingRocketIndexes] = useState<number[]>([]);
+  const [plusOnePositions, setPlusOnePositions] = useState<
+    Map<number, RocketPosition>
+  >(new Map<number, RocketPosition>());
 
   useEffect(() => {
     setAmo(100);
@@ -43,10 +40,16 @@ export const GameWidget = () => {
     const clickedPosition = rocketPositions[index];
 
     // Show "+1" at the rocket's position
-    setPlusOnePosition(clickedPosition);
+    setPlusOnePositions((prep) => {
+      prep.set(index, clickedPosition);
+      return prep;
+    });
 
     // Mark the clicked rocket as flying
-    setFlyingRocketIndex(index);
+    setFlyingRocketIndexes((prep) => {
+      prep.push(index);
+      return prep;
+    });
 
     let positions = rocketPositions;
     const newRocketPosition = generatePosition(gameRef, rocketSize);
@@ -60,8 +63,14 @@ export const GameWidget = () => {
       positions.splice(index, 1);
       setRocketPositions(positions);
 
-      setFlyingRocketIndex(null);
-      setPlusOnePosition(null);
+      setFlyingRocketIndexes((prep) => {
+        prep.splice(index, 1);
+        return prep;
+      });
+      setPlusOnePositions((prep) => {
+        prep.delete(index);
+        return prep;
+      });
     }, 400); // Duration of the animation
   };
 
@@ -77,7 +86,9 @@ export const GameWidget = () => {
             <div
               key={index}
               className={`${styles.rocket} ${
-                index === flyingRocketIndex ? styles['fly-away'] : ''
+                index === flyingRocketIndexes[flyingRocketIndexes.length - 1]
+                  ? styles['fly-away']
+                  : ''
               }`}
               style={{
                 left: `${pos.left}px`,
@@ -86,21 +97,17 @@ export const GameWidget = () => {
               onClick={() => handleRocketClick(index)}
             >
               <GameRocketIcon />
+              <div
+                className={styles.plusOne}
+                style={{
+                  left: `${plusOnePositions.get(index)?.left}px`,
+                  top: `${plusOnePositions.get(index)?.top}px`,
+                }}
+              >
+                +1
+              </div>
             </div>
           ))}
-
-          {/* Render "+1" if a rocket is clicked */}
-          {plusOnePosition && (
-            <div
-              className={styles.plusOne}
-              style={{
-                left: `${plusOnePosition.left}px`,
-                top: `${plusOnePosition.top}px`,
-              }}
-            >
-              +1
-            </div>
-          )}
         </div>
         <UpgradeButton />
       </div>
