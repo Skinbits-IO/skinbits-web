@@ -1,9 +1,12 @@
 import { MutableRefObject } from 'react';
 import { RocketPosition } from '../types/RocketPosition';
 
-const buffer = 20; // Buffer zone in pixels
+const buffer = 10; // Buffer zone in pixels
 const edgeSpacing = 20; // Minimum spacing from edges in pixels
+
 let unavailable: boolean[][];
+let gridWidth = 0;
+let gridHeight = 0;
 
 const isValidPosition = (
   newPos: RocketPosition,
@@ -33,11 +36,10 @@ const isValidPosition = (
   return true;
 };
 
-const markUnavailableArea = (
+export const markArea = (
   pos: RocketPosition,
-  gridWidth: number,
-  gridHeight: number,
-  rocketSize: number
+  rocketSize: number,
+  isUnavailable: boolean
 ): void => {
   const startX = Math.max(0, Math.floor((pos.left - buffer) / gridWidth));
   const endX = Math.min(
@@ -52,7 +54,7 @@ const markUnavailableArea = (
 
   for (let x = startX; x <= endX; x++) {
     for (let y = startY; y <= endY; y++) {
-      unavailable[x][y] = true;
+      unavailable[x][y] = isUnavailable;
     }
   }
 };
@@ -67,8 +69,8 @@ export const computeGrid = (
 
   const { offsetWidth: width, offsetHeight: height } = gameRef.current;
 
-  const gridWidth = rocketSize + buffer * 2;
-  const gridHeight = rocketSize + buffer * 2;
+  gridWidth = rocketSize + buffer * 2;
+  gridHeight = rocketSize + buffer * 2;
 
   const cols = Math.ceil(width / gridWidth);
   const rows = Math.ceil(height / gridHeight);
@@ -97,7 +99,7 @@ export const generatePosition = (
     };
     attempts++;
   } while (
-    attempts < 100 &&
+    attempts < 500 &&
     !isValidPosition(
       newPosition,
       rocketSize + buffer * 2,
@@ -106,42 +108,12 @@ export const generatePosition = (
     )
   );
 
-  if (attempts < 100) {
-    markUnavailableArea(
-      newPosition,
-      rocketSize + buffer * 2,
-      rocketSize + buffer * 2,
-      rocketSize
-    );
+  if (attempts < 500) {
+    markArea(newPosition, rocketSize, true);
     return newPosition;
   } else {
     throw new Error(
       'Could not generate a valid rocket position without overlap'
     );
-  }
-};
-
-export const removeRocketPosition = (
-  pos: RocketPosition,
-  rocketSize: number
-) => {
-  const gridWidth = rocketSize + buffer * 2;
-  const gridHeight = rocketSize + buffer * 2;
-
-  const startX = Math.max(0, Math.floor((pos.left - buffer) / gridWidth));
-  const endX = Math.min(
-    Math.floor((pos.left + rocketSize + buffer) / gridWidth),
-    unavailable.length - 1
-  );
-  const startY = Math.max(0, Math.floor((pos.top - buffer) / gridHeight));
-  const endY = Math.min(
-    Math.floor((pos.top + rocketSize + buffer) / gridHeight),
-    unavailable[0].length - 1
-  );
-
-  for (let x = startX; x <= endX; x++) {
-    for (let y = startY; y <= endY; y++) {
-      unavailable[x][y] = false;
-    }
   }
 };

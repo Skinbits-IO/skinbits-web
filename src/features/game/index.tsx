@@ -6,7 +6,7 @@ import { GameRocketIcon } from '../../components';
 import {
   computeGrid,
   generatePosition,
-  removeRocketPosition,
+  markArea,
 } from './utils/rocketPositioning';
 import { RocketPosition } from './types/RocketPosition';
 
@@ -17,10 +17,7 @@ export const GameWidget = () => {
 
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
-  const [flyingRocketPosition, setFlyingRocketPosition] = useState<
-    RocketPosition[]
-  >([]);
-  const [plusOnePositions, setPlusOnePositions] = useState<
+  const [flyingRocketPositions, setFlyingRocketPositions] = useState<
     Map<number, RocketPosition>
   >(new Map<number, RocketPosition>());
 
@@ -40,21 +37,13 @@ export const GameWidget = () => {
 
   const handleRocketClick = (index: number) => {
     const clickedPosition = rocketPositions[index];
-    console.log(clickedPosition + ' index: ' + index);
 
-    // Show "+1" at the rocket's position
-    setPlusOnePositions((prev) => {
-      const newMap = new Map(prev); // Create a new Map
+    setFlyingRocketPositions((prev) => {
+      const newMap = new Map(prev);
       newMap.set(index, clickedPosition);
       return newMap;
     });
 
-    // Mark the clicked rocket as flying
-    let flyingPosition = flyingRocketPosition;
-    flyingPosition.push(clickedPosition);
-    setFlyingRocketPosition(flyingPosition);
-
-    // Replace the rocket position with a new one
     let positions = rocketPositions;
     const newRocketPosition = generatePosition(gameRef, rocketSize);
     positions.push(newRocketPosition);
@@ -62,23 +51,17 @@ export const GameWidget = () => {
 
     // Remove it after the animation ends
     setTimeout(() => {
-      removeRocketPosition(clickedPosition, rocketSize);
+      markArea(clickedPosition, rocketSize, false);
 
-      // Update the rocket positions
-      positions.splice(index, 1);
+      positions.splice(positions.indexOf(clickedPosition), 1);
       setRocketPositions(positions);
 
-      // Remove the rocket index from flying
-      flyingPosition.splice(flyingPosition.indexOf(clickedPosition), 1);
-      setFlyingRocketPosition(flyingPosition);
-
-      // Remove "+1" after animation
-      setPlusOnePositions((prev) => {
+      setFlyingRocketPositions((prev) => {
         const newMap = new Map(prev);
         newMap.delete(index);
         return newMap;
       });
-    }, 400); // Duration of the animation
+    }, 400);
   };
 
   return (
@@ -94,7 +77,9 @@ export const GameWidget = () => {
               <div
                 key={index}
                 className={`${styles.rocket} ${
-                  flyingRocketPosition.includes(pos) ? styles['fly-away'] : ''
+                  Array.from(flyingRocketPositions.values()).includes(pos)
+                    ? styles['fly-away']
+                    : ''
                 }`}
                 style={{
                   left: `${pos.left}px`,
@@ -104,12 +89,12 @@ export const GameWidget = () => {
               >
                 <GameRocketIcon />
               </div>
-              {plusOnePositions.get(index) && (
+              {flyingRocketPositions.get(index) && (
                 <div
                   className={styles.plusOne}
                   style={{
-                    left: `${plusOnePositions.get(index)!.left}px`,
-                    top: `${plusOnePositions.get(index)!.top}px`,
+                    left: `${flyingRocketPositions.get(index)!.left}px`,
+                    top: `${flyingRocketPositions.get(index)!.top}px`,
                   }}
                 >
                   +1
