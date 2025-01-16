@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
 import { RocketPosition } from '../types/RocketPosition';
 
-const buffer = 10; // Buffer zone in pixels
+const buffer = 20; // Buffer zone in pixels
 const edgeSpacing = 20; // Minimum spacing from edges in pixels
 
 let unavailable: boolean[][];
@@ -10,8 +10,6 @@ let gridHeight = 0;
 
 const isValidPosition = (
   newPos: RocketPosition,
-  gridWidth: number,
-  gridHeight: number,
   rocketSize: number
 ): boolean => {
   const startX = Math.max(0, Math.floor((newPos.left - buffer) / gridWidth));
@@ -98,18 +96,9 @@ export const generatePosition = (
         edgeSpacing + Math.random() * (height - rocketSize - edgeSpacing * 2),
     };
     attempts++;
-  } while (
-    attempts < 50 &&
-    !isValidPosition(
-      newPosition,
-      rocketSize + buffer * 2,
-      rocketSize + buffer * 2,
-      rocketSize
-    )
-  );
+  } while (attempts < 5 && !isValidPosition(newPosition, rocketSize));
 
-  if (attempts > 50) {
-    console.log('hui');
+  if (attempts > 5) {
     newPosition = {
       left:
         edgeSpacing + Math.random() * (width - rocketSize - edgeSpacing * 2),
