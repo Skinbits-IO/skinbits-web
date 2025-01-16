@@ -10,10 +10,27 @@ import {
 } from './utils/rocketPositioning';
 import { RocketPosition } from './types/RocketPosition';
 import { AnimatePresence, motion } from 'motion/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state/store';
+import { addAmo, reduceAmo } from '../../state/game/amoSlice';
 
-export const GameWidget = () => {
+export const GameWidget = (props: {
+  onRocketClick: (value: number) => void;
+}) => {
   const rocketSize = 44;
-  const [amo, setAmo] = useState<number>(0);
+  //Damage level index
+  const damageLevelIndex = 10;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  //Amo
+  const amo = useSelector((state: RootState) => state.amo.value);
+  const maxAmo = useSelector((state: RootState) => state.amo.max);
+
+  const amoRef = useRef(amo);
+  const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
+
+  //Rockets
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
   const [flyingRockets, setFlyingRockets] = useState<
@@ -21,37 +38,58 @@ export const GameWidget = () => {
   >(new Map());
 
   useEffect(() => {
-    setAmo(100);
-
+    //Set up rockets
     computeGrid(gameRef, rocketSize);
-
     const positions: RocketPosition[] = [];
     for (let i = 0; i < 3; i++) {
       const rocketPosition = generatePosition(gameRef, rocketSize);
       positions.push(rocketPosition);
     }
-
     setRocketPositions(positions);
+
+    return () => {
+      clearInterval(regenerationInterval.current!);
+      regenerationInterval.current = null;
+    };
   }, []);
 
+  useEffect(() => {
+    amoRef.current = amo;
+  }, [amo]);
+
   const handleRocketClick = (position: RocketPosition, index: number) => {
-    const newRocketPosition = generatePosition(gameRef, rocketSize);
-    const updatedPositions = rocketPositions.map((pos, i) =>
-      i === index ? newRocketPosition : pos
-    );
+    if (amo - damageLevelIndex >= 0) {
+      const newRocketPosition = generatePosition(gameRef, rocketSize);
+      const updatedPositions = rocketPositions.map((pos, i) =>
+        i === index ? newRocketPosition : pos
+      );
 
-    const updatedFlyingRockets = new Map(flyingRockets);
-    updatedFlyingRockets.set(index, { ...position });
+      const updatedFlyingRockets = new Map(flyingRockets);
+      updatedFlyingRockets.set(index, { ...position });
 
-    markArea(position, rocketSize, false);
+      markArea(position, rocketSize, false);
 
-    setRocketPositions(updatedPositions);
-    setFlyingRockets(updatedFlyingRockets);
+      setRocketPositions(updatedPositions);
+      setFlyingRockets(updatedFlyingRockets);
+      dispatch(reduceAmo(damageLevelIndex));
+      props.onRocketClick(damageLevelIndex);
 
-    setTimeout(() => {
-      updatedFlyingRockets.delete(index);
-      setFlyingRockets(new Map(updatedFlyingRockets));
-    }, 400);
+      setTimeout(() => {
+        updatedFlyingRockets.delete(index);
+        setFlyingRockets(new Map(updatedFlyingRockets));
+      }, 400);
+
+      if (
+        regenerationInterval.current === null &&
+        amo - damageLevelIndex === 0
+      ) {
+        regenerationInterval.current = setInterval(() => {
+          if (amoRef.current < maxAmo) {
+            dispatch(addAmo(10));
+          }
+        }, 1000);
+      }
+    }
   };
 
   return (
@@ -59,7 +97,7 @@ export const GameWidget = () => {
       <div className={styles.content}>
         <span className={styles.amo}>
           <span className={styles.amoBold}>{amo}</span>
-          <span>/500</span>
+          <span>/{maxAmo}</span>
         </span>
         <div className={styles.game} ref={gameRef}>
           <AnimatePresence>
@@ -95,7 +133,7 @@ export const GameWidget = () => {
                       top: `${flyingRockets.get(index)!.top}px`,
                     }}
                   >
-                    +1
+                    +{damageLevelIndex}
                   </motion.div>
                 )}
               </motion.div>
