@@ -99,7 +99,7 @@ export const generatePosition = (
     };
     attempts++;
   } while (
-    attempts < 500 &&
+    attempts < 200 &&
     !isValidPosition(
       newPosition,
       rocketSize + buffer * 2,
@@ -108,7 +108,7 @@ export const generatePosition = (
     )
   );
 
-  if (attempts < 500) {
+  if (attempts < 200) {
     markArea(newPosition, rocketSize, true);
     return newPosition;
   } else {
