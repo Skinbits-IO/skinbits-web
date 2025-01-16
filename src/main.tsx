@@ -7,12 +7,15 @@ import './index.css';
 
 import { store } from './state/store.ts';
 import { Provider } from 'react-redux';
+import { AnimatePresence } from 'motion/react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter basename="/skinbits-web/">
-        <App />
+        <AnimatePresence>
+          <App />
+        </AnimatePresence>
       </BrowserRouter>
     </Provider>
   </StrictMode>

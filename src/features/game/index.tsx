@@ -9,17 +9,16 @@ import {
   markArea,
 } from './utils/rocketPositioning';
 import { RocketPosition } from './types/RocketPosition';
+import { AnimatePresence, motion } from 'motion/react';
 
 export const GameWidget = () => {
   const rocketSize = 44;
-  //const [balance, setBalance] = useState<number>(0);
   const [amo, setAmo] = useState<number>(0);
-
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
-  const [flyingRocketPositions, setFlyingRocketPositions] = useState<
+  const [flyingRockets, setFlyingRockets] = useState<
     Map<number, RocketPosition>
-  >(new Map<number, RocketPosition>());
+  >(new Map());
 
   useEffect(() => {
     setAmo(100);
@@ -27,7 +26,7 @@ export const GameWidget = () => {
     computeGrid(gameRef, rocketSize);
 
     const positions: RocketPosition[] = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       const rocketPosition = generatePosition(gameRef, rocketSize);
       positions.push(rocketPosition);
     }
@@ -35,32 +34,23 @@ export const GameWidget = () => {
     setRocketPositions(positions);
   }, []);
 
-  const handleRocketClick = (index: number) => {
-    const clickedPosition = rocketPositions[index];
-
-    setFlyingRocketPositions((prev) => {
-      const newMap = new Map(prev);
-      newMap.set(index, clickedPosition);
-      return newMap;
-    });
-
-    let positions = rocketPositions;
+  const handleRocketClick = (position: RocketPosition, index: number) => {
+    let positions = [...rocketPositions];
     const newRocketPosition = generatePosition(gameRef, rocketSize);
-    positions.push(newRocketPosition);
+    positions.splice(positions.indexOf(position), 1, newRocketPosition);
+
+    // Set flying rocket position
+    const newFlyingRockets = new Map(flyingRockets);
+    newFlyingRockets.set(index, { ...position });
+
+    markArea(position, rocketSize, false);
     setRocketPositions(positions);
+    setFlyingRockets(newFlyingRockets);
 
-    // Remove it after the animation ends
     setTimeout(() => {
-      markArea(clickedPosition, rocketSize, false);
-
-      positions.splice(positions.indexOf(clickedPosition), 1);
-      setRocketPositions(positions);
-
-      setFlyingRocketPositions((prev) => {
-        const newMap = new Map(prev);
-        newMap.delete(index);
-        return newMap;
-      });
+      const updatedFlyingRockets = new Map(flyingRockets);
+      updatedFlyingRockets.delete(index);
+      setFlyingRockets(updatedFlyingRockets);
     }, 400);
   };
 
@@ -72,36 +62,53 @@ export const GameWidget = () => {
           <span>/500</span>
         </span>
         <div className={styles.game} ref={gameRef}>
-          {rocketPositions.map((pos, index) => (
-            <div key={index}>
-              <div
-                key={index}
-                className={`${styles.rocket} ${
-                  Array.from(flyingRocketPositions.values()).includes(pos)
-                    ? styles['fly-away']
-                    : ''
-                }`}
-                style={{
-                  left: `${pos.left}px`,
-                  top: `${pos.top}px`,
-                }}
-                onClick={() => handleRocketClick(index)}
-              >
-                <GameRocketIcon />
-              </div>
-              {flyingRocketPositions.get(index) && (
-                <div
-                  className={styles.plusOne}
-                  style={{
-                    left: `${flyingRocketPositions.get(index)!.left}px`,
-                    top: `${flyingRocketPositions.get(index)!.top}px`,
+          <AnimatePresence>
+            {rocketPositions.map((pos, index) => (
+              <div key={index}>
+                <motion.div
+                  key={index}
+                  initial={{
+                    x: pos.left,
+                    y: pos.top,
+                    position: 'absolute',
                   }}
+                  animate={{
+                    x: pos.left,
+                    y: pos.top,
+                  }}
+                  exit={{
+                    x: 30,
+                    y: -30,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    ease: 'easeOut',
+                  }}
+                  onClick={() => handleRocketClick(pos, index)}
                 >
-                  +1
-                </div>
-              )}
-            </div>
-          ))}
+                  <GameRocketIcon />
+                </motion.div>
+
+                {flyingRockets.has(index) && (
+                  <motion.div
+                    key={`plus-one-${index}`}
+                    className={styles.plusOne}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    style={{
+                      left: `${flyingRockets.get(index)!.left}px`,
+                      top: `${flyingRockets.get(index)!.top}px`,
+                    }}
+                  >
+                    +1
+                  </motion.div>
+                )}
+              </div>
+            ))}
+          </AnimatePresence>
         </div>
         <UpgradeButton />
       </div>
