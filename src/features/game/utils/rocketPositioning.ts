@@ -99,7 +99,7 @@ export const generatePosition = (
     };
     attempts++;
   } while (
-    attempts < 200 &&
+    attempts < 50 &&
     !isValidPosition(
       newPosition,
       rocketSize + buffer * 2,
@@ -108,12 +108,16 @@ export const generatePosition = (
     )
   );
 
-  if (attempts < 200) {
-    markArea(newPosition, rocketSize, true);
-    return newPosition;
-  } else {
-    throw new Error(
-      'Could not generate a valid rocket position without overlap'
-    );
+  if (attempts > 50) {
+    console.log('hui');
+    newPosition = {
+      left:
+        edgeSpacing + Math.random() * (width - rocketSize - edgeSpacing * 2),
+      top:
+        edgeSpacing + Math.random() * (height - rocketSize - edgeSpacing * 2),
+    };
   }
+
+  markArea(newPosition, rocketSize, true);
+  return newPosition;
 };

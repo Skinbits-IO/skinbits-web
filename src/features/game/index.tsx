@@ -26,7 +26,7 @@ export const GameWidget = () => {
     computeGrid(gameRef, rocketSize);
 
     const positions: RocketPosition[] = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
       const rocketPosition = generatePosition(gameRef, rocketSize);
       positions.push(rocketPosition);
     }
