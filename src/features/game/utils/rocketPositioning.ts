@@ -96,9 +96,9 @@ export const generatePosition = (
         edgeSpacing + Math.random() * (height - rocketSize - edgeSpacing * 2),
     };
     attempts++;
-  } while (attempts < 5 && !isValidPosition(newPosition, rocketSize));
+  } while (attempts < 20 && !isValidPosition(newPosition, rocketSize));
 
-  if (attempts > 5) {
+  if (attempts > 20) {
     newPosition = {
       left:
         edgeSpacing + Math.random() * (width - rocketSize - edgeSpacing * 2),

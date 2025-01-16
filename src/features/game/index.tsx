@@ -35,22 +35,22 @@ export const GameWidget = () => {
   }, []);
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
-    let positions = [...rocketPositions];
     const newRocketPosition = generatePosition(gameRef, rocketSize);
-    positions.splice(positions.indexOf(position), 1, newRocketPosition);
+    const updatedPositions = rocketPositions.map((pos, i) =>
+      i === index ? newRocketPosition : pos
+    );
 
-    // Set flying rocket position
-    const newFlyingRockets = new Map(flyingRockets);
-    newFlyingRockets.set(index, { ...position });
+    const updatedFlyingRockets = new Map(flyingRockets);
+    updatedFlyingRockets.set(index, { ...position });
 
     markArea(position, rocketSize, false);
-    setRocketPositions(positions);
-    setFlyingRockets(newFlyingRockets);
+
+    setRocketPositions(updatedPositions);
+    setFlyingRockets(updatedFlyingRockets);
 
     setTimeout(() => {
-      const updatedFlyingRockets = new Map(flyingRockets);
       updatedFlyingRockets.delete(index);
-      setFlyingRockets(updatedFlyingRockets);
+      setFlyingRockets(new Map(updatedFlyingRockets));
     }, 400);
   };
 
@@ -64,22 +64,15 @@ export const GameWidget = () => {
         <div className={styles.game} ref={gameRef}>
           <AnimatePresence>
             {rocketPositions.map((pos, index) => (
-              <div key={index}>
+              <motion.div key={index}>
                 <motion.div
                   key={index}
+                  style={{ position: 'absolute' }}
                   initial={{
-                    x: pos.left,
-                    y: pos.top,
-                    position: 'absolute',
+                    transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
                   animate={{
-                    x: pos.left,
-                    y: pos.top,
-                  }}
-                  exit={{
-                    x: 30,
-                    y: -30,
-                    opacity: 0,
+                    transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
                   transition={{
                     duration: 0.4,
@@ -89,7 +82,6 @@ export const GameWidget = () => {
                 >
                   <GameRocketIcon />
                 </motion.div>
-
                 {flyingRockets.has(index) && (
                   <motion.div
                     key={`plus-one-${index}`}
@@ -106,7 +98,7 @@ export const GameWidget = () => {
                     +1
                   </motion.div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </AnimatePresence>
         </div>
