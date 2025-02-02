@@ -16,7 +16,7 @@ export const HomePage = () => {
 
   return (
     <div className={styles.background}>
-      <div style={{color: '#FFFFFF'}}>{user}</div>
+      <div style={{ color: '#FFFFFF' }}>{user ?? 'User is empty'}</div>
       {/* <div className={styles.header}>
         <Header avatarUrl="/skinbits-web/avatar.png" username="German" />
         <div className={styles.upperSection}>
