@@ -16,6 +16,12 @@ function App() {
     WebApp.setHeaderColor('#000000');
     WebApp.ready();
     WebApp.expand();
+
+    const user = WebApp.initDataUnsafe;
+    const userId = user.user!.id;
+    const username = user.user!.username;
+
+    console.log(user);
   }, []);
 
   return (

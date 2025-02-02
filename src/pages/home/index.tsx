@@ -7,6 +7,8 @@ import { Header } from './UI/header';
 import { Rank } from './UI/rank';
 import { Wallet } from './UI/wallet';
 import { updateBalance } from '../../state/home/balanceSlice';
+import { useEffect } from 'react';
+import WebApp from '@twa-dev/sdk';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,9 +16,16 @@ export const HomePage = () => {
     (state: RootState) => state.rocketBalance.value
   );
 
+  let user = null;
+
+  useEffect(() => {
+    user = WebApp.initDataUnsafe;
+  });
+
   return (
     <div className={styles.background}>
-      <div className={styles.header}>
+      <div>user</div>
+      {/* <div className={styles.header}>
         <Header avatarUrl="/skinbits-web/avatar.png" username="German" />
         <div className={styles.upperSection}>
           <Rank rank="silver" />
@@ -28,7 +37,7 @@ export const HomePage = () => {
           onRocketClick={(value: number) => dispatch(updateBalance(value))}
         />
         <FarmButton progress={70} status="unavailable" />
-      </div>
+      </div> */}
     </div>
   );
 };

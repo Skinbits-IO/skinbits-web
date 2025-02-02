@@ -19,7 +19,7 @@ export const GameWidget = (props: {
 }) => {
   const rocketSize = 44;
   //Damage level index
-  const damageLevelIndex = 10;
+  const damageLevelIndex = 1;
 
   const dispatch = useDispatch<AppDispatch>();
 
