@@ -1,5 +1,5 @@
 import styles from './HomePage.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import WebApp from '@twa-dev/sdk';
 
 export const HomePage = () => {
@@ -8,11 +8,11 @@ export const HomePage = () => {
     (state: RootState) => state.rocketBalance.value
   );*/
 
-  let user = null;
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    user = WebApp.initDataUnsafe;
-  });
+    setUser(WebApp.initDataUnsafe);
+  }, []);
 
   return (
     <div className={styles.background}>
