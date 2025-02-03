@@ -6,8 +6,8 @@ interface AmoState {
 }
 
 const initialState: AmoState = {
-  value: 100,
-  max: 100,
+  value: 10,
+  max: 10,
 };
 
 const amoSlice = createSlice({

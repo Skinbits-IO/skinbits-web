@@ -1,16 +1,16 @@
 import { RocketIcon } from '../../../../components';
 import styles from './FarmButton.module.css';
 
-interface FarmButtonProps {
+interface IFarmButtonProps {
   status: string;
   progress: number;
 }
 
-export const FarmButton = (props: FarmButtonProps) => {
-  const isFarmingAvailable = props.status !== 'unavailable';
+export const FarmButton = ({ status, progress }: IFarmButtonProps) => {
+  const isFarmingAvailable = status !== 'unavailable';
 
   const buttonText = (): string => {
-    switch (props.status) {
+    switch (status) {
       case 'active':
         return 'Farming Ends in ';
       case 'inactive':
@@ -35,10 +35,7 @@ export const FarmButton = (props: FarmButtonProps) => {
       }
     >
       {!isFarmingAvailable && (
-        <div
-          className={styles.progressBar}
-          style={{ width: `${props.progress}%` }}
-        />
+        <div className={styles.progressBar} style={{ width: `${progress}%` }} />
       )}
       <div className={styles.content}>
         <p

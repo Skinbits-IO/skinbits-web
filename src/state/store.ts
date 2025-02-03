@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import amoReducer from './game/amoSlice';
-import rocketBalanceReducer from './home/balanceSlice';
+import userSliceReducer from './user/userSlice';
 
 export const store = configureStore({
   reducer: {
     amo: amoReducer,
-    rocketBalance: rocketBalanceReducer,
+    user: userSliceReducer,
   },
 });
 

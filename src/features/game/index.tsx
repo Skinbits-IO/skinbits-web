@@ -9,41 +9,36 @@ import {
   markArea,
 } from './utils/rocketPositioning';
 import { RocketPosition } from './types/RocketPosition';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../state/store';
 import { addAmo, reduceAmo } from '../../state/game/amoSlice';
+import { updateUserBalance } from '../../state/user/userSlice';
 
-export const GameWidget = (props: {
-  onRocketClick: (value: number) => void;
-}) => {
+export const GameWidget = () => {
   const rocketSize = 44;
-  //Damage level index
-  const damageLevelIndex = 1;
-
   const dispatch = useDispatch<AppDispatch>();
 
-  //Amo
+  // User
+  const user = useSelector((state: RootState) => state.user);
+
+  // Amo (Ammo)
   const amo = useSelector((state: RootState) => state.amo.value);
   const maxAmo = useSelector((state: RootState) => state.amo.max);
 
   const amoRef = useRef(amo);
   const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
 
-  //Rockets
+  // Rockets
   const gameRef = useRef<HTMLDivElement | null>(null);
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
-  const [flyingRockets, setFlyingRockets] = useState<
-    Map<number, RocketPosition>
-  >(new Map());
+  const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
 
   useEffect(() => {
-    //Set up rockets
     computeGrid(gameRef, rocketSize);
     const positions: RocketPosition[] = [];
     for (let i = 0; i < 3; i++) {
-      const rocketPosition = generatePosition(gameRef, rocketSize);
-      positions.push(rocketPosition);
+      positions.push(generatePosition(gameRef, rocketSize));
     }
     setRocketPositions(positions);
 
@@ -58,34 +53,30 @@ export const GameWidget = (props: {
   }, [amo]);
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
-    if (amo - damageLevelIndex >= 0) {
+    if (amo - user.tapLevel >= 0) {
       const newRocketPosition = generatePosition(gameRef, rocketSize);
       const updatedPositions = rocketPositions.map((pos, i) =>
         i === index ? newRocketPosition : pos
       );
 
-      const updatedFlyingRockets = new Map(flyingRockets);
-      updatedFlyingRockets.set(index, { ...position });
-
       markArea(position, rocketSize, false);
-
+      markArea(newRocketPosition, rocketSize, false);
       setRocketPositions(updatedPositions);
-      setFlyingRockets(updatedFlyingRockets);
-      dispatch(reduceAmo(damageLevelIndex));
-      props.onRocketClick(damageLevelIndex);
+
+      flyingIndicators.current.set(index, { ...position });
+
+      dispatch(reduceAmo(user.tapLevel));
+      dispatch(updateUserBalance(user.tapLevel));
 
       setTimeout(() => {
-        updatedFlyingRockets.delete(index);
-        setFlyingRockets(new Map(updatedFlyingRockets));
-      }, 400);
+        flyingIndicators.current.delete(index);
+      }, 600);
 
-      if (
-        regenerationInterval.current === null &&
-        amo - damageLevelIndex === 0
-      ) {
+      // Start regeneration if amo is 0
+      if (regenerationInterval.current === null && amo - user.tapLevel === 0) {
         regenerationInterval.current = setInterval(() => {
           if (amoRef.current < maxAmo) {
-            dispatch(addAmo(10));
+            dispatch(addAmo(1));
           }
         }, 1000);
       }
@@ -104,7 +95,6 @@ export const GameWidget = (props: {
             {rocketPositions.map((pos, index) => (
               <motion.div key={index}>
                 <motion.div
-                  key={index}
                   style={{ position: 'absolute' }}
                   initial={{
                     transform: `translate(${pos.left}px, ${pos.top}px)`,
@@ -112,28 +102,25 @@ export const GameWidget = (props: {
                   animate={{
                     transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
-                  transition={{
-                    duration: 0.4,
-                    ease: 'easeOut',
-                  }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
                   onClick={() => handleRocketClick(pos, index)}
                 >
                   <GameRocketIcon />
                 </motion.div>
-                {flyingRockets.has(index) && (
+                {flyingIndicators.current.has(index) && (
                   <motion.div
                     key={`plus-one-${index}`}
                     className={styles.plusOne}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 0, y: -20 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.6 }}
                     style={{
-                      left: `${flyingRockets.get(index)!.left}px`,
-                      top: `${flyingRockets.get(index)!.top}px`,
+                      left: `${flyingIndicators.current.get(index)!.left}px`,
+                      top: `${flyingIndicators.current.get(index)!.top}px`,
                     }}
                   >
-                    +{damageLevelIndex}
+                    +{user.tapLevel}
                   </motion.div>
                 )}
               </motion.div>

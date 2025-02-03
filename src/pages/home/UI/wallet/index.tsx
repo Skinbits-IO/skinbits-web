@@ -1,12 +1,12 @@
 import { RocketIcon } from '../../../../components';
 import styles from './Wallet.module.css';
 
-interface WalletProps {
+interface IWalletProps {
   balance: number;
 }
 
-export const Wallet = (props: WalletProps) => {
-  const formattedBalance = new Intl.NumberFormat('en-US').format(props.balance);
+export const Wallet = ({ balance }: IWalletProps) => {
+  const formattedBalance = new Intl.NumberFormat('en-US').format(balance);
 
   return (
     <div className={styles.background}>

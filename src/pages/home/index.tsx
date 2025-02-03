@@ -1,49 +1,31 @@
 import styles from './HomePage.module.css';
-import { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
+import { Header } from './UI/header';
+import { Rank } from './UI/rank';
+import { Wallet } from './UI/wallet';
+import { GameWidget } from '../../features';
+import { FarmButton } from './UI/farm-button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/store';
 
 export const HomePage = () => {
-  /*const dispatch = useDispatch<AppDispatch>();
-  const rocketBalance = useSelector(
-    (state: RootState) => state.rocketBalance.value
-  );*/
+  const user = useSelector((state: RootState) => state.user);
 
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    try {
-      if (WebApp.initData) {
-        setUser(WebApp.initData);
-      }
-    } catch (e) {
-      setUser('Error: ' + e);
-    }
-  }, []);
   return (
     <div className={styles.background}>
-      <div
-        style={{
-          color: '#FFFFFF',
-          maxWidth: '300px',
-          width: '300px',
-          backgroundColor: 'red',
-        }}
-      >
-        {user ?? 'User is empty'}
-      </div>
-      {/* <div className={styles.header}>
-        <Header avatarUrl="/skinbits-web/avatar.png" username="German" />
+      <div className={styles.header}>
+        <Header name={user.name} photoUrl={user.photoUrl} />
         <div className={styles.upperSection}>
-          <Rank rank="silver" />
-          <Wallet balance={rocketBalance} />
+          <Rank rank={user.rank} />
+          <Wallet balance={user.balance} />
         </div>
       </div>
       <div className={styles.game}>
-        <GameWidget
-          onRocketClick={(value: number) => dispatch(updateBalance(value))}
+        <GameWidget />
+        <FarmButton
+          progress={100 * ((user.tapLevel + user.fuelLevel) / 10)}
+          status="unavailable"
         />
-        <FarmButton progress={70} status="unavailable" />
-      </div> */}
+      </div>
     </div>
   );
 };

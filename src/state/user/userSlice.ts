@@ -1,26 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../../types';
 
-interface RocketBalanceState {
-  value: number;
-}
-
-const initialState: RocketBalanceState = {
-  value: 0,
+const initialState: User = {
+  name: 'Unknown',
+  surname: 'Unknown',
+  rank: 'bronze',
+  tapLevel: 1,
+  fuelLevel: 1,
+  farmLevel: 0,
+  balance: 0,
+  photoUrl: null,
 };
 
-const rocketBalanceSlice = createSlice({
-  name: 'home/wallet/balance',
+const userSlice = createSlice({
+  name: '/user',
   initialState,
   reducers: {
-    updateBalance: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    setUserData: (state, action: PayloadAction<User>) => {
+      state = action.payload;
     },
-    setBalance: (state, action: PayloadAction<number>) => {
-      state.value = action.payload;
+    updateUserBalance: (state, action: PayloadAction<number>) => {
+      state.balance += action.payload;
+    },
+    setUserBalance: (state, action: PayloadAction<number>) => {
+      state.balance = action.payload;
     },
   },
 });
 
-export const { updateBalance, setBalance } = rocketBalanceSlice.actions;
+export const { updateUserBalance, setUserBalance } = userSlice.actions;
 
-export default rocketBalanceSlice.reducer;
+export default userSlice.reducer;

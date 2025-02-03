@@ -1,10 +1,13 @@
+import { ranksColors } from '../../../../constants';
 import styles from './Rank.module.css';
 
-interface RankProps {
+interface IRankProps {
   rank: string;
 }
 
-export const Rank = (props: RankProps) => {
+export const Rank = ({ rank }: IRankProps) => {
+  const rankColor = ranksColors.get(rank) ?? '#494949';
+
   return (
     <div className={styles.background}>
       <div className={styles.textBox}>
@@ -17,10 +20,13 @@ export const Rank = (props: RankProps) => {
             fontFamily: 'Bebas Neue',
           }}
         >
-          {props.rank.toUpperCase()}
+          {rank.toUpperCase()}
         </h6>
       </div>
-      <div className={styles.lightning} />
+      <div
+        className={styles.lightning}
+        style={{ backgroundColor: rankColor }}
+      />
     </div>
   );
 };

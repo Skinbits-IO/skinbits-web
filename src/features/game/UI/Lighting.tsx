@@ -10,7 +10,6 @@ export const Lighting = (props: LightingProps) => {
         left: props.left,
         top: props.top,
         position: 'absolute',
-        zIndex: 0,
         height: '4rem',
         width: '4rem',
         background:
