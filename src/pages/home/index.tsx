@@ -13,7 +13,7 @@ export const HomePage = () => {
   useEffect(() => {
     try {
       if (WebApp.initData) {
-        setUser(JSON.parse(WebApp.initData).user);
+        setUser(JSON.parse(WebApp.initData));
       }
     } catch (e) {
       setUser('Error: ' + e);
