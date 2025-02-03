@@ -11,8 +11,12 @@ export const HomePage = () => {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    if (WebApp.initData) {
-      setUser(JSON.parse(WebApp.initData).user);
+    try {
+      if (WebApp.initData) {
+        setUser(JSON.parse(WebApp.initData).user);
+      }
+    } catch (e) {
+      setUser('Error: ' + e);
     }
   }, []);
   return (
