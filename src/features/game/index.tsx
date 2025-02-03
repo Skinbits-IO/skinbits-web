@@ -16,7 +16,6 @@ import { addAmo, reduceAmo } from '../../state/game/amoSlice';
 import { updateUserBalance } from '../../state/user/userSlice';
 
 export const GameWidget = () => {
-  const rocketSize = 44;
   const dispatch = useDispatch<AppDispatch>();
 
   // User
@@ -35,10 +34,10 @@ export const GameWidget = () => {
   const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
 
   useEffect(() => {
-    computeGrid(gameRef, rocketSize);
+    computeGrid(gameRef);
     const positions: RocketPosition[] = [];
     for (let i = 0; i < 3; i++) {
-      positions.push(generatePosition(gameRef, rocketSize));
+      positions.push(generatePosition(gameRef));
     }
     setRocketPositions(positions);
 
@@ -54,13 +53,12 @@ export const GameWidget = () => {
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
     if (amo - user.tapLevel >= 0) {
-      const newRocketPosition = generatePosition(gameRef, rocketSize);
+      const newRocketPosition = generatePosition(gameRef);
       const updatedPositions = rocketPositions.map((pos, i) =>
         i === index ? newRocketPosition : pos
       );
 
-      markArea(position, rocketSize, false);
-      markArea(newRocketPosition, rocketSize, false);
+      markArea(position, false);
       setRocketPositions(updatedPositions);
 
       flyingIndicators.current.set(index, { ...position });
