@@ -24,8 +24,8 @@ export const HomePage = () => {
       <div
         style={{
           color: '#FFFFFF',
-          maxWidth: '100%',
-          width: '100%',
+          maxWidth: '300px',
+          width: '300px',
           backgroundColor: 'red',
         }}
       >
