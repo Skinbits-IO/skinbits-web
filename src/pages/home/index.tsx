@@ -21,7 +21,14 @@ export const HomePage = () => {
   }, []);
   return (
     <div className={styles.background}>
-      <div style={{ color: '#FFFFFF', maxWidth: '100%' }}>
+      <div
+        style={{
+          color: '#FFFFFF',
+          maxWidth: '100%',
+          width: '100%',
+          backgroundColor: 'red',
+        }}
+      >
         {user ?? 'User is empty'}
       </div>
       {/* <div className={styles.header}>
