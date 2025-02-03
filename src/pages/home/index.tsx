@@ -11,11 +11,13 @@ export const HomePage = () => {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    setUser(WebApp.initData);
+    if (WebApp.initData) {
+      setUser(JSON.parse(WebApp.initData).user);
+    }
   }, []);
   return (
     <div className={styles.background}>
-      <div style={{ color: '#FFFFFF' }}>{user.userId ?? 'User is empty'}</div>
+      <div style={{ color: '#FFFFFF' }}>{user ?? 'User is empty'}</div>
       {/* <div className={styles.header}>
         <Header avatarUrl="/skinbits-web/avatar.png" username="German" />
         <div className={styles.upperSection}>
