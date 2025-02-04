@@ -7,16 +7,12 @@ interface IHeaderProps {
 }
 
 export const Header = ({ name, photoUrl }: IHeaderProps) => {
-  const url = photoUrl ?? '/skinbits-web/avatar.png';
+  const url = photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
 
   return (
     <div className={styles.background}>
       <div className={styles.greeting}>
-        <img
-          className={styles.avatar}
-          src={window.location.origin + url}
-          alt="image"
-        />
+        <img className={styles.avatar} src={url} alt="image" />
         <h6 className={styles.text}>Hi, {name} 👋</h6>
       </div>
       <NotificationWidget />

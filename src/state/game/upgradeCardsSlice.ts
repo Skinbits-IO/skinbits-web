@@ -1,0 +1,43 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UpgradeCard } from '../../types';
+
+const initialState: UpgradeCard[] = [
+  {
+    title: 'Fuel Amount',
+    description: '',
+    photoUrl: '/upgrades/fuel.jpg',
+    price: 100,
+    level: 1,
+  },
+  {
+    title: 'Rocket Level',
+    description: '',
+    photoUrl: '/upgrades/launch.jpg',
+    price: 100,
+    level: 1,
+  },
+  {
+    title: 'Farming Bot',
+    description: '',
+    photoUrl: '/upgrades/farm.jpg',
+    price: 10000,
+    level: 0,
+  },
+];
+
+const upgradeCardsSlice = createSlice({
+  name: 'game/upgrade-cards',
+  initialState,
+  reducers: {
+    addCardLevel: (
+      state,
+      action: PayloadAction<{ index: number; level: number }>
+    ) => {
+      state[action.payload.index].level += action.payload.level;
+    },
+  },
+});
+
+export const { addCardLevel } = upgradeCardsSlice.actions;
+
+export default upgradeCardsSlice.reducer;

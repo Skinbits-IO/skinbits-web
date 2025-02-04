@@ -54,7 +54,7 @@ export const computeGrid = (
   cols = Math.ceil(width / gridWidth);
   rows = Math.ceil(height / gridHeight);
 
-  unavailable.clear(); // Reset unavailable set
+  unavailable.clear();
 };
 
 export const generatePosition = (

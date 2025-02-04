@@ -68,7 +68,7 @@ export const GameWidget = () => {
 
       setTimeout(() => {
         flyingIndicators.current.delete(index);
-      }, 600);
+      }, 500);
 
       // Start regeneration if amo is 0
       if (regenerationInterval.current === null && amo - user.tapLevel === 0) {
@@ -100,7 +100,7 @@ export const GameWidget = () => {
                   animate={{
                     transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
                   onClick={() => handleRocketClick(pos, index)}
                 >
                   <GameRocketIcon />
@@ -111,8 +111,7 @@ export const GameWidget = () => {
                     className={styles.plusOne}
                     initial={{ opacity: 1, y: 0 }}
                     animate={{ opacity: 0, y: -20 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.5 }}
                     style={{
                       left: `${flyingIndicators.current.get(index)!.left}px`,
                       top: `${flyingIndicators.current.get(index)!.top}px`,

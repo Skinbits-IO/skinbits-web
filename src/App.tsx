@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router';
 import { NavigationBar } from './components';
 import {
   AccountPage,
+  GameUpgradePage,
   HomePage,
   MarketplacePage,
   ReferralsPage,
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/referrals" element={<ReferralsPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/upgrade" element={<GameUpgradePage />} />
         </Routes>
         <NavigationBar />
       </div>

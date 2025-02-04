@@ -1,42 +1,40 @@
 import { useNavigate } from 'react-router';
-import { LightingIcon } from '../../../components';
+import { BackIcon, LightingIcon } from '../../../components';
 
-export const UpgradeButton = () => {
+export const BackButton = () => {
   const navigate = useNavigate();
 
   return (
     <button
       style={{
         position: 'absolute',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        bottom: '1.25rem',
+        bottom: '100px',
         height: 'fit-content',
         width: 'fit-content',
-        padding: '0.6875rem 0.9375rem',
+        padding: '11px 15px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '0.3125rem',
-        backgroundColor: '#FBFFE4',
-        borderRadius: '2.875rem',
+        gap: '5px',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '46px',
         border: 'none',
         zIndex: 1,
       }}
-      onClick={() => navigate('/upgrade')}
+      onClick={() => navigate('/')}
     >
+      <BackIcon color="#000000" size={16} />
       <h5
         style={{
-          fontSize: '1.125rem',
+          fontSize: '18px',
           fontFamily: 'Bebas Neue',
-          lineHeight: '1.2',
+          lineHeight: 'normal',
           margin: '0',
           color: '#000000',
         }}
       >
-        Upgrade
+        Back
       </h5>
-      <LightingIcon style={{ verticalAlign: 'middle' }} />
     </button>
   );
 };

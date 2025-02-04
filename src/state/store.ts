@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import amoReducer from './game/amoSlice';
 import userSliceReducer from './user/userSlice';
+import boostCardsSliceReducer from './game/boostCardsSlice';
+import upgradeCardsSliceReducer from './game/upgradeCardsSlice';
 
 export const store = configureStore({
   reducer: {
     amo: amoReducer,
     user: userSliceReducer,
+    boostCards: boostCardsSliceReducer,
+    upgradeCards: upgradeCardsSliceReducer,
   },
 });
 
