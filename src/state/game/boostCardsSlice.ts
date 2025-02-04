@@ -5,14 +5,14 @@ const initialState: BoostCard[] = [
   {
     title: 'Fuel boost',
     description: '',
-    photoUrl: '/upgrades/fuel-boost.jpg',
+    photoUrl: '/skinbits-web/upgrades/fuel-boost.jpg',
     price: 10000,
     amount: 0,
   },
   {
     title: 'Rocket boost',
     description: '',
-    photoUrl: '/upgrades/launch-boost.jpg',
+    photoUrl: '/skinbits-web/upgrades/launch-boost.jpg',
     price: 10000,
     amount: 0,
   },

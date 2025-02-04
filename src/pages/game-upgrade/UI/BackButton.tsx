@@ -8,7 +8,7 @@ export const BackButton = () => {
     <button
       style={{
         position: 'absolute',
-        bottom: '100px',
+        bottom: '90px',
         height: 'fit-content',
         width: 'fit-content',
         padding: '11px 15px',

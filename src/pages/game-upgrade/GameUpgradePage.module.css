@@ -6,7 +6,7 @@
     justify-content: start;
     align-items: center;
     gap: 50px;
-    margin: 40px 25px 0 25px;
+    margin: 30px 25px 0 25px;
     background-color: transparent;
 }
 
@@ -14,8 +14,8 @@
     position: absolute;
     height: 350px;
     width: 412px;
-    left: 74px;
-    top: -174px;
+    right: -97px;
+    top: -184px;
     z-index: -1;
 }
 
