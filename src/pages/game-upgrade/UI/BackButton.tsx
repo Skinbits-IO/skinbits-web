@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { BackIcon, LightingIcon } from '../../../components';
+import { BackIcon } from '../../../components';
 
 export const BackButton = () => {
   const navigate = useNavigate();

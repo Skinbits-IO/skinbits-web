@@ -1,6 +1,7 @@
-import { BoostCard } from '../types';
-
-const damageAndAmoLevelsPrices: Map<number, number> = new Map<number, number>([
+export const damageAndAmoLevelsPrices: Map<number, number> = new Map<
+  number,
+  number
+>([
   [1, 0],
   [2, 100],
   [3, 500],
@@ -28,7 +29,7 @@ const damageAndAmoLevelsPrices: Map<number, number> = new Map<number, number>([
   [25, 10000000],
 ]);
 
-const farmLevelsPrices: Map<number, number> = new Map<number, number>([
+export const farmLevelsPrices: Map<number, number> = new Map<number, number>([
   [1, 10000],
   [2, 2500],
   [3, 5000],
