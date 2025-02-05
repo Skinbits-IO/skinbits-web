@@ -41,7 +41,7 @@ export const Card = ({ type, card }: ICardProps) => {
           </div>
         )}
         <button className={styles.button}>
-          <ArrowIcon size={25} />
+          <ArrowIcon size={14} />
         </button>
       </div>
     </div>

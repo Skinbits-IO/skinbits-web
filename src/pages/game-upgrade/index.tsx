@@ -4,12 +4,33 @@ import { RootState } from '../../state/store';
 import { Balance } from './UI/balance';
 import { CardContainer } from './UI/card-container';
 import { Card } from './UI/card';
-import { BackButton } from './UI/BackButton';
+import WebApp from '@twa-dev/sdk';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 export const GameUpgradePage = () => {
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const boostCards = useSelector((state: RootState) => state.boostCards);
   const upgradeCards = useSelector((state: RootState) => state.upgradeCards);
+
+  useEffect(() => {
+    WebApp.ready();
+    WebApp.setHeaderColor('#000000');
+
+    const backButton = WebApp.BackButton;
+    backButton.show();
+    backButton.onClick(() => {
+      navigate(-1);
+    });
+
+    return () => {
+      backButton.hide();
+      backButton.offClick(() => {
+        navigate(-1);
+      });
+    };
+  }, []);
 
   return (
     <div className={styles.background}>
@@ -33,7 +54,6 @@ export const GameUpgradePage = () => {
           })}
         />
       </div>
-      <BackButton />
     </div>
   );
 };

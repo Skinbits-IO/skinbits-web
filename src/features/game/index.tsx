@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './GameWidget.module.css';
-import { Lighting } from './UI/Lighting';
 import { UpgradeButton } from './UI/UpgradeButton';
 import { GameRocketIcon } from '../../components';
 import {
@@ -126,8 +125,6 @@ export const GameWidget = () => {
         </div>
         <UpgradeButton />
       </div>
-      <Lighting left="3.375rem" top="8.875rem" />
-      <Lighting left="14.375rem" top="18.75rem" />
     </div>
   );
 };
