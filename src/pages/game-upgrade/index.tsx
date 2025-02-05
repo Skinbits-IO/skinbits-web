@@ -16,8 +16,6 @@ export const GameUpgradePage = () => {
 
   useEffect(() => {
     WebApp.ready();
-    WebApp.setHeaderColor('#000000');
-
     const backButton = WebApp.BackButton;
     backButton.show();
     backButton.onClick(() => {
