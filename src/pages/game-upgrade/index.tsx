@@ -38,20 +38,22 @@ export const GameUpgradePage = () => {
         src={window.location.origin + '/skinbits-web/spheres.png'}
         alt="image"
       />
-      <Balance balance={user.balance} />
-      <div className={styles.upgrades}>
-        <CardContainer
-          title="Boosts"
-          content={boostCards.map((item, _) => {
-            return <Card type="boost" card={item} />;
-          })}
-        />
-        <CardContainer
-          title="Upgrades"
-          content={upgradeCards.map((item, _) => {
-            return <Card type="upgrade" card={item} />;
-          })}
-        />
+      <div className={styles.content}>
+        <Balance balance={user.balance} />
+        <div className={styles.upgrades}>
+          <CardContainer
+            title="Boosts"
+            content={boostCards.map((item, _) => {
+              return <Card type="boost" card={item} />;
+            })}
+          />
+          <CardContainer
+            title="Upgrades"
+            content={upgradeCards.map((item, _) => {
+              return <Card type="upgrade" card={item} />;
+            })}
+          />
+        </div>
       </div>
     </div>
   );
