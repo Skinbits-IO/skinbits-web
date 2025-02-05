@@ -14,8 +14,9 @@ import {
 
 function App() {
   useEffect(() => {
-    WebApp.setHeaderColor('#000000');
     WebApp.ready();
+    WebApp.setHeaderColor('#000000');
+    WebApp.lockOrientation();
     WebApp.expand();
   }, []);
 
