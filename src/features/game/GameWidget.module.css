@@ -35,6 +35,15 @@
     background-color: transparent;
 }
 
+.rocket {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .plusOne {
     position: absolute;
     font-size: 18px;

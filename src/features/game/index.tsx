@@ -91,7 +91,7 @@ export const GameWidget = () => {
           {rocketPositions.map((pos, index) => (
             <motion.div key={index}>
               <motion.div
-                style={{ position: 'absolute' }}
+                className={styles.rocket}
                 initial={{
                   transform: `translate(${pos.left}px, ${pos.top}px)`,
                 }}
@@ -101,7 +101,7 @@ export const GameWidget = () => {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 onClick={() => handleRocketClick(pos, index)}
               >
-                <GameRocketIcon />
+                <GameRocketIcon size={44} />
               </motion.div>
               {flyingIndicators.current.has(index) && (
                 <motion.div
