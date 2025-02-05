@@ -11,6 +11,10 @@ const isUpgradeCard = (card: BoostCard | UpgradeCard): card is UpgradeCard => {
   return (card as UpgradeCard).level !== undefined;
 };
 
+const isBoostCard = (card: BoostCard | UpgradeCard): card is BoostCard => {
+  return (card as BoostCard).amount !== undefined;
+};
+
 export const Card = ({ type, card }: ICardProps) => {
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
   const levelPercentage = isUpgradeCard(card)
@@ -40,8 +44,11 @@ export const Card = ({ type, card }: ICardProps) => {
             <div className={styles.levelContainer}>{card.level}</div>
           </div>
         )}
+        {type === 'boost' && isBoostCard(card) && (
+          <div className={styles.amountText}>{card.amount}</div>
+        )}
         <button className={styles.button}>
-          <ArrowIcon size={20} />
+          <ArrowIcon size={14} />
         </button>
       </div>
     </div>

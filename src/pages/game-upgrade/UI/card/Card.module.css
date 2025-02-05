@@ -73,6 +73,20 @@
     background-color: black;
 }
 
+.amountText {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: black;
+    border: 1.5px solid rgba(217, 217, 217, 0.1);
+}
+
 .button {
     height: 35px;
     width: 35px;
