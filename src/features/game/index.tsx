@@ -82,49 +82,47 @@ export const GameWidget = () => {
 
   return (
     <div className={styles.background}>
-      <div className={styles.content}>
-        <span className={styles.amo}>
-          <span className={styles.amoBold}>{amo}</span>
-          <span>/{maxAmo}</span>
-        </span>
-        <div className={styles.game} ref={gameRef}>
-          <AnimatePresence>
-            {rocketPositions.map((pos, index) => (
-              <motion.div key={index}>
-                <motion.div
-                  style={{ position: 'absolute' }}
-                  initial={{
-                    transform: `translate(${pos.left}px, ${pos.top}px)`,
-                  }}
-                  animate={{
-                    transform: `translate(${pos.left}px, ${pos.top}px)`,
-                  }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  onClick={() => handleRocketClick(pos, index)}
-                >
-                  <GameRocketIcon />
-                </motion.div>
-                {flyingIndicators.current.has(index) && (
-                  <motion.div
-                    key={`plus-one-${index}`}
-                    className={styles.plusOne}
-                    initial={{ opacity: 1, y: 0 }}
-                    animate={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    style={{
-                      left: `${flyingIndicators.current.get(index)!.left}px`,
-                      top: `${flyingIndicators.current.get(index)!.top}px`,
-                    }}
-                  >
-                    +{user.tapLevel}
-                  </motion.div>
-                )}
+      <span className={styles.amo}>
+        <span className={styles.amoBold}>{amo}</span>
+        <span>/{maxAmo}</span>
+      </span>
+      <div className={styles.game} ref={gameRef}>
+        <AnimatePresence>
+          {rocketPositions.map((pos, index) => (
+            <motion.div key={index}>
+              <motion.div
+                style={{ position: 'absolute' }}
+                initial={{
+                  transform: `translate(${pos.left}px, ${pos.top}px)`,
+                }}
+                animate={{
+                  transform: `translate(${pos.left}px, ${pos.top}px)`,
+                }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                onClick={() => handleRocketClick(pos, index)}
+              >
+                <GameRocketIcon />
               </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-        <UpgradeButton />
+              {flyingIndicators.current.has(index) && (
+                <motion.div
+                  key={`plus-one-${index}`}
+                  className={styles.plusOne}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  style={{
+                    left: `${flyingIndicators.current.get(index)!.left}px`,
+                    top: `${flyingIndicators.current.get(index)!.top}px`,
+                  }}
+                >
+                  +{user.tapLevel}
+                </motion.div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
+      <UpgradeButton />
     </div>
   );
 };

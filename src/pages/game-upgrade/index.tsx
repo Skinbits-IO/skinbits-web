@@ -16,17 +16,18 @@ export const GameUpgradePage = () => {
 
   useEffect(() => {
     WebApp.ready();
+
     const backButton = WebApp.BackButton;
-    backButton.show();
-    backButton.onClick(() => {
+    const handleBackButtonClick = () => {
       navigate(-1);
-    });
+    };
+
+    backButton.show();
+    backButton.onClick(handleBackButtonClick);
 
     return () => {
       backButton.hide();
-      backButton.offClick(() => {
-        navigate(-1);
-      });
+      backButton.offClick(handleBackButtonClick);
     };
   }, []);
 
