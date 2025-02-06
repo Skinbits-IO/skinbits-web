@@ -1,18 +1,12 @@
 import { BoostCard, UpgradeCard } from '../../../../types';
 import styles from './Card.module.css';
 import { ArrowIcon } from '../../../../components';
-import { useEffect } from 'react';
 
 interface ICardProps {
   type: string;
   card: BoostCard | UpgradeCard;
   onClick: () => void;
 }
-
-const preloadImage = (url: string) => {
-  const img = new Image();
-  img.src = url;
-};
 
 const isUpgradeCard = (card: BoostCard | UpgradeCard): card is UpgradeCard => {
   return (card as UpgradeCard).level !== undefined;
@@ -23,20 +17,18 @@ const isBoostCard = (card: BoostCard | UpgradeCard): card is BoostCard => {
 };
 
 export const Card = ({ type, card, onClick }: ICardProps) => {
-  const imageUrl = window.location.origin + card.photoUrl;
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
   const levelPercentage = isUpgradeCard(card)
     ? Math.min(card.level / 25, 1) * 100
     : 0;
 
-  useEffect(() => {
-    preloadImage(imageUrl);
-  }, [imageUrl]);
-
   return (
     <div className={styles.background}>
       <div className={styles.content}>
-        <img src={imageUrl} className={styles.image} loading="lazy" />
+        <img
+          src={window.location.origin + card.photoUrl}
+          className={styles.image}
+        />
         <div className={styles.textContainer}>
           <p className={styles.title}>{card.title}</p>
           <p className={styles.price}>{formatedPrice}</p>
