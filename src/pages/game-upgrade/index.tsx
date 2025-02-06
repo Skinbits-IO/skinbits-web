@@ -5,14 +5,21 @@ import { Balance } from './UI/balance';
 import { CardContainer } from './UI/card-container';
 import { Card } from './UI/card';
 import WebApp from '@twa-dev/sdk';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { BoostCard, UpgradeCard } from '../../types';
+import { Popup } from './UI/popup';
+import { AnimatePresence } from 'framer-motion';
 
 export const GameUpgradePage = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const boostCards = useSelector((state: RootState) => state.boostCards);
   const upgradeCards = useSelector((state: RootState) => state.upgradeCards);
+
+  const [selectedCard, setSelectedCard] = useState<
+    BoostCard | UpgradeCard | null
+  >(null);
 
   useEffect(() => {
     WebApp.ready();
@@ -44,17 +51,40 @@ export const GameUpgradePage = () => {
           <CardContainer
             title="Boosts"
             content={boostCards.map((item, _) => {
-              return <Card type="boost" card={item} />;
+              return (
+                <Card
+                  key={`boost-${item.title}-${item.price}`}
+                  type="boost"
+                  card={item}
+                  onClick={() => setSelectedCard(item)}
+                />
+              );
             })}
           />
           <CardContainer
             title="Upgrades"
             content={upgradeCards.map((item, _) => {
-              return <Card type="upgrade" card={item} />;
+              return (
+                <Card
+                  key={`upgrade-${item.title}-${item.price}`}
+                  type="upgrade"
+                  card={item}
+                  onClick={() => setSelectedCard(item)}
+                />
+              );
             })}
           />
         </div>
       </div>
+      <AnimatePresence>
+        {selectedCard && (
+          <Popup
+            key={`popup-${selectedCard!.title}-${selectedCard!.price}`} // ✅ Ensure uniqueness
+            card={selectedCard!}
+            onExit={() => setSelectedCard(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

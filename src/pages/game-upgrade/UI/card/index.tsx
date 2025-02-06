@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 interface ICardProps {
   type: string;
   card: BoostCard | UpgradeCard;
+  onClick: () => void;
 }
 
 const preloadImage = (url: string) => {
@@ -21,7 +22,7 @@ const isBoostCard = (card: BoostCard | UpgradeCard): card is BoostCard => {
   return (card as BoostCard).amount !== undefined;
 };
 
-export const Card = ({ type, card }: ICardProps) => {
+export const Card = ({ type, card, onClick }: ICardProps) => {
   const imageUrl = window.location.origin + card.photoUrl;
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
   const levelPercentage = isUpgradeCard(card)
@@ -55,7 +56,7 @@ export const Card = ({ type, card }: ICardProps) => {
         {type === 'boost' && isBoostCard(card) && (
           <div className={styles.amountText}>{card.amount}</div>
         )}
-        <button className={styles.button}>
+        <button className={styles.button} onClick={() => onClick()}>
           <ArrowIcon size={14} />
         </button>
       </div>

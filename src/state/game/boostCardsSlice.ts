@@ -4,14 +4,15 @@ import { BoostCard } from '../../types';
 const initialState: BoostCard[] = [
   {
     title: 'Fuel boost',
-    description: '',
+    description:
+      'Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost',
     photoUrl: '/skinbits-web/upgrades/fuel-boost.jpg',
     price: 10000,
     amount: 0,
   },
   {
     title: 'Rocket boost',
-    description: '',
+    description: 'Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost',
     photoUrl: '/skinbits-web/upgrades/launch-boost.jpg',
     price: 10000,
     amount: 0,

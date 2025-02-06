@@ -1,4 +1,5 @@
-export { NavigationBar } from './NavigationBar/index';
+export { NavigationBar } from './NavigationBar';
+export { PopupButton } from './PopupButton';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
@@ -10,3 +11,4 @@ export { LightingIcon } from './icons/LightingIcon';
 
 export { ArrowIcon } from './icons/ArrowIcon';
 export { BackIcon } from './icons/BackIcon';
+export { CloseIcon } from './icons/CloseIcon';

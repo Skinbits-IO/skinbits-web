@@ -4,21 +4,24 @@ import { UpgradeCard } from '../../types';
 const initialState: UpgradeCard[] = [
   {
     title: 'Fuel Amount',
-    description: '',
+    description:
+      'Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount',
     photoUrl: '/skinbits-web/upgrades/fuel.jpg',
     price: 100,
     level: 1,
   },
   {
     title: 'Rocket Level',
-    description: '',
+    description:
+      'Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level',
     photoUrl: '/skinbits-web/upgrades/launch.jpg',
     price: 100,
     level: 1,
   },
   {
     title: 'Farming Bot',
-    description: '',
+    description:
+      'Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot',
     photoUrl: '/skinbits-web/upgrades/farm.jpg',
     price: 10000,
     level: 0,
