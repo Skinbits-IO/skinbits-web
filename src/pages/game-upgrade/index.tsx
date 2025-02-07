@@ -5,7 +5,7 @@ import { Balance } from './UI/balance';
 import { CardContainer } from './UI/card-container';
 import { Card } from './UI/card';
 import WebApp from '@twa-dev/sdk';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BoostCard, UpgradeCard } from '../../types';
 import { Popup } from './UI/popup';
@@ -50,36 +50,44 @@ export const GameUpgradePage = () => {
         <div className={styles.upgrades}>
           <CardContainer
             title="Boosts"
-            content={boostCards.map((item, _) => {
-              return (
-                <Card
-                  key={`boost-${item.title}-${item.price}`}
-                  type="boost"
-                  card={item}
-                  onClick={() => setSelectedCard(item)}
-                />
-              );
-            })}
+            content={useMemo(
+              () =>
+                boostCards.map((item, _) => {
+                  return (
+                    <Card
+                      key={`boost-${item.title}-${item.price}`}
+                      type="boost"
+                      card={item}
+                      onClick={() => setSelectedCard(item)}
+                    />
+                  );
+                }),
+              [boostCards]
+            )}
           />
           <CardContainer
             title="Upgrades"
-            content={upgradeCards.map((item, _) => {
-              return (
-                <Card
-                  key={`upgrade-${item.title}-${item.price}`}
-                  type="upgrade"
-                  card={item}
-                  onClick={() => setSelectedCard(item)}
-                />
-              );
-            })}
+            content={useMemo(
+              () =>
+                upgradeCards.map((item, _) => {
+                  return (
+                    <Card
+                      key={`upgrade-${item.title}-${item.price}`}
+                      type="upgrade"
+                      card={item}
+                      onClick={() => setSelectedCard(item)}
+                    />
+                  );
+                }),
+              [upgradeCards]
+            )}
           />
         </div>
       </div>
       <AnimatePresence>
         {selectedCard && (
           <Popup
-            key={`popup-${selectedCard!.title}-${selectedCard!.price}`} // ✅ Ensure uniqueness
+            key={`popup-${selectedCard!.title}-${selectedCard!.price}`}
             card={selectedCard!}
             onExit={() => setSelectedCard(null)}
           />
