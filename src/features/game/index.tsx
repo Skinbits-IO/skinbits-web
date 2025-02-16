@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../state/store';
 import { addAmo, reduceAmo } from '../../state/game/amoSlice';
 import { updateUserBalance } from '../../state/user/userSlice';
+import { SuperRocket } from './UI/SuperRocket';
 
 export const GameWidget = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +33,12 @@ export const GameWidget = () => {
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
   const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
 
+  // Super rocket state and its indicators (with tap positions)
+  const [activeSuperRocket, setActiveSuperRocket] = useState<boolean>(false);
+  const [superRocketIndicators, setSuperRocketIndicators] = useState<
+    { id: number; x: number; y: number }[]
+  >([]);
+
   useEffect(() => {
     computeGrid(gameRef);
     const positions: RocketPosition[] = [];
@@ -41,6 +48,7 @@ export const GameWidget = () => {
     setRocketPositions(positions);
 
     return () => {
+      setActiveSuperRocket(false);
       clearInterval(regenerationInterval.current!);
       regenerationInterval.current = null;
     };
@@ -52,6 +60,15 @@ export const GameWidget = () => {
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
     if (amo - user.tapLevel >= 0) {
+      dispatch(reduceAmo(user.tapLevel));
+      dispatch(updateUserBalance(user.tapLevel));
+
+      if ((amo - user.tapLevel) % 100 === 0) {
+        setActiveSuperRocket(true);
+        setTimeout(() => setActiveSuperRocket(false), 5000);
+        return;
+      }
+
       const newRocketPosition = generatePosition(gameRef);
       const updatedPositions = rocketPositions.map((pos, i) =>
         i === index ? newRocketPosition : pos
@@ -61,9 +78,6 @@ export const GameWidget = () => {
       setRocketPositions(updatedPositions);
 
       flyingIndicators.current.set(index, { ...position });
-
-      dispatch(reduceAmo(user.tapLevel));
-      dispatch(updateUserBalance(user.tapLevel));
 
       setTimeout(() => {
         flyingIndicators.current.delete(index);
@@ -80,6 +94,25 @@ export const GameWidget = () => {
     }
   };
 
+  const handleSuperRocketClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    dispatch(updateUserBalance(user.tapLevel * 10));
+
+    // Create a new indicator at the tap position
+    const indicatorId = Date.now();
+    setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
+
+    // Remove the indicator after 500ms (animation duration)
+    setTimeout(() => {
+      setSuperRocketIndicators((prev) =>
+        prev.filter((indicator) => indicator.id !== indicatorId)
+      );
+    }, 500);
+  };
+
   return (
     <div className={styles.background}>
       <span className={styles.amo}>
@@ -88,38 +121,46 @@ export const GameWidget = () => {
       </span>
       <div className={styles.game} ref={gameRef}>
         <AnimatePresence>
-          {rocketPositions.map((pos, index) => (
-            <motion.div key={index}>
-              <motion.div
-                className={styles.rocket}
-                initial={{
-                  transform: `translate(${pos.left}px, ${pos.top}px)`,
-                }}
-                animate={{
-                  transform: `translate(${pos.left}px, ${pos.top}px)`,
-                }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                onClick={() => handleRocketClick(pos, index)}
-              >
-                <GameRocketIcon size={44} />
-              </motion.div>
-              {flyingIndicators.current.has(index) && (
+          {!activeSuperRocket &&
+            rocketPositions.map((pos, index) => (
+              <motion.div key={index}>
                 <motion.div
-                  key={`plus-one-${index}`}
-                  className={styles.plusOne}
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  style={{
-                    left: `${flyingIndicators.current.get(index)!.left}px`,
-                    top: `${flyingIndicators.current.get(index)!.top}px`,
+                  className={styles.rocket}
+                  initial={{
+                    transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
+                  animate={{
+                    transform: `translate(${pos.left}px, ${pos.top}px)`,
+                  }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  onClick={() => handleRocketClick(pos, index)}
                 >
-                  +{user.tapLevel}
+                  <GameRocketIcon size={44} />
                 </motion.div>
-              )}
-            </motion.div>
-          ))}
+                {flyingIndicators.current.has(index) && (
+                  <motion.div
+                    key={`plus-one-${index}`}
+                    className={styles.plusOne}
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                      left: `${flyingIndicators.current.get(index)!.left}px`,
+                      top: `${flyingIndicators.current.get(index)!.top}px`,
+                    }}
+                  >
+                    +{user.tapLevel}
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          {activeSuperRocket && (
+            <SuperRocket
+              user={user}
+              superRocketIndicators={superRocketIndicators}
+              handleSuperRocketClick={handleSuperRocketClick}
+            />
+          )}
         </AnimatePresence>
       </div>
       <UpgradeButton />

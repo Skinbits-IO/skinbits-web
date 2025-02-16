@@ -9,11 +9,9 @@ import { store } from './state/store.ts';
 import { Provider } from 'react-redux';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter basename="/skinbits-web/">
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <BrowserRouter basename="/skinbits-web/">
+      <App />
+    </BrowserRouter>
+  </Provider>
 );

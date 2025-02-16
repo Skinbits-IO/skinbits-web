@@ -1,0 +1,31 @@
+.superRocket {
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plusOne {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.tapCircle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.8) ;
+    border-radius: 50%;
+    pointer-events: none;
+}
