@@ -33,7 +33,7 @@ export const SuperRocket = ({
           duration: 1.5,
         },
       }}
-      onClick={handleSuperRocketClick}
+      onPointerDown={handleSuperRocketClick}
     >
       <GameRocketIcon
         size={250}

@@ -6,9 +6,33 @@ import { GameWidget } from '../../features';
 import { FarmButton } from './UI/farm-button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
+import { useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { addUserPostData } from './api/userApi';
 
 export const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
+  const mutation = useMutation({
+    mutationFn: addUserPostData,
+    onSuccess: (data) => {
+      console.log('Post successful:', data);
+    },
+    onError: (error) => {
+      console.error('Post failed:', error);
+    },
+  });
+
+  useEffect(() => {
+    mutation.mutate({
+      telegramId: 'fsf',
+      firstName: 'ff',
+      lastName: 'ggg',
+      username: 'ttt',
+      languageCode: 'rrr',
+      isPremium: true,
+      photoUrl: 'yyy',
+    });
+  }, []);
 
   return (
     <div className={styles.background}>

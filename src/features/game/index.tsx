@@ -59,11 +59,13 @@ export const GameWidget = () => {
   }, [amo]);
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
-    if (amo - user.tapLevel >= 0) {
+    const newAmo = amo - user.tapLevel;
+
+    if (newAmo >= 0) {
       dispatch(reduceAmo(user.tapLevel));
       dispatch(updateUserBalance(user.tapLevel));
 
-      if ((amo - user.tapLevel) % 100 === 0) {
+      if (newAmo % 10 === 0) {
         setActiveSuperRocket(true);
         setTimeout(() => setActiveSuperRocket(false), 5000);
         return;
@@ -84,7 +86,7 @@ export const GameWidget = () => {
       }, 500);
 
       // Start regeneration if amo is 0
-      if (regenerationInterval.current === null && amo - user.tapLevel === 0) {
+      if (regenerationInterval.current === null && newAmo === 0) {
         regenerationInterval.current = setInterval(() => {
           if (amoRef.current < maxAmo) {
             dispatch(addAmo(1));
@@ -99,16 +101,16 @@ export const GameWidget = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
+    // Dispatch balance update (or any other action).
     dispatch(updateUserBalance(user.tapLevel * 10));
 
-    // Create a new indicator at the tap position
-    const indicatorId = Date.now();
+    // Create a new indicator at the tap position.
+    const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
 
-    // Remove the indicator after 500ms (animation duration)
     setTimeout(() => {
       setSuperRocketIndicators((prev) =>
-        prev.filter((indicator) => indicator.id !== indicatorId)
+        prev.filter((ind) => ind.id !== indicatorId)
       );
     }, 500);
   };
