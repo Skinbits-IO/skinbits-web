@@ -11,7 +11,7 @@ import { RocketPosition } from './types/RocketPosition';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../state/store';
-import { addAmo, reduceAmo } from '../../state/game/amoSlice';
+import { addAmo, reduceAmo, setMaxAmo } from '../../state/game/amoSlice';
 import { updateUserBalance } from '../../state/user/userSlice';
 import { SuperRocket } from './UI/SuperRocket';
 
@@ -47,6 +47,8 @@ export const GameWidget = () => {
     }
     setRocketPositions(positions);
 
+    dispatch(setMaxAmo(1000 + (user.fuelLevel - 1) * 500));
+
     return () => {
       setActiveSuperRocket(false);
       clearInterval(regenerationInterval.current!);
@@ -65,7 +67,7 @@ export const GameWidget = () => {
       dispatch(reduceAmo(user.tapLevel));
       dispatch(updateUserBalance(user.tapLevel));
 
-      if (newAmo % 10 === 0) {
+      if (newAmo % 100 === 0) {
         setActiveSuperRocket(true);
         setTimeout(() => setActiveSuperRocket(false), 5000);
         return;
@@ -89,7 +91,7 @@ export const GameWidget = () => {
       if (regenerationInterval.current === null && newAmo === 0) {
         regenerationInterval.current = setInterval(() => {
           if (amoRef.current < maxAmo) {
-            dispatch(addAmo(1));
+            dispatch(addAmo(user.fuelLevel));
           }
         }, 1000);
       }
@@ -101,10 +103,8 @@ export const GameWidget = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Dispatch balance update (or any other action).
-    dispatch(updateUserBalance(user.tapLevel * 10));
+    dispatch(updateUserBalance(user.tapLevel));
 
-    // Create a new indicator at the tap position.
     const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
 

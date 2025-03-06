@@ -7,7 +7,7 @@ const initialState: UpgradeCard[] = [
     description:
       'Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount',
     photoUrl: '/skinbits-web/upgrades/fuel.jpg',
-    price: 100,
+    price: 500,
     level: 1,
   },
   {
@@ -15,7 +15,7 @@ const initialState: UpgradeCard[] = [
     description:
       'Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level',
     photoUrl: '/skinbits-web/upgrades/launch.jpg',
-    price: 100,
+    price: 500,
     level: 1,
   },
   {
