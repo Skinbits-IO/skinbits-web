@@ -67,9 +67,9 @@ export const GameWidget = () => {
       dispatch(reduceAmo(user.tapLevel));
       dispatch(updateUserBalance(user.tapLevel));
 
-      if (newAmo % 100 === 0 && newAmo !== 0) {
+      if (newAmo % 50 === 0 && newAmo !== 0) {
         setActiveSuperRocket(true);
-        setTimeout(() => setActiveSuperRocket(false), 5000);
+        setTimeout(() => setActiveSuperRocket(false), 3000);
         return;
       }
 
