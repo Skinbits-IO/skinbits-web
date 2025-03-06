@@ -103,7 +103,7 @@ export const GameWidget = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    dispatch(updateUserBalance(user.tapLevel));
+    dispatch(updateUserBalance(5 * user.tapLevel));
 
     const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
