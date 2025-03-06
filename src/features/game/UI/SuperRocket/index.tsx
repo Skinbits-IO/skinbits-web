@@ -55,7 +55,7 @@ export const SuperRocket = ({
                 top: indicator.y + 10,
               }}
             >
-              +{user.tapLevel * 5}
+              +{user.tapLevel}
             </motion.div>
             <motion.div
               key={`burst-${indicator.id}`}
