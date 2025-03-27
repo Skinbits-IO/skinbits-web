@@ -25,7 +25,7 @@ export const Notification = ({ notification }: INotificationProps) => {
           alt="Notification Image"
           onError={(e) => {
             (e.target as HTMLImageElement).src =
-              window.location.origin + '/avatar.jpg';
+              window.location.origin + '/skinbits-web/avatar.jpg';
           }}
         />
       )}
