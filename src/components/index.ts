@@ -1,8 +1,12 @@
 export { NavigationBar } from './NavigationBar';
 export { PopupButton } from './PopupButton';
+export { PopupCloseButton } from './PopupCloseButton';
+
+export { NotificationButton } from './NotificationButton';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
+export { NotificationCircle } from './icons/NotificationCircle';
 
 export { RocketIcon } from './icons/RocketIcon';
 export { GameRocketIcon } from './icons/GameRocketIcon';

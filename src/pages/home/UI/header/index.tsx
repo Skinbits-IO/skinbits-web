@@ -1,12 +1,13 @@
-import { NotificationWidget } from '../../../../features';
+import { NotificationButton } from '../../../../components';
 import styles from './Header.module.css';
 
 interface IHeaderProps {
   name: string;
   photoUrl: string | null;
+  onNotification: () => void;
 }
 
-export const Header = ({ name, photoUrl }: IHeaderProps) => {
+export const Header = ({ name, photoUrl, onNotification }: IHeaderProps) => {
   const url = photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
 
   return (
@@ -15,7 +16,7 @@ export const Header = ({ name, photoUrl }: IHeaderProps) => {
         <img className={styles.avatar} src={url} alt="image" />
         <h6 className={styles.text}>Hi, {name} 👋</h6>
       </div>
-      <NotificationWidget />
+      <NotificationButton onTap={onNotification} />
     </div>
   );
 };

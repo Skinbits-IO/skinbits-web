@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
 import styles from './Popup.module.css';
 import { BoostCard, UpgradeCard } from '../../../../types';
-import { CloseIcon, PopupButton, RocketIcon } from '../../../../components';
+import {
+  CloseIcon,
+  PopupButton,
+  PopupCloseButton,
+  RocketIcon,
+} from '../../../../components';
 
 interface IPopupProps {
   card: BoostCard | UpgradeCard;
@@ -32,9 +37,9 @@ export const Popup = ({ card, onExit }: IPopupProps) => {
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       >
-        <button className={styles.closeButton} onClick={() => onExit()}>
-          <CloseIcon size={22} />
-        </button>
+        <div style={{ marginBottom: '-20px' }}>
+          <PopupCloseButton onTap={onExit} />
+        </div>
         <div className={styles.imageContainer}>
           <img
             src={window.location.origin + card.photoUrl}

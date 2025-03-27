@@ -1,0 +1,47 @@
+.background {
+    height: fit-content;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 14px 16px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 12px;
+    font-family: 'Roboto';
+}
+
+.applicationRow {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 6px;
+}
+
+.applicationRow h6 {
+    font-size: 12px;
+    font-weight: 400;
+    color: #8D83FC;
+}
+
+.title {
+    font-size: 15px;
+    font-weight: 400;
+    color: #E1E1E1;
+}
+
+.description {
+    font-size: 13px;
+    font-weight: 400;
+    color: #A8A8A8;
+    line-height: normal;
+}
+
+img {
+    height: fit-content;
+    width: 100%;
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.2);
+}

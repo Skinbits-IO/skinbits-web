@@ -26,16 +26,6 @@
     gap: 40px;
 }
 
-.closeButton {
-    position: relative;
-    height: fit-content;
-    width: fit-content;
-    margin-bottom: -20px;
-    padding: 0;
-    background: none;
-    border: none;
-}
-
 .imageContainer {
     position: relative;
     height: 100px;
