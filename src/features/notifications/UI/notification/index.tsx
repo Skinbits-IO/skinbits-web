@@ -1,4 +1,3 @@
-import { image } from 'motion/react-client';
 import { NotificationCircle } from '../../../../components';
 import { CustomNotification } from '../../../../types';
 import { getTimeDifferenceString } from '../../utils/notificationUtils';

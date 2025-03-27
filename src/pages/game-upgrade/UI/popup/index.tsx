@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import styles from './Popup.module.css';
 import { BoostCard, UpgradeCard } from '../../../../types';
 import {
-  CloseIcon,
   PopupButton,
   PopupCloseButton,
   RocketIcon,
