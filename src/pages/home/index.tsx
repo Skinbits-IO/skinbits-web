@@ -83,7 +83,7 @@ export const HomePage = () => {
           onClick={() => setShowRankingSystem(!showRankingSystem)}
         />
         {showRankingSystem ? (
-          <ProgressWidget rank={user.rank} />
+          <ProgressWidget rank={user.rank} totalEarned={user.totalEarned} />
         ) : (
           <Wallet balance={user.balance} />
         )}

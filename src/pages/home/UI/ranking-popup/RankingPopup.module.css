@@ -86,11 +86,3 @@
     color: #D2F7B6;
     line-height: normal;
 }
-
-.buttonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-}

@@ -59,9 +59,7 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
           <p className={styles.price}>{`+${formatedPrice}`}</p>
           <RocketIcon size={19} color="#D2F7B6" />
         </div>
-        <div className={styles.buttonContainer}>
-          <PopupButton text="Claim" onClick={() => {}} />
-        </div>
+        <PopupButton text="Claim" onClick={() => {}} />
       </motion.div>
     </>
   );

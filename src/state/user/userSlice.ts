@@ -9,6 +9,7 @@ const initialState: User = {
   fuelLevel: 1,
   farmLevel: 0,
   balance: 0,
+  totalEarned: 0,
   photoUrl: null,
 };
 
@@ -21,6 +22,7 @@ const userSlice = createSlice({
     },
     updateUserBalance: (state, action: PayloadAction<number>) => {
       state.balance += action.payload;
+      state.totalEarned += action.payload;
     },
     setUserBalance: (state, action: PayloadAction<number>) => {
       state.balance = action.payload;

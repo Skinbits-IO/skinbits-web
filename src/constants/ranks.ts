@@ -2,7 +2,7 @@ export const ranks: Map<
   string,
   {
     color: string;
-    milestone?: number;
+    milestone: number;
     reward?: number;
     nextRank?: string;
   }
@@ -10,7 +10,7 @@ export const ranks: Map<
   string,
   {
     color: string;
-    milestone?: number;
+    milestone: number;
     reward?: number;
     nextRank?: string;
   }

@@ -6,5 +6,6 @@ export type User = {
   fuelLevel: number;
   farmLevel: number;
   balance: number;
+  totalEarned: number;
   photoUrl: string | null;
 };
