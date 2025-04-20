@@ -7,8 +7,6 @@ import { FarmButton } from './UI/farm-button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import { useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { addUserPostData } from './api/userApi';
 import { AnimatePresence } from 'framer-motion';
 import WebApp from '@twa-dev/sdk';
 import { ProgressWidget } from './UI/progress-widget';
@@ -16,7 +14,7 @@ import { RankingPage } from '../ranking';
 
 export const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const mutation = useMutation({
+  /*const mutation = useMutation({
     mutationFn: addUserPostData,
     onSuccess: (data) => {
       console.log('Post successful:', data);
@@ -24,7 +22,7 @@ export const HomePage = () => {
     onError: (error) => {
       console.error('Post failed:', error.message);
     },
-  });
+  });*/
 
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const [showRankingSystem, setShowRankingSystem] = useState<boolean>(false);
