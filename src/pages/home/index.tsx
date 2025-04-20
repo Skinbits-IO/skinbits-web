@@ -4,15 +4,19 @@ import { Rank } from './UI/rank';
 import { Wallet } from './UI/wallet';
 import { GameWidget, NotificationWidget } from '../../features';
 import { FarmButton } from './UI/farm-button';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state/store';
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import WebApp from '@twa-dev/sdk';
 import { ProgressWidget } from './UI/progress-widget';
 import { RankingPage } from '../ranking';
+import { useRanking } from '../../hooks';
+import { RankingPopup } from './UI/ranking-popup';
+import { setUserRank } from '../../state/user/userSlice';
+import { ranks } from '../../constants';
 
 export const HomePage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
   /*const mutation = useMutation({
     mutationFn: addUserPostData,
@@ -25,7 +29,12 @@ export const HomePage = () => {
   });*/
 
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
-  const [showRankingSystem, setShowRankingSystem] = useState<boolean>(false);
+  const {
+    showRankingSystem,
+    showNewRankPopup,
+    setShowRankingSystem,
+    setShowNewRankPopup,
+  } = useRanking();
 
   useEffect(() => {
     /*mutation.mutate({
@@ -40,25 +49,6 @@ export const HomePage = () => {
     });*/
   }, []);
 
-  useEffect(() => {
-    if (showRankingSystem) {
-      WebApp.ready();
-
-      const backButton = WebApp.BackButton;
-      const handleBackButtonClick = () => {
-        setShowRankingSystem(false);
-      };
-
-      backButton.show();
-      backButton.onClick(handleBackButtonClick);
-
-      return () => {
-        backButton.hide();
-        backButton.offClick(handleBackButtonClick);
-      };
-    }
-  }, [showRankingSystem]);
-
   return (
     <div className={styles.background}>
       <AnimatePresence>
@@ -66,6 +56,19 @@ export const HomePage = () => {
           <NotificationWidget
             key="notification-widget"
             onClose={() => setShowNotifications(false)}
+          />
+        )}
+        {showNewRankPopup && (
+          <RankingPopup
+            key="ranking-popup"
+            rank={user.rank}
+            onClose={() => {
+              const rank = ranks.get(user.rank);
+              if (rank && rank.nextRank) {
+                dispatch(setUserRank(rank.nextRank));
+              }
+              setShowNewRankPopup(false);
+            }}
           />
         )}
       </AnimatePresence>

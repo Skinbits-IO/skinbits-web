@@ -25,9 +25,13 @@ const userSlice = createSlice({
     setUserBalance: (state, action: PayloadAction<number>) => {
       state.balance = action.payload;
     },
+    setUserRank: (state, action: PayloadAction<string>) => {
+      state.rank = action.payload;
+    },
   },
 });
 
-export const { updateUserBalance, setUserBalance } = userSlice.actions;
+export const { updateUserBalance, setUserBalance, setUserRank } =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -2,55 +2,60 @@ export const ranks: Map<
   string,
   {
     color: string;
-    milestone: number;
-    reward: number;
+    milestone?: number;
+    reward?: number;
+    nextRank?: string;
   }
 > = new Map<
   string,
   {
     color: string;
-    milestone: number;
-    reward: number;
+    milestone?: number;
+    reward?: number;
+    nextRank?: string;
   }
 >([
   [
     'bronze',
     {
       color: '#CD7F32',
-      milestone: 100000,
+      milestone: 10, //1e5,
       reward: 50000,
+      nextRank: 'silver',
     },
   ],
   [
     'silver',
     {
       color: '#C0C0C0',
-      milestone: 1000000,
+      milestone: 1e6,
       reward: 250000,
+      nextRank: 'gold',
     },
   ],
   [
     'gold',
     {
       color: '#FFD700',
-      milestone: 10000000,
-      reward: 1000000,
+      milestone: 1e8,
+      reward: 1e6,
+      nextRank: 'platinum',
     },
   ],
   [
     'platinum',
     {
       color: '#E5E4E2',
-      milestone: 100000000,
-      reward: 10000000,
+      milestone: 1e9,
+      reward: 1e7,
+      nextRank: 'diamond',
     },
   ],
   [
     'diamond',
     {
       color: '#B9F2FF',
-      milestone: 1000000000,
-      reward: 100000000,
+      milestone: 1e12,
     },
   ],
 ]);
