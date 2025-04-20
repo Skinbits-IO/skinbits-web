@@ -1,0 +1,71 @@
+.background {
+    flex: 0 0 auto;
+    height: 3.75rem;
+    width: 100%;
+    padding: 0.3125rem 2.5rem;
+    border-radius: 0.75rem;
+    background-color: #FCCB4D;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-image: url('/winner-decoration.png');
+    background-size: 105% auto; 
+    background-repeat: no-repeat;
+    background-position: center -1.1875rem;
+}
+
+.rank {
+    height: 2.125rem;
+    width: 2.125rem;
+    background-color: #FFFFFF;
+    border-radius: 1.0625rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #000000;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.1875rem;
+}
+
+.userInfo > img {
+    height: 1.8125rem;
+    width: 1.8125rem;
+    border-radius: 1.5313rem;
+    border: 0.0625rem solid #000000;
+}
+
+.userInfo > p {
+    opacity: 80%;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.totalEarned {
+    padding: 0.625rem;
+    border-radius: 2.125rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.totalEarned > p {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #FFFFFF;
+}
+

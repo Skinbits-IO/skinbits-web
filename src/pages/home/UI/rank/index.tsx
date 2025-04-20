@@ -1,15 +1,16 @@
-import { ranksColors } from '../../../../constants';
+import { ranks } from '../../../../constants';
 import styles from './Rank.module.css';
 
 interface IRankProps {
   rank: string;
+  onClick: () => void;
 }
 
-export const Rank = ({ rank }: IRankProps) => {
-  const rankColor = ranksColors.get(rank) ?? '#494949';
+export const Rank = ({ rank, onClick }: IRankProps) => {
+  const rankColor = ranks.get(rank)?.color;
 
   return (
-    <div className={styles.background}>
+    <div className={styles.background} onClick={onClick}>
       <div className={styles.textBox}>
         <h6 className={styles.rankText}>Rank</h6>
         <h6

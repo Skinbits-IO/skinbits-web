@@ -1,0 +1,29 @@
+.background {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2.1875rem;
+    overflow: hidden;
+}
+  
+.ranking {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    padding-bottom: 105px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}

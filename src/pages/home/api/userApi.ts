@@ -2,7 +2,7 @@ import { apiUrl } from '../../../constants';
 
 export const addUserPostData = async (data: {
   hash: string;
-  telegramId: string;
+  telegramId: number;
   firstName: string;
   lastName: string;
   username: string;
@@ -13,9 +13,8 @@ export const addUserPostData = async (data: {
   const requestBody = convertUserData(data);
   console.log(JSON.stringify(requestBody));
 
-  const response = await fetch(apiUrl + '/user/addUser', {
+  const response = await fetch(apiUrl + '/user/add', {
     method: 'POST',
-    mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
     },

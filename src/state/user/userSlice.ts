@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../types';
 
 const initialState: User = {
-  name: 'Unknown',
-  surname: 'Unknown',
+  name: 'Germans',
+  surname: 'Prudivus',
   rank: 'bronze',
   tapLevel: 1,
   fuelLevel: 1,

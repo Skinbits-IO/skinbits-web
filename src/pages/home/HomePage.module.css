@@ -12,15 +12,6 @@
     overflow: hidden;
 }
 
-.header {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    gap: 0.9375rem;
-}
-
 .upperSection {
     width: 100%;
     display: grid;

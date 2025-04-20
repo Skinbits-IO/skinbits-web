@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { addUserPostData } from './api/userApi';
 import { AnimatePresence } from 'framer-motion';
+import WebApp from '@twa-dev/sdk';
+import { ProgressWidget } from './UI/progress-widget';
+import { RankingPage } from '../ranking';
 
 export const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -24,19 +27,39 @@ export const HomePage = () => {
   });
 
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const [showRankingSystem, setShowRankingSystem] = useState<boolean>(false);
 
   useEffect(() => {
-    mutation.mutate({
+    /*mutation.mutate({
       hash: 'ae8050695d65c3191a05e0cd1a0767c41b6af284e3c7c09e5a35fdc08b93ff86',
-      telegramId: '1111111111',
+      telegramId: 1111111111,
       firstName: 'vvvvv',
       lastName: 'G',
       username: 'slavon',
       languageCode: 'EN',
       isPremium: false,
       photoUrl: '5i42-rkeo',
-    });
+    });*/
   }, []);
+
+  useEffect(() => {
+    if (showRankingSystem) {
+      WebApp.ready();
+
+      const backButton = WebApp.BackButton;
+      const handleBackButtonClick = () => {
+        setShowRankingSystem(false);
+      };
+
+      backButton.show();
+      backButton.onClick(handleBackButtonClick);
+
+      return () => {
+        backButton.hide();
+        backButton.offClick(handleBackButtonClick);
+      };
+    }
+  }, [showRankingSystem]);
 
   return (
     <div className={styles.background}>
@@ -48,24 +71,33 @@ export const HomePage = () => {
           />
         )}
       </AnimatePresence>
-      <div className={styles.header}>
-        <Header
-          name={user.name}
-          photoUrl={user.photoUrl}
-          onNotification={() => setShowNotifications(true)}
+      <Header
+        name={user.name}
+        photoUrl={user.photoUrl}
+        onNotification={() => setShowNotifications(true)}
+      />
+      <div className={styles.upperSection}>
+        <Rank
+          rank={user.rank}
+          onClick={() => setShowRankingSystem(!showRankingSystem)}
         />
-        <div className={styles.upperSection}>
-          <Rank rank={user.rank} />
+        {showRankingSystem ? (
+          <ProgressWidget rank={user.rank} />
+        ) : (
           <Wallet balance={user.balance} />
+        )}
+      </div>
+      {showRankingSystem ? (
+        <RankingPage />
+      ) : (
+        <div className={styles.game}>
+          <GameWidget />
+          <FarmButton
+            progress={100 * ((user.tapLevel + user.fuelLevel) / 10)}
+            status="unavailable"
+          />
         </div>
-      </div>
-      <div className={styles.game}>
-        <GameWidget />
-        <FarmButton
-          progress={100 * ((user.tapLevel + user.fuelLevel) / 10)}
-          status="unavailable"
-        />
-      </div>
+      )}
     </div>
   );
 };

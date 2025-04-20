@@ -1,0 +1,70 @@
+.background {
+    flex: 0 0 auto;
+    height: 3.75rem;
+    width: 100%;
+    padding: 0.9375rem 0.625rem;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: red;
+}
+
+.userInfoContainer {
+    flex: 2;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.rank {
+    height: 1.75rem;
+    width: 2.25rem;
+    padding: 0.625rem;
+    background-color: #FFFFFF;
+    border-radius: 2.125rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #000000;
+}
+
+.userInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.userInfo > img {
+    height: 1.8125rem;
+    width: 1.8125rem;
+    border-radius: 1.5313rem;
+    border: 0.0625rem solid #000000;
+}
+
+.userInfo > p {
+    opacity: 80%;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.totalEarned {
+    flex: 1;
+    padding: 0.625rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.totalEarned > p {
+    opacity: 80%;
+    font-weight: 600;
+    font-size: 12px;
+}
