@@ -27,7 +27,6 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose}
       ></motion.div>
       <motion.div
         className={styles.background}
