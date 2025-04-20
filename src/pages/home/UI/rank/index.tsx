@@ -7,7 +7,7 @@ interface IRankProps {
 }
 
 export const Rank = ({ rank, onClick }: IRankProps) => {
-  const rankColor = ranks.get(rank)?.color ?? '#000000';
+  const rankColor = ranks.get(rank)?.color ?? 'red';
 
   return (
     <div className={styles.background} onClick={onClick}>
