@@ -7,7 +7,7 @@ interface IRankProps {
 }
 
 export const Rank = ({ rank, onClick }: IRankProps) => {
-  const rankColor = ranks.get(rank)?.color ?? 'red';
+  const rankColor = ranks.get(rank)?.color ?? '#000000';
 
   return (
     <div className={styles.background} onClick={onClick}>
@@ -26,7 +26,7 @@ export const Rank = ({ rank, onClick }: IRankProps) => {
       </div>
       <div
         className={styles.lightning}
-        style={{ backgroundColor: rankColor }}
+        style={{ '--rank-color': rankColor } as React.CSSProperties}
       />
     </div>
   );

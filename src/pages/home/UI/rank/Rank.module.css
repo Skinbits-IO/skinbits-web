@@ -19,7 +19,8 @@
     width: 5.625rem;
     border-radius: 2.8125rem;
     z-index: -1;
-    filter: blur(3.5625rem);
+    box-shadow: 0 0 3.5rem var(--rank-color, #FCCB4D); 
+    overflow: visible;
 }
 
 .textBox{
