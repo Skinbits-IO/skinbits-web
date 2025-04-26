@@ -15,7 +15,7 @@ export interface AddUserPostDataPayload {
  * Registers a new user and returns access + refresh tokens on success.
  */
 export async function addUser(data: AddUserPostDataPayload) {
-  const res = await fetch(`${SERVER_URL}/user/add`, {
+  const res = await fetch(`${SERVER_URL}/user/add/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
