@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
+import { useLocation, Route, Routes } from 'react-router';
 import styles from './App.module.css';
 import WebApp from '@twa-dev/sdk';
-import { Route, Routes } from 'react-router';
 import { NavigationBar } from './components';
 import {
   AccountPage,
+  AuthenticationPage,
   GameUpgradePage,
   HomePage,
   MarketplacePage,
@@ -20,18 +21,26 @@ function App() {
     WebApp.expand();
   }, []);
 
+  const location = useLocation();
+  const isAuthRoute = ['/', '/login'].includes(location.pathname);
+
   return (
     <div className={styles.safeArea}>
+      <Routes>
+        <Route path="/" element={<AuthenticationPage />} />
+        <Route path="/login" element={<AuthenticationPage />} />
+      </Routes>
+
       <div className={styles.app}>
         <Routes>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/upgrade" element={<GameUpgradePage />} />
           <Route path="/marketplace" element={<MarketplacePage />} />
           <Route path="/task" element={<TaskPage />} />
-          <Route path="/" element={<HomePage />} />
           <Route path="/referrals" element={<ReferralsPage />} />
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/upgrade" element={<GameUpgradePage />} />
         </Routes>
-        <NavigationBar />
+        {!isAuthRoute && <NavigationBar />}
       </div>
     </div>
   );

@@ -1,0 +1,18 @@
+.background {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.9375rem;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.loader {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+}

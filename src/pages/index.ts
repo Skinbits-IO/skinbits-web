@@ -1,3 +1,5 @@
+export { AuthenticationPage } from './authentication';
+
 export { MarketplacePage } from './marketplace';
 export { TaskPage } from './task';
 

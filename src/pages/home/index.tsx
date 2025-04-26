@@ -6,7 +6,7 @@ import { GameWidget, NotificationWidget } from '../../features';
 import { FarmButton } from './UI/farm-button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../state/store';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ProgressWidget } from './UI/progress-widget';
 import { RankingPage } from '../ranking';
@@ -18,15 +18,6 @@ import { ranks } from '../../constants';
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
-  /*const mutation = useMutation({
-    mutationFn: addUserPostData,
-    onSuccess: (data) => {
-      console.log('Post successful:', data);
-    },
-    onError: (error) => {
-      console.error('Post failed:', error.message);
-    },
-  });*/
 
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const {
@@ -35,19 +26,6 @@ export const HomePage = () => {
     setShowRankingSystem,
     setShowNewRankPopup,
   } = useRanking();
-
-  useEffect(() => {
-    /*mutation.mutate({
-      hash: 'ae8050695d65c3191a05e0cd1a0767c41b6af284e3c7c09e5a35fdc08b93ff86',
-      telegramId: 1111111111,
-      firstName: 'vvvvv',
-      lastName: 'G',
-      username: 'slavon',
-      languageCode: 'EN',
-      isPremium: false,
-      photoUrl: '5i42-rkeo',
-    });*/
-  }, []);
 
   return (
     <div className={styles.background}>

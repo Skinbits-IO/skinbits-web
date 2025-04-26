@@ -1,3 +1,5 @@
+export { ErrorAlert } from './ErrorAlert';
+
 export { NavigationBar } from './NavigationBar';
 export { PopupButton } from './PopupButton';
 export { PopupCloseButton } from './PopupCloseButton';
