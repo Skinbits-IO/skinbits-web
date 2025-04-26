@@ -37,7 +37,7 @@ export const useLogin = () => {
       return;
     }
 
-    login(telegramId, hash)
+    login(telegramId, user.first_name, hash)
       .then(({ access_token, refresh_token }) => {
         cookies.set('access_token', access_token, {
           path: '/',

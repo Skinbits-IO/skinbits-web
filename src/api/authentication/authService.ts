@@ -9,6 +9,7 @@ export interface LoginResponse {
  * Log in a user by Telegram ID.
  *
  * @param telegramId - the user's Telegram ID
+ * @param telegramId - the user's Telegram First Name
  * @param hash - the hash provided by Telegram
  * @returns the access and refresh tokens
  * @throws Error with message "User not found" if the server returns 404
@@ -16,6 +17,7 @@ export interface LoginResponse {
  */
 export async function login(
   telegramId: number,
+  firstName: string,
   hash: string
 ): Promise<LoginResponse> {
   const response = await fetch(`${SERVER_URL}/auth/login/`, {
@@ -23,7 +25,11 @@ export async function login(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ telegram_id: telegramId, hash: hash }),
+    body: JSON.stringify({
+      telegram_id: telegramId,
+      first_name: firstName,
+      hash: hash,
+    }),
   });
 
   if (response.ok) {
