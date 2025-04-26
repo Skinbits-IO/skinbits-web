@@ -1,34 +1,38 @@
-import { api } from '../api';
+import { SERVER_URL } from '../../constants';
 
 export interface AddUserPostDataPayload {
-  hash: string;
   telegramId: number;
+  hash: string;
   firstName: string;
-  lastName: string;
-  username: string;
-  languageCode: string;
-  isPremium: boolean;
-  photoUrl: string;
+  lastName?: string;
+  username?: string;
+  languageCode?: string;
+  isPremium?: boolean;
+  photoUrl?: string;
 }
 
-export interface AddUserResponse {
-  success: boolean;
-  userId: string;
-}
-
-export const addUser = async (
-  data: AddUserPostDataPayload
-): Promise<AddUserResponse> => {
-  const { data: responseData } = await api.post<AddUserResponse>('/user/add', {
-    telegram_id: data.telegramId,
-    first_name: data.firstName,
-    last_name: data.lastName,
-    username: data.username,
-    language_code: data.languageCode,
-    is_premium: data.isPremium,
-    photo_url: data.photoUrl,
-    hash: data.hash,
+/**
+ * Registers a new user and returns access + refresh tokens on success.
+ */
+export async function addUser(data: AddUserPostDataPayload) {
+  const res = await fetch(`${SERVER_URL}/user/add`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      telegram_id: data.telegramId,
+      hash: data.hash,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      username: data.username,
+      language_code: data.languageCode,
+      is_premium: data.isPremium,
+      photo_url: data.photoUrl,
+    }),
   });
 
-  return responseData;
-};
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`Failed to add user: ${res.status} ${text}`);
+  }
+  return res.json();
+}

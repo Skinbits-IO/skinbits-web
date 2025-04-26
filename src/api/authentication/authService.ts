@@ -27,7 +27,7 @@ export async function login(
 
   if (response.ok) {
     return response.json() as Promise<LoginResponse>;
-  } else if (response.status === 404) {
+  } else if (response.status === 405) {
     throw new Error('User not found');
   } else {
     const text = await response.text().catch(() => '');

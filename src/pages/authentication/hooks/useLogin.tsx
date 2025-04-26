@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import WebApp from '@twa-dev/sdk';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
-import { login } from '../../../api';
+import { addUser, login } from '../../../api';
+import { WebAppUser } from '../../../types';
 
 const cookies = new Cookies();
 
@@ -21,7 +22,7 @@ export const useLogin = () => {
       return;
     }
 
-    let user: { id: number };
+    let user: WebAppUser;
     try {
       user = JSON.parse(decodeURIComponent(userParam));
     } catch (e) {
@@ -51,7 +52,38 @@ export const useLogin = () => {
         navigate('/home');
       })
       .catch((err) => {
-        setError('Login failed: ' + err.message);
+        if (err.message === 'User not found') {
+          addUser({
+            hash,
+            telegramId,
+            firstName: user.first_name,
+            lastName: user.last_name ?? '',
+            username: user.username ?? '',
+            languageCode: user.language_code ?? '',
+            isPremium: Boolean(user.is_premium),
+            photoUrl: user.photo_url ?? '',
+          })
+            .then((data) => {
+              if (data.access_token && data.refresh_token) {
+                cookies.set('access_token', data.access_token, {
+                  path: '/',
+                  sameSite: 'lax',
+                  secure: true,
+                });
+                cookies.set('refresh_token', data.refresh_token, {
+                  path: '/',
+                  sameSite: 'lax',
+                  secure: true,
+                });
+              }
+              setError(data);
+            })
+            .catch((addErr) => {
+              setError(addErr.message);
+            });
+        } else {
+          setError(err.message);
+        }
       });
   }, []);
 
