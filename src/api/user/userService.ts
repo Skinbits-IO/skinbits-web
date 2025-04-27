@@ -36,17 +36,3 @@ export async function addUser(data: AddUserPostDataPayload) {
   }
   return res.json();
 }
-
-export async function health() {
-  const res = await fetch(`${SERVER_URL}/health`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  console.log(res);
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`Failed to add user: ${res.status} ${text}`);
-  }
-  return res.json();
-}
