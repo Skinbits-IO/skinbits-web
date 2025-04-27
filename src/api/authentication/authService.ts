@@ -9,7 +9,7 @@ export interface LoginResponse {
  * Log in a user by Telegram ID.
  *
  * @param telegramId - the user's Telegram ID
- * @param telegramId - the user's Telegram First Name
+ * @param firstName - the user's Telegram First Name
  * @param hash - the hash provided by Telegram
  * @returns the access and refresh tokens
  * @throws Error with message "User not found" if the server returns 404

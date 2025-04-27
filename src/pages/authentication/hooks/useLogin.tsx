@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
-import Cookies from 'universal-cookie';
-import { useNavigate } from 'react-router';
-import { addUser, login } from '../../../api';
-import { WebAppUser } from '../../../types';
+import { health } from '../../../api/user/userService';
 
-const cookies = new Cookies();
+//const cookies = new Cookies();
 
 export const useLogin = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    WebApp.ready();
+    (async () => {
+      try {
+        const answer = await health();
+        setError(JSON.stringify(answer));
+      } catch (e) {
+        setError('dd' + e);
+      }
+    })();
+
+    /*WebApp.ready();
     const raw = WebApp.initData;
     const params = new URLSearchParams(raw);
 
@@ -84,7 +88,7 @@ export const useLogin = () => {
         } else {
           setError(err.message);
         }
-      });
+      });*/
   }, []);
 
   return { loginError: error };
