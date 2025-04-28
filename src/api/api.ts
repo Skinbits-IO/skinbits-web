@@ -3,8 +3,8 @@ import axios, {
   AxiosRequestConfig,
   InternalAxiosRequestConfig,
 } from 'axios';
-import { SERVER_URL } from '../constants';
 import { Cookies } from 'react-cookie';
+import { API_BASE } from '../constants';
 
 type AxiosRequestConfigWithRetry = AxiosRequestConfig & { _retry?: boolean };
 
@@ -33,7 +33,7 @@ const clearTokens = () => {
 
 // --- Axios instance ---
 export const api = axios.create({
-  baseURL: SERVER_URL,
+  baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -68,7 +68,7 @@ api.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          `${SERVER_URL}/auth/refresh`,
+          `${API_BASE}/auth/refresh`,
           { refresh_token: refreshToken },
           { headers: { 'Content-Type': 'application/json' } }
         );
