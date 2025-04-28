@@ -9,10 +9,15 @@
     gap: 0.9375rem;
     background-color: transparent;
     overflow: hidden;
+    padding: 20px;
 }
 
 .loader {
     color: white;
     font-size: 16px;
     font-weight: 700;
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }

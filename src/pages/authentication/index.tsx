@@ -5,7 +5,7 @@ import { useLogin } from './hooks/useLogin';
 import { useState } from 'react';
 
 export const AuthenticationPage = () => {
-  const [text, setText] = useState<string>('fsfs');
+  const [text, setText] = useState<string>('');
   const { loginError } = useLogin(setText);
 
   return (
