@@ -37,7 +37,7 @@ export const useLogin = (setText: (value: string) => void) => {
       return;
     }
 
-    setText(hash);
+    setText(hash + ' ' + telegramId);
 
     login(telegramId, user.first_name, hash)
       .then(({ access_token, refresh_token }) => {
