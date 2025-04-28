@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
-import { WebAppUser } from '../../../types';
-import { addUser, login } from '../../../api';
-import { useNavigate } from 'react-router';
-import { Cookies } from 'react-cookie';
 import { API_BASE } from '../../../constants';
 
-const cookies = new Cookies();
+//const cookies = new Cookies();
 
 export const useLogin = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,6 +12,7 @@ export const useLogin = () => {
         method: 'GET',
       });
       console.log(res);
+      setError(await res.text());
     })();
     /*WebApp.ready();
     const raw = WebApp.initData;
