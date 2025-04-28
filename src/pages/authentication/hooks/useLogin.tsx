@@ -7,7 +7,7 @@ import { addUser, login } from '../../../api';
 
 const cookies = new Cookies();
 
-export const useLogin = () => {
+export const useLogin = (setText: (value: string) => void) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -36,6 +36,8 @@ export const useLogin = () => {
       setError('No hash in initData');
       return;
     }
+
+    setText(hash);
 
     login(telegramId, user.first_name, hash)
       .then(({ access_token, refresh_token }) => {

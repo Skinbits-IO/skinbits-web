@@ -2,13 +2,18 @@ import { AnimatePresence } from 'framer-motion';
 import { ErrorAlert } from '../../components';
 import styles from './Authentication.module.css';
 import { useLogin } from './hooks/useLogin';
+import { useState } from 'react';
 
 export const AuthenticationPage = () => {
-  const { loginError } = useLogin();
+  const [text, setText] = useState<string>('fsfs');
+  const { loginError } = useLogin(setText);
 
   return (
     <div className={styles.background}>
-      <div className={styles.loader}>Loading...</div>
+      <div className={styles.loader}>
+        <p>Loading...</p>
+        {text}
+      </div>
       <AnimatePresence>
         {loginError && <ErrorAlert text={loginError} />}
       </AnimatePresence>
