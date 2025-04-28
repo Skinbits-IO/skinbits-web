@@ -1,4 +1,4 @@
-import { SERVER_URL } from '../../constants';
+import { API_BASE } from '../../constants';
 
 export interface LoginResponse {
   access_token: string;
@@ -20,7 +20,7 @@ export async function login(
   firstName: string,
   hash: string
 ): Promise<LoginResponse> {
-  const response = await fetch(`${SERVER_URL}/auth/login`, {
+  const response = await fetch(`${API_BASE}/api/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

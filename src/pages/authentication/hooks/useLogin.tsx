@@ -4,6 +4,7 @@ import { WebAppUser } from '../../../types';
 import { addUser, login } from '../../../api';
 import { useNavigate } from 'react-router';
 import { Cookies } from 'react-cookie';
+import { API_BASE } from '../../../constants';
 
 const cookies = new Cookies();
 
@@ -12,7 +13,13 @@ export const useLogin = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    WebApp.ready();
+    (async () => {
+      const res = await fetch(`${API_BASE}/health`, {
+        method: 'GET',
+      });
+      console.log(res);
+    })();
+    /*WebApp.ready();
     const raw = WebApp.initData;
     const params = new URLSearchParams(raw);
 
@@ -84,7 +91,7 @@ export const useLogin = () => {
         } else {
           setError(err.message);
         }
-      });
+      });*/
   }, []);
 
   return { loginError: error };

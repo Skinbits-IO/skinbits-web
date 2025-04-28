@@ -13,4 +13,14 @@ export default defineConfig({
     basicSsl(),
   ],
   base: '/skinbits-web/',
+  server: {
+    https: true,
+    proxy: {
+      '/api': {
+        target: 'https://skinbits-api.xyz',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 });
