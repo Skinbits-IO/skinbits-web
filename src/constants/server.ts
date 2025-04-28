@@ -1,2 +1,2 @@
-const SERVER_URL = import.meta.env.VITE_API_URL;
+const SERVER_URL = 'https://skinbits-api.xyz/api';
 export const API_BASE = import.meta.env.DEV ? '/api' : SERVER_URL;
