@@ -32,12 +32,14 @@ export const useLogin = (setText: (value: string) => void) => {
           sameSite: 'lax',
           secure: true,
         });
-        navigate('/home');
+        setText(access_token);
       })
       .catch((err) => {
         if (err.message === 'User not found') {
           addUser(initData)
             .then((data) => {
+              setText(data);
+
               if (data.access_token && data.refresh_token) {
                 cookies.set('access_token', data.access_token, {
                   path: '/',
@@ -50,7 +52,6 @@ export const useLogin = (setText: (value: string) => void) => {
                   secure: true,
                 });
               }
-              setError(data);
             })
             .catch((addErr) => {
               setError(addErr.message);
