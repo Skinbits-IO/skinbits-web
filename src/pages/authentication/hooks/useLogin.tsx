@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Cookies } from 'react-cookie';
 import WebApp from '@twa-dev/sdk';
-import { WebAppUser } from '../../../types';
 import { addUser, login } from '../../../api';
 
 const cookies = new Cookies();
@@ -13,33 +12,15 @@ export const useLogin = (setText: (value: string) => void) => {
 
   useEffect(() => {
     WebApp.ready();
-    const raw = WebApp.initData;
-    const params = new URLSearchParams(raw);
-
-    const userParam = params.get('user');
-    if (!userParam) {
+    const initData = WebApp.initData;
+    if (!initData) {
       setError('No user data in initData');
       return;
     }
 
-    let user: WebAppUser;
-    try {
-      user = JSON.parse(decodeURIComponent(userParam));
-    } catch (e) {
-      setError('Failed to parse user from initData' + e);
-      return;
-    }
+    setText(initData);
 
-    const telegramId = user.id;
-    const hash = params.get('hash');
-    if (!hash) {
-      setError('No hash in initData');
-      return;
-    }
-
-    setText(raw);
-
-    login(telegramId, user.first_name, hash)
+    login(initData)
       .then(({ access_token, refresh_token }) => {
         cookies.set('access_token', access_token, {
           path: '/',
@@ -55,16 +36,7 @@ export const useLogin = (setText: (value: string) => void) => {
       })
       .catch((err) => {
         if (err.message === 'User not found') {
-          addUser({
-            hash,
-            telegramId,
-            firstName: user.first_name,
-            lastName: user.last_name ?? '',
-            username: user.username ?? '',
-            languageCode: user.language_code ?? '',
-            isPremium: Boolean(user.is_premium),
-            photoUrl: user.photo_url ?? '',
-          })
+          addUser(initData)
             .then((data) => {
               if (data.access_token && data.refresh_token) {
                 cookies.set('access_token', data.access_token, {

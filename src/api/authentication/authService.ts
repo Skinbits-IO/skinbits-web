@@ -1,39 +1,24 @@
 import { API_BASE } from '../../constants';
 
-export interface LoginResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
 /**
- * Log in a user by Telegram ID.
+ * Log in a user
  *
- * @param telegramId - the user's Telegram ID
- * @param firstName - the user's Telegram First Name
- * @param hash - the hash provided by Telegram
+ * @param initDAta - the user's Telegram data
  * @returns the access and refresh tokens
  * @throws Error with message "User not found" if the server returns 404
  * @throws Error with message "Failed to login" for any other non-OK response
  */
-export async function login(
-  telegramId: number,
-  firstName: string,
-  hash: string
-): Promise<LoginResponse> {
+export async function login(initData: string) {
   const response = await fetch(`${API_BASE}/api/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      telegram_id: telegramId,
-      first_name: firstName,
-      hash: hash,
-    }),
+    body: JSON.stringify({ initData }),
   });
 
   if (response.ok) {
-    return response.json() as Promise<LoginResponse>;
+    return response.json();
   } else if (response.status === 404) {
     throw new Error('User not found');
   } else {
