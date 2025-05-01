@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { Cookies } from 'react-cookie';
 import WebApp from '@twa-dev/sdk';
 import { addUser, login } from '../../../api';
@@ -7,7 +6,6 @@ import { addUser, login } from '../../../api';
 const cookies = new Cookies();
 
 export const useLogin = (setText: (value: string) => void) => {
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
