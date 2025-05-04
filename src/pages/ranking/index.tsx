@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { RankUser } from '../../types';
 import styles from './RankingPage.module.css';
 import { RankCard } from './UI/rank-card';
-import { RootState } from '../../state/store';
-import { useSelector } from 'react-redux';
 import { WinnerRankCard } from './UI/winner-rank-card';
 import { findUserByName } from './utils/rankingUtils';
+import { useUser } from '../../hooks';
 
 export const RankingPage = () => {
   const users: RankUser[] = [
@@ -81,11 +80,11 @@ export const RankingPage = () => {
     },
   ];
 
-  const user = useSelector((state: RootState) => state.user);
+  const { user } = useUser();
   const [currentUser, setCurrentUser] = useState<RankUser | null>(null);
 
   useEffect(() => {
-    const currentUser = findUserByName(`${user.name} ${user.surname}`, users);
+    const currentUser = findUserByName(`${user!.name} ${user!.surname}`, users);
     setCurrentUser(currentUser);
   }, []);
 

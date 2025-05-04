@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import { useLocation, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 import styles from './App.module.css';
 import WebApp from '@twa-dev/sdk';
 import { NavigationBar } from './components';
 import {
   AccountPage,
-  AuthenticationPage,
   GameUpgradePage,
   HomePage,
   MarketplacePage,
   ReferralsPage,
   TaskPage,
 } from './pages';
+import { AuthGuard, AuthProvider } from './features';
 
 function App() {
   useEffect(() => {
@@ -21,28 +21,65 @@ function App() {
     WebApp.expand();
   }, []);
 
-  const location = useLocation();
-  const isAuthRoute = ['/', '/login'].includes(location.pathname);
-
   return (
-    <div className={styles.safeArea}>
-      <Routes>
-        <Route path="/" element={<AuthenticationPage />} />
-        <Route path="/login" element={<AuthenticationPage />} />
-      </Routes>
+    <AuthProvider>
+      <div className={styles.safeArea}>
+        <div className={styles.app}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <AuthGuard>
+                  <HomePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/upgrade"
+              element={
+                <AuthGuard>
+                  <GameUpgradePage />
+                </AuthGuard>
+              }
+            />
 
-      <div className={styles.app}>
-        <Routes>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/upgrade" element={<GameUpgradePage />} />
-          <Route path="/marketplace" element={<MarketplacePage />} />
-          <Route path="/task" element={<TaskPage />} />
-          <Route path="/referrals" element={<ReferralsPage />} />
-          <Route path="/account" element={<AccountPage />} />
-        </Routes>
-        {!isAuthRoute && <NavigationBar />}
+            <Route
+              path="/marketplace"
+              element={
+                <AuthGuard>
+                  <MarketplacePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/task"
+              element={
+                <AuthGuard>
+                  <TaskPage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/referrals"
+              element={
+                <AuthGuard>
+                  <ReferralsPage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <AuthGuard>
+                  <AccountPage />
+                </AuthGuard>
+              }
+            />
+          </Routes>
+          <NavigationBar />
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }
 

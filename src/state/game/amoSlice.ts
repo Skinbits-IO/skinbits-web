@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AmoState {
-  value: number;
-  max: number;
+  amo: number;
+  maxAmo: number;
 }
 
 const initialState: AmoState = {
-  value: 1000,
-  max: 1000,
+  amo: 1000,
+  maxAmo: 1000,
 };
 
 const amoSlice = createSlice({
@@ -15,16 +15,16 @@ const amoSlice = createSlice({
   initialState,
   reducers: {
     addAmo: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+      state.amo += action.payload;
     },
     reduceAmo: (state, action: PayloadAction<number>) => {
-      state.value -= action.payload;
+      state.amo -= action.payload;
     },
     setAmo: (state, action: PayloadAction<number>) => {
-      state.value = action.payload;
+      state.amo = action.payload;
     },
     setMaxAmo: (state, action: PayloadAction<number>) => {
-      state.max = action.payload;
+      state.maxAmo = action.payload;
     },
   },
 });

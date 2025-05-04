@@ -4,20 +4,21 @@ import { Rank } from './UI/rank';
 import { Wallet } from './UI/wallet';
 import { GameWidget, NotificationWidget } from '../../features';
 import { FarmButton } from './UI/farm-button';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../state/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../state/store';
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ProgressWidget } from './UI/progress-widget';
 import { RankingPage } from '../ranking';
-import { useRanking } from '../../hooks';
+import { useRanking, useUser, useUserGameInfo } from '../../hooks';
 import { RankingPopup } from './UI/ranking-popup';
-import { setUserRank } from '../../state/user/userSlice';
+import { setUserRank } from '../../state/userSlice';
 import { ranks } from '../../constants';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.user);
+  const { user } = useUser();
+  const { user: userGameInfo } = useUserGameInfo();
 
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const {
@@ -39,9 +40,9 @@ export const HomePage = () => {
         {showNewRankPopup && (
           <RankingPopup
             key="ranking-popup"
-            rank={user.rank}
+            rank={user!.rank}
             onClose={() => {
-              const rank = ranks.get(user.rank);
+              const rank = ranks.get(user!.rank);
               if (rank && rank.nextRank) {
                 dispatch(setUserRank(rank.nextRank));
               }
@@ -51,19 +52,19 @@ export const HomePage = () => {
         )}
       </AnimatePresence>
       <Header
-        name={user.name}
-        photoUrl={user.photoUrl}
+        name={user!.username}
+        photoUrl={user!.photoUrl}
         onNotification={() => setShowNotifications(true)}
       />
       <div className={styles.upperSection}>
         <Rank
-          rank={user.rank}
+          rank={user!.rank}
           onClick={() => setShowRankingSystem(!showRankingSystem)}
         />
         {showRankingSystem ? (
-          <ProgressWidget rank={user.rank} totalEarned={user.totalEarned} />
+          <ProgressWidget rank={user!.rank} totalEarned={user!.totalEarned} />
         ) : (
-          <Wallet balance={user.balance} />
+          <Wallet balance={user!.balance} />
         )}
       </div>
       {showRankingSystem ? (
@@ -72,7 +73,9 @@ export const HomePage = () => {
         <div className={styles.game}>
           <GameWidget />
           <FarmButton
-            progress={100 * ((user.tapLevel + user.fuelLevel) / 10)}
+            progress={
+              100 * ((userGameInfo!.tapLevel + userGameInfo!.fuelLevel) / 10)
+            }
             status="unavailable"
           />
         </div>

@@ -10,10 +10,11 @@ import { useNavigate } from 'react-router';
 import { BoostCard, UpgradeCard } from '../../types';
 import { Popup } from './UI/popup';
 import { AnimatePresence } from 'framer-motion';
+import { useUser } from '../../hooks';
 
 export const GameUpgradePage = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user);
+  const { user } = useUser();
   const boostCards = useSelector((state: RootState) => state.boostCards);
   const upgradeCards = useSelector((state: RootState) => state.upgradeCards);
 
@@ -46,7 +47,7 @@ export const GameUpgradePage = () => {
         alt="image"
       />
       <div className={styles.content}>
-        <Balance balance={user.balance} />
+        <Balance balance={user!.balance} />
         <div className={styles.upgrades}>
           <CardContainer
             title="Boosts"

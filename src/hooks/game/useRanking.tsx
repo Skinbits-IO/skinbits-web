@@ -1,23 +1,22 @@
 import WebApp from '@twa-dev/sdk';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../state/store';
-import { ranks } from '../constants';
+import { ranks } from '../../constants';
+import { useUser } from '../state';
 
 export const useRanking = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const { user } = useUser();
 
   const [showRankingSystem, setShowRankingSystem] = useState<boolean>(false);
   const [showNewRankPopup, setShowNewRankPopup] = useState<boolean>(false);
 
   useEffect(() => {
-    const rank = ranks.get(user.rank);
+    const rank = ranks.get(user!.rank);
     if (rank) {
-      if (rank.milestone === user.balance && rank.nextRank) {
+      if (rank.milestone === user!.balance && rank.nextRank) {
         setShowNewRankPopup(true);
       }
     }
-  }, [user.balance]);
+  }, [user!.balance]);
 
   useEffect(() => {
     if (showRankingSystem) {

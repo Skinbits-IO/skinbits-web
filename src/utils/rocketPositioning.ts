@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-import { RocketPosition } from '../types/RocketPosition';
+import { RocketPosition } from '../types';
 
 const rocketSize = 44;
 const buffer = 12; // Buffer zone in pixels

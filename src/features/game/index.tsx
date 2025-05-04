@@ -1,119 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import styles from './GameWidget.module.css';
 import { UpgradeButton } from './UI/UpgradeButton';
 import { GameRocketIcon } from '../../components';
-import {
-  computeGrid,
-  generatePosition,
-  markArea,
-} from './utils/rocketPositioning';
-import { RocketPosition } from './types/RocketPosition';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../state/store';
-import { addAmo, reduceAmo, setMaxAmo } from '../../state/game/amoSlice';
-import { updateUserBalance } from '../../state/user/userSlice';
 import { SuperRocket } from './UI/SuperRocket';
+import {
+  useAmo,
+  useRocket,
+  useSuperRocket,
+  useUserGameInfo,
+} from '../../hooks';
 
 export const GameWidget = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  // User
-  const user = useSelector((state: RootState) => state.user);
-
-  // Amo (Ammo)
-  const amo = useSelector((state: RootState) => state.amo.value);
-  const maxAmo = useSelector((state: RootState) => state.amo.max);
-
-  const amoRef = useRef(amo);
-  const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
-
-  // Rockets
   const gameRef = useRef<HTMLDivElement | null>(null);
-  const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
-  const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
 
-  // Super rocket state and its indicators (with tap positions)
-  const [activeSuperRocket, setActiveSuperRocket] = useState<boolean>(false);
-  const [superRocketIndicators, setSuperRocketIndicators] = useState<
-    { id: number; x: number; y: number }[]
-  >([]);
+  const { user } = useUserGameInfo();
+  const { amo, maxAmo } = useAmo();
 
-  useEffect(() => {
-    computeGrid(gameRef);
-    const positions: RocketPosition[] = [];
-    for (let i = 0; i < 3; i++) {
-      positions.push(generatePosition(gameRef));
-    }
-    setRocketPositions(positions);
-
-    dispatch(setMaxAmo(1000 + (user.fuelLevel - 1) * 500));
-
-    return () => {
-      setActiveSuperRocket(false);
-      clearInterval(regenerationInterval.current!);
-      regenerationInterval.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    amoRef.current = amo;
-  }, [amo]);
-
-  const handleRocketClick = (position: RocketPosition, index: number) => {
-    const newAmo = amo - user.tapLevel;
-
-    if (newAmo >= 0) {
-      dispatch(reduceAmo(user.tapLevel));
-      dispatch(updateUserBalance(user.tapLevel));
-
-      if (newAmo % 50 === 0 && newAmo !== 0) {
-        setActiveSuperRocket(true);
-        setTimeout(() => setActiveSuperRocket(false), 3000);
-        return;
-      }
-
-      const newRocketPosition = generatePosition(gameRef);
-      const updatedPositions = rocketPositions.map((pos, i) =>
-        i === index ? newRocketPosition : pos
-      );
-
-      markArea(position, false);
-      setRocketPositions(updatedPositions);
-
-      flyingIndicators.current.set(index, { ...position });
-
-      setTimeout(() => {
-        flyingIndicators.current.delete(index);
-      }, 500);
-
-      // Start regeneration if amo is 0
-      if (regenerationInterval.current === null && newAmo === 0) {
-        regenerationInterval.current = setInterval(() => {
-          if (amoRef.current < maxAmo) {
-            dispatch(addAmo(user.fuelLevel));
-          }
-        }, 1000);
-      }
-    }
-  };
-
-  const handleSuperRocketClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    dispatch(updateUserBalance(user.tapLevel));
-
-    const indicatorId = Date.now() + Math.random();
-    setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
-
-    setTimeout(() => {
-      setSuperRocketIndicators((prev) =>
-        prev.filter((ind) => ind.id !== indicatorId)
-      );
-    }, 500);
-  };
+  const { rocketPositions, flyingIndicators, handleRocketClick } =
+    useRocket(gameRef);
+  const { activeSuperRocket, superRocketIndicators, handleSuperRocketClick } =
+    useSuperRocket();
 
   return (
     <div className={styles.background}>
@@ -151,14 +58,14 @@ export const GameWidget = () => {
                       top: `${flyingIndicators.current.get(index)!.top}px`,
                     }}
                   >
-                    +{user.tapLevel}
+                    +{user!.tapLevel}
                   </motion.div>
                 )}
               </motion.div>
             ))}
           {activeSuperRocket && (
             <SuperRocket
-              user={user}
+              userTapLevel={user!.tapLevel}
               superRocketIndicators={superRocketIndicators}
               handleSuperRocketClick={handleSuperRocketClick}
             />

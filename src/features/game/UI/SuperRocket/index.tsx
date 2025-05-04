@@ -1,16 +1,15 @@
 import styles from './SuperRocket.module.css';
 import { motion } from 'framer-motion';
 import { GameRocketIcon } from '../../../../components';
-import { User } from '../../../../types';
 
 interface ISuperRocket {
-  user: User;
+  userTapLevel: number;
   superRocketIndicators: { id: number; x: number; y: number }[];
   handleSuperRocketClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const SuperRocket = ({
-  user,
+  userTapLevel,
   superRocketIndicators,
   handleSuperRocketClick,
 }: ISuperRocket) => {
@@ -55,7 +54,7 @@ export const SuperRocket = ({
                 top: indicator.y + 10,
               }}
             >
-              +{user.tapLevel}
+              +{userTapLevel}
             </motion.div>
             <motion.div
               key={`burst-${indicator.id}`}

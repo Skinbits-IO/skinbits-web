@@ -9,17 +9,16 @@ import { API_BASE } from '../constants';
 type AxiosRequestConfigWithRetry = AxiosRequestConfig & { _retry?: boolean };
 
 const cookies = new Cookies();
-const getAccessToken = () => cookies.get('access_token') as string | undefined;
-const getRefreshToken = () =>
-  cookies.get('refresh_token') as string | undefined;
+const getAccessToken = () => cookies.get('accessToken') as string | undefined;
+const getRefreshToken = () => cookies.get('refreshToken') as string | undefined;
 
 const setTokens = (accessToken: string, refreshToken: string) => {
-  cookies.set('access_token', accessToken, {
+  cookies.set('accessToken', accessToken, {
     path: '/',
     sameSite: 'lax',
     secure: true,
   });
-  cookies.set('refresh_token', refreshToken, {
+  cookies.set('refreshToken', refreshToken, {
     path: '/',
     sameSite: 'lax',
     secure: true,
@@ -27,11 +26,10 @@ const setTokens = (accessToken: string, refreshToken: string) => {
 };
 
 const clearTokens = () => {
-  cookies.remove('access_token', { path: '/' });
-  cookies.remove('refresh_token', { path: '/' });
+  cookies.remove('accessToken', { path: '/' });
+  cookies.remove('refreshToken', { path: '/' });
 };
 
-// --- Axios instance ---
 export const api = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
@@ -62,7 +60,6 @@ api.interceptors.response.use(
       const refreshToken = getRefreshToken();
       if (!refreshToken) {
         clearTokens();
-        window.location.href = '/login';
         return Promise.reject(error);
       }
 
@@ -82,7 +79,6 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         clearTokens();
-        window.location.href = '/login';
         return Promise.reject(refreshError);
       }
     }

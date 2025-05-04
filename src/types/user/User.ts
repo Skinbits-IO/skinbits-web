@@ -1,11 +1,16 @@
-export type User = {
-  name: string;
-  surname: string;
+export interface User {
+  telegramId: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  languageCode: string;
+  isPremium: boolean;
+  photoUrl: string;
+  joinDate: string;
+  tradeLink: string;
   rank: string;
-  tapLevel: number;
-  fuelLevel: number;
-  farmLevel: number;
   balance: number;
+  balanceBb: number;
   totalEarned: number;
-  photoUrl: string | null;
-};
+  friendsCount: number;
+}
