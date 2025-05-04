@@ -1,10 +1,11 @@
 .background {
     position: absolute;
     padding: 0.7813rem;
-    max-height: 6.25rem;
+    max-height: 9.375rem;
     width: calc(100% - 2.5rem);
     background-color: red;
     border-radius: 0.875rem;
+    left: 1.25rem;
     bottom: calc(var(--tg-content-safe-area-inset-bottom, 0rem) + 1.25rem);
 
     color: white;
@@ -15,6 +16,7 @@
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
+    z-index: 99999;
 }
   
 .background strong {

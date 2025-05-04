@@ -1,3 +1,3 @@
 export { useRanking, useRocket, useSuperRocket } from './game';
 export { useAmo, useUser, useUserGameInfo } from './state';
-export { useLogin } from './api';
+export { useLogin, useManageGameSession } from './api';

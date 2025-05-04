@@ -3,6 +3,10 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../state/store';
 import { updateUserBalance } from '../../state/userSlice';
 import { useAmo, useUserGameInfo } from '../state';
+import {
+  updateBalanceEarned,
+  updateTotalTaps,
+} from '../../state/game/gameSessionSlice';
 
 export const useSuperRocket = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +31,9 @@ export const useSuperRocket = () => {
     const y = event.clientY - rect.top;
 
     dispatch(updateUserBalance(user!.tapLevel));
+
+    dispatch(updateTotalTaps(1));
+    dispatch(updateBalanceEarned(user!.tapLevel));
 
     const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);

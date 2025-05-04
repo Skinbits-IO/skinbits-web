@@ -11,7 +11,7 @@ import {
   ReferralsPage,
   TaskPage,
 } from './pages';
-import { AuthGuard, AuthProvider } from './features';
+import { AuthGuard, AuthProvider, StatusNotifications } from './features';
 
 function App() {
   useEffect(() => {
@@ -78,6 +78,7 @@ function App() {
           </Routes>
         </AuthProvider>
         <NavigationBar />
+        <StatusNotifications />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export const ranks: Map<
     'bronze',
     {
       color: '#CD7F32',
-      milestone: 10, //1e5,
+      milestone: 1e5,
       reward: 50000,
       nextRank: 'silver',
     },

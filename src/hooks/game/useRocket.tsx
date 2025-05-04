@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../state/store';
 import { addAmo, reduceAmo, setMaxAmo } from '../../state/game/amoSlice';
 import { updateUserBalance } from '../../state/userSlice';
+import {
+  updateBalanceEarned,
+  updateTotalTaps,
+} from '../../state/game/gameSessionSlice';
 
 export const useRocket = (
   gameRef: React.MutableRefObject<HTMLDivElement | null>
@@ -26,6 +30,9 @@ export const useRocket = (
     if (newAmo >= 0) {
       dispatch(reduceAmo(user!.tapLevel));
       dispatch(updateUserBalance(user!.tapLevel));
+
+      dispatch(updateTotalTaps(1));
+      dispatch(updateBalanceEarned(user!.tapLevel));
 
       const newRocketPosition = generatePosition(gameRef);
       const updatedPositions = rocketPositions.map((pos, i) =>

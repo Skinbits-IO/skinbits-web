@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SuperRocket } from './UI/SuperRocket';
 import {
   useAmo,
+  useManageGameSession,
   useRocket,
   useSuperRocket,
   useUserGameInfo,
@@ -21,6 +22,8 @@ export const GameWidget = () => {
     useRocket(gameRef);
   const { activeSuperRocket, superRocketIndicators, handleSuperRocketClick } =
     useSuperRocket();
+
+  useManageGameSession();
 
   return (
     <div className={styles.background}>

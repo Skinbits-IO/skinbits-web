@@ -1,5 +1,3 @@
-export { ErrorAlert } from './ErrorAlert';
-
 export { Loader } from './Loader';
 export { NavigationBar } from './NavigationBar';
 export { PopupButton } from './PopupButton';

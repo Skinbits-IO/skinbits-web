@@ -3,10 +3,13 @@ import { Cookies } from 'react-cookie';
 import WebApp from '@twa-dev/sdk';
 import { addUser, login } from '../../api';
 import { useMutation } from '@tanstack/react-query';
+import { useStatusNotification } from '../useStatusNotification';
 
 const cookies = new Cookies();
 
 export const useLogin = () => {
+  const addNotification = useStatusNotification();
+
   const loginMutation = useMutation({
     mutationFn: (initData: string) => login(initData),
     onSuccess: (data) => {
@@ -28,7 +31,7 @@ export const useLogin = () => {
       if (error.message === 'User not found') {
         createUserMutatation.mutate(initData);
       } else {
-        console.error(error);
+        addNotification('error', error.message, 2000);
       }
     },
   });
@@ -51,7 +54,7 @@ export const useLogin = () => {
 
       console.log(data);
     },
-    onError: (error) => console.error(error),
+    onError: (error) => addNotification('error', error.message, 2000),
   });
 
   useEffect(() => {
