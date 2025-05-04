@@ -84,7 +84,10 @@ export const RankingPage = () => {
   const [currentUser, setCurrentUser] = useState<RankUser | null>(null);
 
   useEffect(() => {
-    const currentUser = findUserByName(`${user!.name} ${user!.surname}`, users);
+    const currentUser = findUserByName(
+      `${user!.firstName} ${user!.lastName}`,
+      users
+    );
     setCurrentUser(currentUser);
   }, []);
 
