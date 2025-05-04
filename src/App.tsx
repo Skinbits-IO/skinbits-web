@@ -22,9 +22,9 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <div className={styles.safeArea}>
-        <div className={styles.app}>
+    <div className={styles.safeArea}>
+      <div className={styles.app}>
+        <AuthProvider>
           <Routes>
             <Route
               path="/"
@@ -76,10 +76,10 @@ function App() {
               }
             />
           </Routes>
-          <NavigationBar />
-        </div>
+        </AuthProvider>
+        <NavigationBar />
       </div>
-    </AuthProvider>
+    </div>
   );
 }
 
