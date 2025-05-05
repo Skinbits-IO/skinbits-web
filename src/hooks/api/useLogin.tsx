@@ -2,18 +2,18 @@ import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import WebApp from '@twa-dev/sdk';
 import { addUser, login } from '../../api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStatusNotification } from '../useStatusNotification';
 
 const cookies = new Cookies();
 
-export const useLogin = () => {
+export const useLogin = (error: Error | null) => {
   const addNotification = useStatusNotification();
+  const queryClient = useQueryClient();
 
   const loginMutation = useMutation({
     mutationFn: (initData: string) => login(initData),
     onSuccess: (data) => {
-      console.log(data);
       if (data.accessToken && data.refreshToken) {
         cookies.set('accessToken', data.accessToken, {
           path: '/',
@@ -25,6 +25,7 @@ export const useLogin = () => {
           sameSite: 'lax',
           secure: true,
         });
+        queryClient.invalidateQueries({ queryKey: ['user'] });
       }
     },
     onError: (error, initData: string) => {
@@ -51,8 +52,7 @@ export const useLogin = () => {
           secure: true,
         });
       }
-
-      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => addNotification('error', error.message, 2000),
   });
@@ -64,6 +64,9 @@ export const useLogin = () => {
       console.error('No user data in initData');
       initData = import.meta.env.VITE_TEST_USER_INIT_DATA;
     }
-    loginMutation.mutate(initData);
-  }, []);
+
+    if (error) {
+      loginMutation.mutate(initData);
+    }
+  }, [error]);
 };

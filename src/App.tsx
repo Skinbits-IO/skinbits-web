@@ -11,7 +11,7 @@ import {
   ReferralsPage,
   TaskPage,
 } from './pages';
-import { AuthGuard, AuthProvider, StatusNotifications } from './features';
+import { AuthProvider, StatusNotifications } from './features';
 
 function App() {
   useEffect(() => {
@@ -26,55 +26,13 @@ function App() {
       <div className={styles.app}>
         <AuthProvider>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <AuthGuard>
-                  <HomePage />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path="/upgrade"
-              element={
-                <AuthGuard>
-                  <GameUpgradePage />
-                </AuthGuard>
-              }
-            />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/upgrade" element={<GameUpgradePage />} />
 
-            <Route
-              path="/marketplace"
-              element={
-                <AuthGuard>
-                  <MarketplacePage />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path="/task"
-              element={
-                <AuthGuard>
-                  <TaskPage />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path="/referrals"
-              element={
-                <AuthGuard>
-                  <ReferralsPage />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <AuthGuard>
-                  <AccountPage />
-                </AuthGuard>
-              }
-            />
+            <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/task" element={<TaskPage />} />
+            <Route path="/referrals" element={<ReferralsPage />} />
+            <Route path="/account" element={<AccountPage />} />
           </Routes>
         </AuthProvider>
         <NavigationBar />
