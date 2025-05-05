@@ -32,6 +32,8 @@ export const useManageGameSession = () => {
     mutationFn: (session: GameSession) => uploadGameSession(session),
     onSuccess: () => {
       dispatch(resetGameSession());
+      dispatch(setStartTime(toIsoUtcNoMs()));
+
       localStorage.removeItem('pendingGameSession');
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
