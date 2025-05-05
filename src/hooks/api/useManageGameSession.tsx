@@ -47,9 +47,12 @@ export const useManageGameSession = () => {
 
   useEffect(() => {
     WebApp.ready();
+    closingBehavior.mount();
+
     if (!gameSession.startTime) {
       dispatch(setStartTime(toIsoUtcNoMs()));
     }
+
     closingBehavior.enableConfirmation();
   }, [dispatch, closingBehavior]);
 
@@ -73,8 +76,11 @@ export const useManageGameSession = () => {
     return () => {
       const session = sessionRef.current;
       if (session.startTime && session.totalTaps > 0 && !mutation.isSuccess) {
-        closingBehavior.enableConfirmation();
         mutation.mutate({ ...session, endTime: toIsoUtcNoMs() });
+      }
+
+      if (closingBehavior.isMounted()) {
+        closingBehavior.unmount();
       }
     };
   }, [mutation, closingBehavior]);
