@@ -10,8 +10,6 @@ import { GameSession } from '../../types';
 import { uploadGameSession } from '../../api';
 import { useGameSession } from '../state/useGameSession';
 import { useStatusNotification } from '../useStatusNotification';
-import WebApp from '@twa-dev/sdk';
-import { closingBehavior } from '@telegram-apps/sdk';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -26,62 +24,39 @@ export const useManageGameSession = () => {
     sessionRef.current = gameSession;
   }, [gameSession]);
 
-  const lastTapRef = useRef<number>(Date.now());
   useEffect(() => {
-    if (gameSession.totalTaps > 0) {
-      lastTapRef.current = Date.now();
+    if (!gameSession.startTime) {
+      dispatch(setStartTime(toIsoUtcNoMs()));
     }
-  }, [gameSession.totalTaps]);
+  }, [gameSession.startTime]);
 
   const mutation = useMutation({
     mutationFn: (session: GameSession) => uploadGameSession(session),
     onSuccess: () => {
       dispatch(resetGameSession());
-      closingBehavior.disableConfirmation();
     },
     onError: (err: any) => {
       addNotification('error', err.message || 'Failed to upload session', 3000);
-      closingBehavior.enableConfirmation();
     },
   });
 
   useEffect(() => {
-    WebApp.ready();
-    closingBehavior.mount();
+    if (!gameSession.startTime || gameSession.totalTaps === 0) return;
 
-    if (!gameSession.startTime) {
-      dispatch(setStartTime(toIsoUtcNoMs()));
-    }
+    const timer = setTimeout(() => {
+      const s = sessionRef.current;
+      mutation.mutate({ ...s, endTime: toIsoUtcNoMs() });
+    }, 1000);
 
-    closingBehavior.enableConfirmation();
-  }, [dispatch, closingBehavior]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const session = sessionRef.current;
-      if (
-        session.startTime &&
-        session.totalTaps > 0 &&
-        !mutation.isPending &&
-        !mutation.isSuccess
-      ) {
-        closingBehavior.enableConfirmation();
-        mutation.mutate({ ...session, endTime: toIsoUtcNoMs() });
-      }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [lastTapRef.current, mutation, closingBehavior]);
+    return () => clearTimeout(timer);
+  }, [gameSession.totalTaps]);
 
   useEffect(() => {
     return () => {
-      const session = sessionRef.current;
-      if (session.startTime && session.totalTaps > 0 && !mutation.isSuccess) {
-        mutation.mutate({ ...session, endTime: toIsoUtcNoMs() });
-      }
-
-      if (closingBehavior.isMounted()) {
-        closingBehavior.unmount();
+      const s = sessionRef.current;
+      if (s.startTime && s.totalTaps > 0 && !mutation.isSuccess) {
+        mutation.mutate({ ...s, endTime: toIsoUtcNoMs() });
       }
     };
-  }, [mutation, closingBehavior]);
+  }, []);
 };
