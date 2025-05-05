@@ -11,6 +11,7 @@ import { uploadGameSession } from '../../api';
 import { useGameSession } from '../state/useGameSession';
 import { useStatusNotification } from '../useStatusNotification';
 import { API_BASE } from '../../constants';
+import WebApp from '@twa-dev/sdk';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -50,6 +51,9 @@ export const useManageGameSession = () => {
   }, []);
 
   useEffect(() => {
+    WebApp.ready();
+
+    const closeButton = WebApp.MainButton;
     const sendOnUnload = () => {
       const s = sessionRef.current;
       if (s.startTime && s.totalTaps > 0) {
@@ -76,12 +80,14 @@ export const useManageGameSession = () => {
       }
     };
 
-    window.addEventListener('pagehide', sendOnUnload);
-    window.addEventListener('beforeunload', sendOnUnload);
+    const handleCloseButtonClick = () => {
+      sendOnUnload();
+      WebApp.close();
+    };
 
+    closeButton.onClick(handleCloseButtonClick);
     return () => {
-      window.removeEventListener('pagehide', sendOnUnload);
-      window.removeEventListener('beforeunload', sendOnUnload);
+      closeButton.offClick(handleCloseButtonClick);
     };
   }, []);
 };
