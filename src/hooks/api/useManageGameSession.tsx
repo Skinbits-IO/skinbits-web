@@ -10,7 +10,6 @@ import { GameSession } from '../../types';
 import { uploadGameSession } from '../../api';
 import { useGameSession } from '../state/useGameSession';
 import { useStatusNotification } from '../useStatusNotification';
-import WebApp from '@twa-dev/sdk';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');
