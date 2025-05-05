@@ -52,42 +52,15 @@ export const useManageGameSession = () => {
 
   useEffect(() => {
     WebApp.ready();
-
-    const closeButton = WebApp.MainButton;
-    const sendOnUnload = () => {
+    const onClose = () => {
       const s = sessionRef.current;
       if (s.startTime && s.totalTaps > 0) {
-        const payload = JSON.stringify({
-          end_time: toIsoUtcNoMs(),
-          start_time: s.startTime,
-          total_taps: s.totalTaps,
-          balance_earned: s.balanceEarned,
-          boosts_used: s.boostsUsed,
-        });
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(
-            `${API_BASE}/gameSession/add`,
-            new Blob([payload], { type: 'application/json' })
-          );
-        } else {
-          fetch(`${API_BASE}/gameSession/add`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: payload,
-            keepalive: true,
-          });
-        }
+        mutation.mutate({ ...s, endTime: toIsoUtcNoMs() });
       }
     };
-
-    const handleCloseButtonClick = () => {
-      sendOnUnload();
-      WebApp.close();
-    };
-
-    closeButton.onClick(handleCloseButtonClick);
+    WebApp.onEvent('mainButtonClicked', onClose);
     return () => {
-      closeButton.offClick(handleCloseButtonClick);
+      WebApp.offEvent('mainButtonClicked', onClose);
     };
-  }, []);
+  }, [mutation]);
 };
