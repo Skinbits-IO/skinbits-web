@@ -10,6 +10,10 @@ import { GameSession } from '../../types';
 import { uploadGameSession } from '../../api';
 import { useGameSession } from '../state/useGameSession';
 import { useStatusNotification } from '../useStatusNotification';
+import { API_BASE } from '../../constants';
+
+const toIsoUtcNoMs = (d: Date = new Date()) =>
+  d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 export const useManageGameSession = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,16 +38,50 @@ export const useManageGameSession = () => {
 
   useEffect(() => {
     if (!gameSession.startTime) {
-      const start = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-      dispatch(setStartTime(start));
+      dispatch(setStartTime(toIsoUtcNoMs()));
     }
 
     return () => {
       const session = sessionRef.current;
       if (session.startTime && session.totalTaps > 0) {
-        const end = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-        mutation.mutate({ ...session, endTime: end });
+        mutation.mutate({ ...session, endTime: toIsoUtcNoMs() });
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    const sendOnUnload = () => {
+      const s = sessionRef.current;
+      if (s.startTime && s.totalTaps > 0) {
+        const payload = JSON.stringify({
+          end_time: toIsoUtcNoMs(),
+          start_time: s.startTime,
+          total_taps: s.totalTaps,
+          balance_earned: s.balanceEarned,
+          boosts_used: s.boostsUsed,
+        });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(
+            `${API_BASE}/gameSession/add`,
+            new Blob([payload], { type: 'application/json' })
+          );
+        } else {
+          fetch(`${API_BASE}/gameSession/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true,
+          });
+        }
+      }
+    };
+
+    window.addEventListener('pagehide', sendOnUnload);
+    window.addEventListener('beforeunload', sendOnUnload);
+
+    return () => {
+      window.removeEventListener('pagehide', sendOnUnload);
+      window.removeEventListener('beforeunload', sendOnUnload);
     };
   }, []);
 };
