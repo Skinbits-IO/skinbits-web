@@ -50,16 +50,44 @@ export const useManageGameSession = () => {
   }, []);
 
   useEffect(() => {
-    WebApp.ready();
-    const onClose = () => {
+    const sendLastBeacon = () => {
       const s = sessionRef.current;
       if (s.startTime && s.totalTaps > 0) {
-        mutation.mutate({ ...s, endTime: toIsoUtcNoMs() });
+        const payload = JSON.stringify({
+          start_time: s.startTime,
+          end_time: toIsoUtcNoMs(),
+          total_taps: s.totalTaps,
+          balance_earned: s.balanceEarned,
+          boosts_used: s.boostsUsed,
+        });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(
+            `${process.env.REACT_APP_API_URL}/gameSession/add`,
+            new Blob([payload], { type: 'application/json' })
+          );
+        } else {
+          fetch(`${process.env.REACT_APP_API_URL}/gameSession/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true,
+          });
+        }
       }
     };
-    WebApp.onEvent('deactivated', onClose);
+
+    window.addEventListener('pagehide', sendLastBeacon);
+    window.addEventListener('beforeunload', sendLastBeacon);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        sendLastBeacon();
+      }
+    });
+
     return () => {
-      WebApp.offEvent('deactivated', onClose);
+      window.removeEventListener('pagehide', sendLastBeacon);
+      window.removeEventListener('beforeunload', sendLastBeacon);
+      document.removeEventListener('visibilitychange', sendLastBeacon);
     };
-  }, [mutation]);
+  }, []);
 };
