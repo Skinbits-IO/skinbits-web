@@ -57,9 +57,9 @@ export const useManageGameSession = () => {
         mutation.mutate({ ...s, endTime: toIsoUtcNoMs() });
       }
     };
-    WebApp.onEvent('mainButtonClicked', onClose);
+    WebApp.onEvent('deactivated', onClose);
     return () => {
-      WebApp.offEvent('mainButtonClicked', onClose);
+      WebApp.offEvent('deactivated', onClose);
     };
   }, [mutation]);
 };
