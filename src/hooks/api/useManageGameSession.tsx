@@ -10,7 +10,6 @@ import { GameSession } from '../../types';
 import { uploadGameSession } from '../../api';
 import { useGameSession } from '../state/useGameSession';
 import { useStatusNotification } from '../useStatusNotification';
-import { API_BASE } from '../../constants';
 import WebApp from '@twa-dev/sdk';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
