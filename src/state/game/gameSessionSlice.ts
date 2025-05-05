@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { GameSession } from '../../types';
 
 interface GameSessionState {
-  gameSession: GameSession;
+  gameSession: Omit<GameSession, 'endTime'>;
 }
 
 const initialState: GameSessionState = {
   gameSession: {
     startTime: null,
-    endTime: null,
     totalTaps: 0,
     balanceEarned: 0,
     boostsUsed: 0,
@@ -19,11 +18,8 @@ const gameSessionSlice = createSlice({
   name: 'game/game-session',
   initialState,
   reducers: {
-    setStartTime: (state, action: PayloadAction<string | null>) => {
+    setStartTime: (state, action: PayloadAction<string>) => {
       state.gameSession.startTime = action.payload;
-    },
-    setEndTime: (state, action: PayloadAction<string | null>) => {
-      state.gameSession.endTime = action.payload;
     },
     updateTotalTaps: (state, action: PayloadAction<number>) => {
       state.gameSession.totalTaps += action.payload;
@@ -36,7 +32,6 @@ const gameSessionSlice = createSlice({
     },
     resetGameSession: (state) => {
       state.gameSession.startTime = null;
-      state.gameSession.endTime = null;
       state.gameSession.totalTaps = 0;
       state.gameSession.balanceEarned = 0;
       state.gameSession.boostsUsed = 0;
@@ -46,7 +41,6 @@ const gameSessionSlice = createSlice({
 
 export const {
   setStartTime,
-  setEndTime,
   updateTotalTaps,
   updateBalanceEarned,
   updateBoostsUsed,

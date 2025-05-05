@@ -5,13 +5,11 @@ import { api } from '../api';
 export async function uploadGameSession(session: GameSession) {
   try {
     const response = await api.post('/gameSession/add', {
-      body: JSON.stringify({
-        start_time: session.startTime,
-        end_time: session.endTime,
-        total_taps: session.totalTaps,
-        balance_earned: session.balanceEarned,
-        boosts_used: session.boostsUsed,
-      }),
+      start_time: session.startTime,
+      end_time: session.endTime,
+      total_taps: session.totalTaps,
+      balance_earned: session.balanceEarned,
+      boosts_used: session.boostsUsed,
     });
 
     return response.data;
