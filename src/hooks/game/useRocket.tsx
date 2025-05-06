@@ -4,7 +4,12 @@ import { RocketPosition } from '../../types';
 import { computeGrid, generatePosition, markArea } from '../../utils';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../state/store';
-import { addAmo, reduceAmo, setMaxAmo } from '../../state/game/amoSlice';
+import {
+  addAmo,
+  reduceAmo,
+  setAmo,
+  setMaxAmo,
+} from '../../state/game/amoSlice';
 import { updateUserBalance } from '../../state/userSlice';
 import {
   updateBalanceEarned,
@@ -66,7 +71,10 @@ export const useRocket = (
       positions.push(generatePosition(gameRef));
     }
     setRocketPositions(positions);
-    dispatch(setMaxAmo(1000 + (user!.fuelLevel - 1) * 500));
+
+    const amo = 1000 + (user!.fuelLevel - 1) * 500;
+    dispatch(setAmo(amo));
+    dispatch(setMaxAmo(amo));
 
     return () => {
       clearInterval(regenerationInterval.current!);

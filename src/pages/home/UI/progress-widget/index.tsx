@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { RocketIcon } from '../../../../components';
-import { ranks } from '../../../../constants';
+import { RANKS } from '../../../../constants';
 import styles from './ProgressWidget.module.css';
 
 interface IProgressWidgetProps {
@@ -9,7 +9,7 @@ interface IProgressWidgetProps {
 }
 
 export const ProgressWidget = ({ rank, totalEarned }: IProgressWidgetProps) => {
-  const rankInfo = ranks.get(rank);
+  const rankInfo = RANKS.get(rank);
   const formattedReward = new Intl.NumberFormat('en-US').format(
     rankInfo?.reward ?? 0
   );

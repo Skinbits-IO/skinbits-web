@@ -1,7 +1,5 @@
-export type UpgradeCard = {
+export type Card = {
   title: string;
   description: string;
   photoUrl: string;
-  price: number;
-  level: number;
 };

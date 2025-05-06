@@ -3,7 +3,7 @@ import {
   PopupCloseButton,
   RocketIcon,
 } from '../../../../components';
-import { ranks } from '../../../../constants';
+import { RANKS } from '../../../../constants';
 import styles from './RankingPopup.module.css';
 import { motion } from 'framer-motion';
 
@@ -13,7 +13,7 @@ interface IRankingPopupProps {
 }
 
 export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
-  const rankInfo = ranks.get(rank);
+  const rankInfo = RANKS.get(rank);
   if (!rankInfo) return null;
 
   const formatedPrice = new Intl.NumberFormat('en-US').format(
@@ -42,7 +42,7 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
           className={styles.imageContainer}
           style={{
             backgroundColor:
-              ranks.get(rankInfo.nextRank ?? '')?.color ?? '#000000',
+              RANKS.get(rankInfo.nextRank ?? '')?.color ?? '#000000',
           }}
         >
           <div className={styles.title}>{`New rank: ${

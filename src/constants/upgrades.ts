@@ -1,7 +1,6 @@
-export const damageAndAmoLevelsPrices: Map<number, number> = new Map<
-  number,
-  number
->([
+import { Card } from '../types';
+
+export const LEVEL_PRICES: Map<number, number> = new Map<number, number>([
   [1, 0],
   [2, 500],
   [3, 1000],
@@ -24,7 +23,7 @@ export const damageAndAmoLevelsPrices: Map<number, number> = new Map<
   [20, 50000000],
 ]);
 
-export const farmLevelsPrices: Map<number, number> = new Map<number, number>([
+export const FARM_LEVEL_PRICES: Map<number, number> = new Map<number, number>([
   [1, 10000],
   [2, 5000],
   [3, 10000],
@@ -46,3 +45,39 @@ export const farmLevelsPrices: Map<number, number> = new Map<number, number>([
   [19, 75000000],
   [20, 100000000],
 ]);
+
+export const UPGRADE_CARDS: Card[] = [
+  {
+    title: 'Fuel Amount',
+    description:
+      'Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount',
+    photoUrl: '/skinbits-web/upgrades/fuel.jpg',
+  },
+  {
+    title: 'Rocket Level',
+    description:
+      'Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level',
+    photoUrl: '/skinbits-web/upgrades/launch.jpg',
+  },
+  {
+    title: 'Farming Bot',
+    description:
+      'Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot',
+    photoUrl: '/skinbits-web/upgrades/farm.jpg',
+  },
+];
+
+export const BOOST_CARDS: Card[] = [
+  {
+    title: 'Fuel boost',
+    description:
+      'Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost',
+    photoUrl: '/skinbits-web/upgrades/fuel-boost.jpg',
+  },
+  {
+    title: 'Rocket boost',
+    description:
+      'Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost',
+    photoUrl: '/skinbits-web/upgrades/launch-boost.jpg',
+  },
+];

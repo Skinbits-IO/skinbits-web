@@ -1,4 +1,3 @@
-export type { BoostCard } from './BoostCard';
+export type { Card } from './Card';
 export type { RocketPosition } from './RocketPosition';
-export type { UpgradeCard } from './UpgradeCard';
 export type { GameSession } from './GameSession';

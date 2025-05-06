@@ -1,25 +1,39 @@
-import { useSelector } from 'react-redux';
 import styles from './GameUpgradePage.module.css';
-import { RootState } from '../../state/store';
 import { Balance } from './UI/balance';
 import { CardContainer } from './UI/card-container';
-import { Card } from './UI/card';
 import WebApp from '@twa-dev/sdk';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { BoostCard, UpgradeCard } from '../../types';
 import { Popup } from './UI/popup';
 import { AnimatePresence } from 'framer-motion';
-import { useUser } from '../../hooks';
+import { useUser, useUserGameInfo } from '../../hooks';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { upgradeUserLevel } from '../../api';
+import { useStatusNotification } from '../../hooks/useStatusNotification';
+import { BoostCard } from './UI/boost-card';
+import { UpgradeCard } from './UI/upgrade-card';
+import {
+  BOOST_CARDS,
+  FARM_LEVEL_PRICES,
+  LEVEL_PRICES,
+  UPGRADE_CARDS,
+} from '../../constants';
+import { Card } from '../../types';
 
 export const GameUpgradePage = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
-  const boostCards = useSelector((state: RootState) => state.boostCards);
-  const upgradeCards = useSelector((state: RootState) => state.upgradeCards);
+  const queryClient = useQueryClient();
 
-  const [selectedCard, setSelectedCard] = useState<
-    BoostCard | UpgradeCard | null
+  const { user } = useUser();
+  const { user: userGameInfo } = useUserGameInfo();
+  const addNotification = useStatusNotification();
+
+  const [selectedUpgradeCard, setSelectedUpgradeCard] = useState<
+    (Card & { price: number }) | null
+  >(null);
+
+  const [selectedBoostCard, setSelectedBoostCard] = useState<
+    (Card & { price: number; amount: number }) | null
   >(null);
 
   useEffect(() => {
@@ -39,6 +53,18 @@ export const GameUpgradePage = () => {
     };
   }, []);
 
+  const upgradeLevelMutation = useMutation({
+    mutationFn: (data: { level: string; price: number }) =>
+      upgradeUserLevel(data.level, data.price),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      setSelectedUpgradeCard(null);
+    },
+    onError: (err) => {
+      addNotification('error', err.message || 'Failed to upgrade level', 3000);
+    },
+  });
+
   return (
     <div className={styles.background}>
       <img
@@ -51,46 +77,91 @@ export const GameUpgradePage = () => {
         <div className={styles.upgrades}>
           <CardContainer
             title="Boosts"
-            content={useMemo(
-              () =>
-                boostCards.map((item, _) => {
-                  return (
-                    <Card
-                      key={`boost-${item.title}-${item.price}`}
-                      type="boost"
-                      card={item}
-                      onClick={() => setSelectedCard(item)}
-                    />
-                  );
-                }),
-              [boostCards]
-            )}
+            content={BOOST_CARDS.map((item, index) => {
+              let amount: number;
+              if (index === 0) {
+                amount = userGameInfo!.boost1Quantity;
+              } else {
+                amount = userGameInfo!.boost2Quantity;
+              }
+
+              return (
+                <BoostCard
+                  key={index}
+                  title={item.title}
+                  photoUrl={item.photoUrl}
+                  price={100_000}
+                  amount={amount}
+                  onClick={() =>
+                    setSelectedBoostCard({ ...item, price: 100_000, amount })
+                  }
+                />
+              );
+            })}
           />
           <CardContainer
             title="Upgrades"
-            content={useMemo(
-              () =>
-                upgradeCards.map((item, _) => {
-                  return (
-                    <Card
-                      key={`upgrade-${item.title}-${item.price}`}
-                      type="upgrade"
-                      card={item}
-                      onClick={() => setSelectedCard(item)}
-                    />
-                  );
-                }),
-              [upgradeCards]
-            )}
+            content={UPGRADE_CARDS.map((item, index) => {
+              const titleStarts = item.title.split(' ')[0];
+
+              const level =
+                titleStarts === 'Fuel'
+                  ? userGameInfo!.fuelLevel
+                  : titleStarts === 'Rocket'
+                  ? userGameInfo!.tapLevel
+                  : userGameInfo!.farmLevel;
+
+              let price: number;
+
+              if (titleStarts === 'Farming') {
+                price = FARM_LEVEL_PRICES.get(level + 1) ?? 0;
+              } else {
+                price = LEVEL_PRICES.get(level + 1) ?? 0;
+              }
+
+              return (
+                <UpgradeCard
+                  key={index}
+                  title={item.title}
+                  photoUrl={item.photoUrl}
+                  price={price}
+                  level={level}
+                  onClick={() => setSelectedUpgradeCard({ ...item, price })}
+                />
+              );
+            })}
           />
         </div>
       </div>
       <AnimatePresence>
-        {selectedCard && (
+        {selectedBoostCard && (
           <Popup
-            key={`popup-${selectedCard!.title}-${selectedCard!.price}`}
-            card={selectedCard!}
-            onExit={() => setSelectedCard(null)}
+            key={`popup-${selectedBoostCard.title}`}
+            card={selectedBoostCard}
+            onActivate={() => {}}
+            onUpgrade={() => {}}
+            onExit={() => setSelectedBoostCard(null)}
+          />
+        )}
+        {selectedUpgradeCard && (
+          <Popup
+            key={`popup-${selectedUpgradeCard.title}`}
+            card={selectedUpgradeCard}
+            onUpgrade={() => {
+              const levelType =
+                selectedUpgradeCard.title.split(' ')[0] === 'Fuel'
+                  ? 'upgradeFuel'
+                  : selectedUpgradeCard.title.split(' ')[0] === 'Rocket'
+                  ? 'upgradeTap'
+                  : 'upgradeFarm';
+
+              upgradeLevelMutation.mutate({
+                level: levelType,
+                price: selectedUpgradeCard.price,
+              });
+            }}
+            isUpgradeRequestPending={upgradeLevelMutation.isPending}
+            onExit={() => setSelectedUpgradeCard(null)}
           />
         )}
       </AnimatePresence>

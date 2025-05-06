@@ -6,17 +6,20 @@ import { GameWidget, NotificationWidget } from '../../features';
 import { FarmButton } from './UI/farm-button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../state/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ProgressWidget } from './UI/progress-widget';
 import { RankingPage } from '../ranking';
 import { useRanking, useUser, useUserGameInfo } from '../../hooks';
 import { RankingPopup } from './UI/ranking-popup';
 import { setUserRank } from '../../state/userSlice';
-import { ranks } from '../../constants';
+import { RANKS } from '../../constants';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient();
+
   const { user } = useUser();
   const { user: userGameInfo } = useUserGameInfo();
 
@@ -27,6 +30,10 @@ export const HomePage = () => {
     setShowRankingSystem,
     setShowNewRankPopup,
   } = useRanking();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['user'] });
+  }, []);
 
   return (
     <div className={styles.background}>
@@ -42,7 +49,7 @@ export const HomePage = () => {
             key="ranking-popup"
             rank={user!.rank}
             onClose={() => {
-              const rank = ranks.get(user!.rank);
+              const rank = RANKS.get(user!.rank);
               if (rank && rank.nextRank) {
                 dispatch(setUserRank(rank.nextRank));
               }

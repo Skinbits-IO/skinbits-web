@@ -8,8 +8,6 @@ import {
   GameUpgradePage,
   HomePage,
   MarketplacePage,
-  ReferralsPage,
-  TaskPage,
 } from './pages';
 import { AuthProvider, StatusNotifications } from './features';
 
@@ -30,8 +28,8 @@ function App() {
             <Route path="/upgrade" element={<GameUpgradePage />} />
 
             <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/task" element={<TaskPage />} />
-            <Route path="/referrals" element={<ReferralsPage />} />
+            <Route path="/task" element={<div />} />
+            <Route path="/referrals" element={<div />} />
             <Route path="/account" element={<AccountPage />} />
           </Routes>
         </AuthProvider>

@@ -1,4 +1,4 @@
-export const ranks: Map<
+export const RANKS: Map<
   string,
   {
     color: string;

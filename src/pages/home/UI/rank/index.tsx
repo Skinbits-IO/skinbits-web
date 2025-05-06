@@ -1,4 +1,4 @@
-import { ranks } from '../../../../constants';
+import { RANKS } from '../../../../constants';
 import styles from './Rank.module.css';
 
 interface IRankProps {
@@ -7,7 +7,7 @@ interface IRankProps {
 }
 
 export const Rank = ({ rank, onClick }: IRankProps) => {
-  const rankColor = ranks.get(rank)?.color ?? '#000000';
+  const rankColor = RANKS.get(rank)?.color ?? '#000000';
 
   return (
     <div className={styles.background} onClick={onClick}>

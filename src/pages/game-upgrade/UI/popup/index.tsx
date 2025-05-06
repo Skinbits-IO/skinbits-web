@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styles from './Popup.module.css';
-import { BoostCard, UpgradeCard } from '../../../../types';
+import { Card } from '../../../../types';
 import {
   PopupButton,
   PopupCloseButton,
@@ -8,17 +8,21 @@ import {
 } from '../../../../components';
 
 interface IPopupProps {
-  card: BoostCard | UpgradeCard;
+  card: Card & { price: number; amount?: number };
+  onActivate?: () => void;
+  onUpgrade: () => void;
+  isUpgradeRequestPending?: boolean;
   onExit: () => void;
 }
 
-const isBoostCard = (card: BoostCard | UpgradeCard): card is BoostCard => {
-  return (card as BoostCard).amount !== undefined;
-};
-
-export const Popup = ({ card, onExit }: IPopupProps) => {
+export const Popup = ({
+  card,
+  onActivate,
+  onUpgrade,
+  isUpgradeRequestPending,
+  onExit,
+}: IPopupProps) => {
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
-  const isBoost = isBoostCard(card);
 
   return (
     <>
@@ -27,7 +31,6 @@ export const Popup = ({ card, onExit }: IPopupProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={() => onExit()}
       />
       <motion.div
         className={styles.popup}
@@ -53,15 +56,16 @@ export const Popup = ({ card, onExit }: IPopupProps) => {
           <p className={styles.price}>{formatedPrice}</p>
         </div>
         <div className={styles.buttonContainer}>
-          {isBoost && (
+          {card.amount && onActivate && (
             <PopupButton
               text={`Activate (${card.amount})`}
-              onClick={() => console.log('Boost Activated')}
+              onClick={() => onActivate()}
             />
           )}
           <PopupButton
-            text={isBoost ? 'Buy' : 'Upgrade'}
-            onClick={() => console.log(isBoost ? 'Boost Tap' : 'Upgrade Tap')}
+            text={card.amount ? 'Buy' : 'Upgrade'}
+            isRequestPending={isUpgradeRequestPending}
+            onClick={() => onUpgrade()}
           />
         </div>
       </motion.div>

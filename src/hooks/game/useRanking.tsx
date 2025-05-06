@@ -1,6 +1,6 @@
 import WebApp from '@twa-dev/sdk';
 import { useEffect, useState } from 'react';
-import { ranks } from '../../constants';
+import { RANKS } from '../../constants';
 import { useUser } from '../state';
 
 export const useRanking = () => {
@@ -10,7 +10,7 @@ export const useRanking = () => {
   const [showNewRankPopup, setShowNewRankPopup] = useState<boolean>(false);
 
   useEffect(() => {
-    const rank = ranks.get(user!.rank);
+    const rank = RANKS.get(user!.rank);
     if (rank) {
       if (rank.milestone === user!.balance && rank.nextRank) {
         setShowNewRankPopup(true);
