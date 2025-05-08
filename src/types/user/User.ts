@@ -11,6 +11,4 @@ export interface User {
   rank: string;
   balance: number;
   balanceBb: number;
-  totalEarned: number;
-  friendsCount: number;
 }

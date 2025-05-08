@@ -54,8 +54,6 @@ export async function getUser(): Promise<{
       rank: 'bronze',
       balance: data.balance,
       balanceBb: data.balance_bb,
-      totalEarned: data.balance,
-      friendsCount: data.friends_count,
     };
 
     return { user, userGameInfo };

@@ -28,12 +28,10 @@ export const useManageGameSession = () => {
     }
   }, [gameSession]);
 
-  const mutation = useMutation({
+  const addGameSessionmutation = useMutation({
     mutationFn: (session: GameSession) => uploadGameSession(session),
     onSuccess: () => {
       dispatch(resetGameSession());
-      dispatch(setStartTime(toIsoUtcNoMs()));
-
       localStorage.removeItem('pendingGameSession');
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
@@ -43,32 +41,15 @@ export const useManageGameSession = () => {
   });
 
   useEffect(() => {
-    const raw = localStorage.getItem('pendingGameSession');
-    if (raw) {
-      try {
-        const pending = JSON.parse(raw);
-        mutation.mutate({ ...pending, endTime: toIsoUtcNoMs() });
-      } catch {}
-    }
-  }, []);
-
-  useEffect(() => {
     dispatch(setStartTime(toIsoUtcNoMs()));
 
     return () => {
       if (sessionRef.current.totalTaps > 0) {
-        mutation.mutate({ ...sessionRef.current, endTime: toIsoUtcNoMs() });
+        addGameSessionmutation.mutate({
+          ...sessionRef.current,
+          endTime: toIsoUtcNoMs(),
+        });
       }
     };
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (gameSession.totalTaps && gameSession.startTime) {
-        mutation.mutate({ ...gameSession, endTime: toIsoUtcNoMs() });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [gameSession.totalTaps]);
 };

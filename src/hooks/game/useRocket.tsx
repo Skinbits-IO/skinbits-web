@@ -23,8 +23,11 @@ export const useRocket = (
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
 
-  const amoRef = useRef<number>(amo);
   const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
+  const amoRef = useRef<number>(amo);
+  useEffect(() => {
+    amoRef.current = amo;
+  }, [amo]);
 
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
   const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
@@ -81,10 +84,6 @@ export const useRocket = (
       regenerationInterval.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    amoRef.current = amo;
-  }, [amo]);
 
   return { rocketPositions, flyingIndicators, handleRocketClick };
 };
