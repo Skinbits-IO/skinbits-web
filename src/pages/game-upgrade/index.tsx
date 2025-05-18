@@ -1,24 +1,21 @@
 import styles from './GameUpgradePage.module.css';
-import { Balance } from './UI/balance';
-import { CardContainer } from './UI/card-container';
 import WebApp from '@twa-dev/sdk';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Popup } from './UI/popup';
 import { AnimatePresence } from 'framer-motion';
-import { useUser, useUserGameInfo } from '../../hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { upgradeUserLevel } from '../../api';
-import { useStatusNotification } from '../../hooks/useStatusNotification';
-import { BoostCard } from './UI/boost-card';
-import { UpgradeCard } from './UI/upgrade-card';
+import { Card } from './types';
 import {
   BOOST_CARDS,
   FARM_LEVEL_PRICES,
   LEVEL_PRICES,
   UPGRADE_CARDS,
-} from '../../constants';
-import { Card } from '../../types';
+  useStatusNotification,
+  useUser,
+  useUserGameInfo,
+} from '../../shared';
+import { upgradeUserLevel } from './api';
+import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 
 export const GameUpgradePage = () => {
   const navigate = useNavigate();

@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import styles from './NotificationWidget.module.css';
+import { AppDispatch } from '../../store';
+import { useDispatch } from 'react-redux';
+import { CustomNotification } from './types';
+import { setNotificationShow } from '../../store/slices/notificationSlice';
 import { PopupCloseButton } from '../../components';
-import { CustomNotification } from '../../types';
-import { Notification } from './UI/notification';
+import { Notification } from './UI';
 
-interface INotificatioWidgetProps {
-  onClose: () => void;
-}
-
-export const NotificationWidget = ({ onClose }: INotificatioWidgetProps) => {
+export const NotificationWidget = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const notifications: CustomNotification[] = [
     {
       type: 'Application name',
@@ -37,7 +37,7 @@ export const NotificationWidget = ({ onClose }: INotificatioWidgetProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose}
+        onClick={() => dispatch(setNotificationShow(false))}
       ></motion.div>
       <motion.div
         className={styles.background}
@@ -46,7 +46,7 @@ export const NotificationWidget = ({ onClose }: INotificatioWidgetProps) => {
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 120, damping: 20 }}
       >
-        <PopupCloseButton onTap={onClose} />
+        <PopupCloseButton onTap={() => dispatch(setNotificationShow(false))} />
         {notifications.length === 0 && (
           <div className={styles.empty}>No notifications</div>
         )}

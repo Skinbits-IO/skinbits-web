@@ -1,9 +1,10 @@
-export { Loader } from './Loader';
-export { NavigationBar } from './NavigationBar';
-export { PopupButton } from './PopupButton';
-export { PopupCloseButton } from './PopupCloseButton';
-
-export { NotificationButton } from './NotificationButton';
+export { Loader } from './loader';
+export { NavigationBar } from './navigation-bar';
+export { PopupButton } from './popup-button';
+export { PopupCloseButton } from './popup-close-button';
+export { Header } from './header';
+export { Rank } from './rank';
+export { Devider } from './devider';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
@@ -17,3 +18,8 @@ export { LightingIcon } from './icons/LightingIcon';
 export { ArrowIcon } from './icons/ArrowIcon';
 export { BackIcon } from './icons/BackIcon';
 export { CloseIcon } from './icons/CloseIcon';
+
+export { SteamIcon } from './icons/SteamIcon';
+export { TonIcon } from './icons/TonIcon';
+export { StarIcon } from './icons/StarIcon';
+export { CheckIcon } from './icons/CheckIcon';

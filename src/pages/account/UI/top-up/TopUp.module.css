@@ -1,0 +1,43 @@
+.background {
+    position: relative;
+    width: 100%;
+    padding: 1.25rem 1.0625rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0.42);
+    border-radius: 0.75rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.9375rem;
+
+    overflow: hidden;
+    background-image: url('/donat-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.background > p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+}
+
+.button {
+    padding: 15px 0;
+    width: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+        90deg,
+        #E2C1F9 0%,
+        #FEBD8E 33%,
+        #FBFFE4 66%,
+        #B6D0F7 100%
+    );
+
+    font-size: 0.875rem;
+    color: #000000;
+    font-weight: 600;
+}

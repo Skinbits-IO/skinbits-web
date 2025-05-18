@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { RankUser } from '../../types';
 import styles from './RankingPage.module.css';
-import { RankCard } from './UI/rank-card';
-import { WinnerRankCard } from './UI/winner-rank-card';
-import { findUserByName } from './utils/rankingUtils';
-import { useUser } from '../../hooks';
+import { Header, Rank } from '../../components';
+import { ProgressWidget, RankCard, WinnerRankCard } from './UI';
+import { RankUser } from './types';
+import { findUserByName } from './utils';
+import { useUser } from '../../shared';
 
 export const RankingPage = () => {
   const users: RankUser[] = [
@@ -93,20 +93,27 @@ export const RankingPage = () => {
 
   return (
     <div className={styles.background}>
-      {currentUser &&
-        (currentUser.place === 1 ? (
-          <WinnerRankCard user={currentUser} />
-        ) : (
-          <RankCard user={currentUser} />
-        ))}
-      <div className={styles.ranking}>
-        {users.map((user: RankUser) => {
-          if (user.place === 1) {
-            return <WinnerRankCard key={`${user.place}-key`} user={user} />;
-          } else {
-            return <RankCard key={`${user.place}-key`} user={user} />;
-          }
-        })}
+      <Header />
+      <div className={styles.upperSection}>
+        <Rank rank={user!.rank} />
+        <ProgressWidget rank={user!.rank} totalEarned={10000} />
+      </div>
+      <div className={styles.rankings}>
+        {currentUser &&
+          (currentUser.place === 1 ? (
+            <WinnerRankCard user={currentUser} />
+          ) : (
+            <RankCard user={currentUser} />
+          ))}
+        <div className={styles.ranking}>
+          {users.map((user: RankUser) => {
+            if (user.place === 1) {
+              return <WinnerRankCard key={`${user.place}-key`} user={user} />;
+            } else {
+              return <RankCard key={`${user.place}-key`} user={user} />;
+            }
+          })}
+        </div>
       </div>
     </div>
   );

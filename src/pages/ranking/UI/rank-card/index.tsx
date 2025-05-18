@@ -1,6 +1,6 @@
 import { RocketIcon } from '../../../../components';
-import { RankUser } from '../../../../types';
-import { formatPoints } from '../../utils/rankingUtils';
+import { RankUser } from '../../types';
+import { formatPoints } from '../../utils';
 import styles from './RankCard.module.css';
 
 interface IRankCardProps {

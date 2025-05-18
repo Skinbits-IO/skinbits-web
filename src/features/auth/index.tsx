@@ -1,18 +1,22 @@
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../state/store';
+import { AppDispatch } from '../../store';
 import { FC, PropsWithChildren, useEffect } from 'react';
-import { setIsLoading, setUser } from '../../state/userSlice';
-import { getUser, uploadGameSession } from '../../api';
-import { useLogin, useUser } from '../../hooks';
+import { setIsLoading, setUser } from '../../store/slices/userSlice';
 import { Loader } from '../../components';
-import { setUserGameInfo } from '../../state/game/userGameInfoSlice';
+import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   resetGameSession,
   setStartTime,
-} from '../../state/game/gameSessionSlice';
-import { GameSession } from '../../types';
-import { useStatusNotification } from '../../hooks/useStatusNotification';
+} from '../../store/slices/game/gameSessionSlice';
+import { useLogin } from './hooks';
+import { getUser } from './api';
+import {
+  GameSession,
+  uploadGameSession,
+  useStatusNotification,
+  useUser,
+} from '../../shared';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');

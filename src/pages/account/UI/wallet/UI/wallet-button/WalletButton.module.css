@@ -1,0 +1,14 @@
+.button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 28px;
+    background-color: rgba(255, 255, 255, 0.05);
+
+    font-size: 14px;
+    color: #CDCDCD;
+    font-weight: 500;
+    border: none;
+}
+
+.button:disabled {
+    opacity: 0.4;
+}

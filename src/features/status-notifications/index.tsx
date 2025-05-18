@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
+import { RootState } from '../../store';
 import styles from './StatusNotifications.module.css';
 
 export const StatusNotifications = () => {

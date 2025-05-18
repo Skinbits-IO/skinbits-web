@@ -4,7 +4,7 @@ import App from './App.tsx';
 import './reset.css';
 import './index.css';
 
-import { store } from './state/store.ts';
+import { store } from './store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CookiesProvider } from 'react-cookie';

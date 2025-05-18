@@ -8,10 +8,20 @@ import {
   GameUpgradePage,
   HomePage,
   MarketplacePage,
+  RankingPage,
 } from './pages';
-import { AuthProvider, StatusNotifications } from './features';
+import {
+  AuthProvider,
+  NotificationWidget,
+  StatusNotifications,
+} from './features';
+import { AnimatePresence } from 'framer-motion';
+import { RootState } from './store';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const notification = useSelector((state: RootState) => state.notification);
+
   useEffect(() => {
     WebApp.ready();
     WebApp.setHeaderColor('#000000');
@@ -27,13 +37,17 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/upgrade" element={<GameUpgradePage />} />
 
+            <Route path="/ranking" element={<RankingPage />} />
             <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/task" element={<div />} />
             <Route path="/referrals" element={<div />} />
             <Route path="/account" element={<AccountPage />} />
           </Routes>
         </AuthProvider>
         <NavigationBar />
+
+        <AnimatePresence>
+          {notification.show && <NotificationWidget />}
+        </AnimatePresence>
         <StatusNotifications />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { NotificationCircle } from '../../../../components';
-import { CustomNotification } from '../../../../types';
-import { getTimeDifferenceString } from '../../utils/notificationUtils';
+import { CustomNotification } from '../../types';
+import { getTimeDifferenceString } from '../../utils';
 import styles from './Notification.module.css';
 
 interface INotificationProps {

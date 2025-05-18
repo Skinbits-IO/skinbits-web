@@ -13,6 +13,7 @@
 .app {
     position: absolute;
     min-width: 100%;
+    max-width: 100%;
     top: var(--tg-content-safe-area-inset-top, 0rem);
     bottom: var(--tg-content-safe-area-inset-bottom, 0rem);
 }

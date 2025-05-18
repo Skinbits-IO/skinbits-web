@@ -1,4 +1,4 @@
-import { RankUser } from '../../../types';
+import { RankUser } from '../types';
 
 export const findUserByName = (
   fullName: string,

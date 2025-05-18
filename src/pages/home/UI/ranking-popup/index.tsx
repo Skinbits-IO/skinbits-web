@@ -3,7 +3,7 @@ import {
   PopupCloseButton,
   RocketIcon,
 } from '../../../../components';
-import { RANKS } from '../../../../constants';
+import { RANKS } from '../../../../shared';
 import styles from './RankingPopup.module.css';
 import { motion } from 'framer-motion';
 

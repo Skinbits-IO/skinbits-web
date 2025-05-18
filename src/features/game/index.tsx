@@ -1,20 +1,13 @@
 import { useRef } from 'react';
 import styles from './GameWidget.module.css';
-import { UpgradeButton } from './UI/UpgradeButton';
 import { GameRocketIcon } from '../../components';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SuperRocket } from './UI/SuperRocket';
-import {
-  useAmo,
-  useManageGameSession,
-  useRocket,
-  useSuperRocket,
-  useUserGameInfo,
-} from '../../hooks';
+import { useManageGameSession, useRocket, useSuperRocket } from './hooks';
+import { SuperRocket, UpgradeButton } from './UI';
+import { useAmo, useUserGameInfo } from '../../shared';
 
 export const GameWidget = () => {
   const gameRef = useRef<HTMLDivElement | null>(null);
-
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
 

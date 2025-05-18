@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
 import styles from './Popup.module.css';
-import { Card } from '../../../../types';
 import {
   PopupButton,
   PopupCloseButton,
   RocketIcon,
 } from '../../../../components';
+import { Card } from '../../types';
+import { useStatusNotification, useUser } from '../../../../shared';
 
 interface IPopupProps {
   card: Card & { price: number; amount?: number };
@@ -22,6 +23,8 @@ export const Popup = ({
   isUpgradeRequestPending,
   onExit,
 }: IPopupProps) => {
+  const { user } = useUser();
+  const addNotification = useStatusNotification();
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
 
   return (
@@ -58,11 +61,13 @@ export const Popup = ({
         <div className={styles.buttonContainer}>
           {card.amount && onActivate && (
             <PopupButton
+              disabled={card.amount === 0}
               text={`Activate (${card.amount})`}
               onClick={() => onActivate()}
             />
           )}
           <PopupButton
+            disabled={user!.balance < card.price}
             text={card.amount ? 'Buy' : 'Upgrade'}
             isRequestPending={isUpgradeRequestPending}
             onClick={() => onUpgrade()}
