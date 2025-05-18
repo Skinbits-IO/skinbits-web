@@ -9,8 +9,10 @@
     gap: 1.875rem;
     margin: 0.9375rem 0.9375rem 0 0.9375rem;
     background-color: transparent;
+    padding-bottom: 100px;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
 }
 
 .steamButton {

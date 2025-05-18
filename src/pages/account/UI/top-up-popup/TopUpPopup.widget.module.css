@@ -13,7 +13,7 @@
     position: fixed;
     bottom: 0;
     height: fit-content;
-    height: 90%;
+    height: 80%;
     width: 100%;
     background-color: rgba(10, 10, 10, 1);
     padding: 1.25rem 1.25rem calc(18px + var(--tg-safe-area-inset-bottom, 0rem)) 20px;
@@ -62,5 +62,6 @@
     align-items: center;
     gap: 15px;
     width: 100%;
-    overflow-y: scroll;
+    flex: 1;
+    overflow-y: auto;
 }

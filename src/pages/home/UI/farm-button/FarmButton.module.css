@@ -18,7 +18,7 @@
 
 .content {
     width: 100%;
-    margin: 0.625rem 0.9375rem;
+    padding: 0.625rem 0.9375rem;
     background-color: transparent;
     display: flex;
     justify-content: space-between;
