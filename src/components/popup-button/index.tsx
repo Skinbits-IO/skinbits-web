@@ -4,7 +4,7 @@ interface IPopupButton {
   text: string;
   isRequestPending?: boolean;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const PopupButton = ({

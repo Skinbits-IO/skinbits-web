@@ -9,6 +9,7 @@ export {
 export {
   RANKS,
   API_BASE,
+  YOUTUBE_URL,
   LEVEL_PRICES,
   FARM_LEVEL_PRICES,
   UPGRADE_CARDS,
