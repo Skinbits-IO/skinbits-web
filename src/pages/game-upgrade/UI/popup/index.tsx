@@ -6,7 +6,7 @@ import {
   RocketIcon,
 } from '../../../../components';
 import { Card } from '../../types';
-import { useStatusNotification, useUser } from '../../../../shared';
+import { useUser } from '../../../../shared';
 
 interface IPopupProps {
   card: Card & { price: number; amount?: number };
@@ -24,7 +24,6 @@ export const Popup = ({
   onExit,
 }: IPopupProps) => {
   const { user } = useUser();
-  const addNotification = useStatusNotification();
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
 
   return (

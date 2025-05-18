@@ -1,4 +1,4 @@
-import { Card } from '../shared/types';
+import { Card } from '../../pages/game-upgrade/types';
 
 export const LEVEL_PRICES: Map<number, number> = new Map<number, number>([
   [1, 0],
