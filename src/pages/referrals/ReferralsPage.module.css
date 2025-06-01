@@ -1,0 +1,94 @@
+.background {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 1.875rem);
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin: 0.9375rem 0.9375rem 0 0.9375rem;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.spheres {
+    position: fixed;
+    height: 350px;
+    width: 412px;
+    top: -10px;
+    left:0;
+    z-index: -1;
+}
+
+.shadow {
+    position: fixed;
+    top: 210px;
+    height: 100px;
+    width: 100%;
+    background-color: #000000;
+    filter: blur(15px);
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0 25px;
+    padding: 190px 0 100px 0;
+    display: grid;
+    grid-template-rows: 1fr 56px;
+    gap: 70px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.mainContent {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: 800;
+    color: #FFFFFF;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.buttons {
+    height: fit-content;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 135px;
+    gap: 10px;
+}
+
+.button {
+    height: 56px;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.copyButton {
+    height: 56px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #9E9E9E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}

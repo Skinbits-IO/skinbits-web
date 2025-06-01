@@ -17,7 +17,7 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: 'https://skinbits-api.xyz',
+        target: 'https://skinbits-api-production.up.railway.app/',
         changeOrigin: true,
         secure: true,
       },

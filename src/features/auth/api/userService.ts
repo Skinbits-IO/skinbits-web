@@ -5,7 +5,7 @@ export async function addUser(initData: string): Promise<{
   user: User;
   token: { accessToken: string; refreshToken: string };
 }> {
-  const response = await fetch(`${API_BASE}/user/add`, {
+  const response = await fetch(`${API_BASE}/user`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -25,7 +25,7 @@ export async function getUser(): Promise<{
   userGameInfo: UserGameInfo;
 }> {
   try {
-    const response = await api.get('/user/get', {
+    const response = await api.get('/user', {
       headers: { 'Content-Type': 'application/json' },
     });
     const data = response.data.data;

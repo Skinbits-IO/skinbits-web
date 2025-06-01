@@ -70,11 +70,11 @@ api.interceptors.response.use(
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-        const { access_token, refresh_token } = data;
-        setTokens(access_token, refresh_token);
+        const { accessToken, refresh_token } = data;
+        setTokens(accessToken, refresh_token);
 
         originalRequest.headers = originalRequest.headers ?? {};
-        originalRequest.headers.Authorization = `Bearer ${access_token}`;
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
         return api(originalRequest);
       } catch (refreshError) {

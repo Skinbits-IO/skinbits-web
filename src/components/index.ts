@@ -23,3 +23,5 @@ export { SteamIcon } from './icons/SteamIcon';
 export { TonIcon } from './icons/TonIcon';
 export { StarIcon } from './icons/StarIcon';
 export { CheckIcon } from './icons/CheckIcon';
+
+export { CopyIcon } from './icons/CopyIcon';

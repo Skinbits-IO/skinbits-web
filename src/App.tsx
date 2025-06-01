@@ -9,6 +9,7 @@ import {
   HomePage,
   MarketplacePage,
   RankingPage,
+  ReferralsPage,
 } from './pages';
 import {
   AuthProvider,
@@ -39,7 +40,7 @@ function App() {
 
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/referrals" element={<div />} />
+            <Route path="/referrals" element={<ReferralsPage />} />
             <Route path="/account" element={<AccountPage />} />
           </Routes>
         </AuthProvider>

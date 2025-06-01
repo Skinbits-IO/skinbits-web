@@ -5,7 +5,7 @@ import { GameSession } from '../types';
 export async function uploadGameSession(session: GameSession) {
   console.log(session);
   try {
-    const response = await api.post('/gameSession/add', {
+    const response = await api.post('/gameSession', {
       start_time: session.startTime,
       end_time: session.endTime,
       total_taps: session.totalTaps,

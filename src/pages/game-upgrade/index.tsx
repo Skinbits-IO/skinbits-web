@@ -51,8 +51,8 @@ export const GameUpgradePage = () => {
   }, []);
 
   const upgradeLevelMutation = useMutation({
-    mutationFn: (data: { level: string; price: number }) =>
-      upgradeUserLevel(data.level, data.price),
+    mutationFn: (data: { type: 'tap' | 'fuel' | 'farm'; price: number }) =>
+      upgradeUserLevel(data.type, data.price),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       setSelectedUpgradeCard(null);
@@ -147,13 +147,13 @@ export const GameUpgradePage = () => {
             onUpgrade={() => {
               const levelType =
                 selectedUpgradeCard.title.split(' ')[0] === 'Fuel'
-                  ? 'upgradeFuel'
+                  ? 'fuel'
                   : selectedUpgradeCard.title.split(' ')[0] === 'Rocket'
-                  ? 'upgradeTap'
-                  : 'upgradeFarm';
+                  ? 'tap'
+                  : 'farm';
 
               upgradeLevelMutation.mutate({
-                level: levelType,
+                type: levelType,
                 price: selectedUpgradeCard.price,
               });
             }}
