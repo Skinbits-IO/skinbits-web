@@ -15,14 +15,14 @@
     position: fixed;
     height: 350px;
     width: 412px;
-    top: -10px;
+    top: -30px;
     left:0;
     z-index: -1;
 }
 
 .shadow {
     position: fixed;
-    top: 210px;
+    top: 190px;
     height: 100px;
     width: 100%;
     background-color: #000000;
@@ -35,7 +35,7 @@
     height: 100%;
     width: 100%;
     padding: 0 25px;
-    padding: 190px 0 100px 0;
+    padding: 150px 0 100px 0;
     display: grid;
     grid-template-rows: 1fr 56px;
     gap: 70px;
