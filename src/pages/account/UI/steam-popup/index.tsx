@@ -70,6 +70,7 @@ export const SteamPopup = ({ onClose }: ISteamPopupProps) => {
                 isValidSteamTradeLink(val) ||
                 'Must be a Steam trade URL like https://steamcommunity.com/tradeoffer/new/?partner=123456&token=ABCDEFGH',
             })}
+            autoFocus
           />
           {errors.tradeLink && (
             <p className={styles.error}>{errors.tradeLink.message}</p>
