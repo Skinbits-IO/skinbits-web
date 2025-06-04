@@ -1,17 +1,3 @@
-import { RankUser } from '../types';
-
-export const findUserByName = (
-  fullName: string,
-  users: RankUser[]
-): RankUser | null => {
-  for (const u of users) {
-    if (u.fullName === fullName) {
-      return u;
-    }
-  }
-  return null;
-};
-
 export function formatPoints(n: number): string {
   if (n >= 1_000_000_000_000) {
     // trillions

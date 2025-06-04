@@ -1,1 +1,1 @@
-export { findUserByName, formatPoints } from './rankingUtils';
+export { formatPoints } from './rankingUtils';

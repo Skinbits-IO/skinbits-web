@@ -8,7 +8,12 @@ import { Header, Rank } from '../../components';
 import { FarmButton, RankingPopup, Wallet } from './UI';
 import { useNavigate } from 'react-router';
 import { useRanking } from './hooks';
-import { RANKS, useUser, useUserGameInfo } from '../../shared';
+import {
+  Rank as RankEnum,
+  RANKS,
+  useUser,
+  useUserGameInfo,
+} from '../../shared';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,7 +31,7 @@ export const HomePage = () => {
             key="ranking-popup"
             rank={user!.rank}
             onClose={() => {
-              const rank = RANKS.get(user!.rank);
+              const rank = RANKS.get(user!.rank as RankEnum);
               if (rank && rank.nextRank) {
                 dispatch(setUserRank(rank.nextRank));
               }
@@ -37,7 +42,10 @@ export const HomePage = () => {
       </AnimatePresence>
       <Header />
       <div className={styles.upperSection}>
-        <Rank rank={user!.rank} onClick={() => navigate('/ranking')} />
+        <Rank
+          rank={user!.rank as RankEnum}
+          onClick={() => navigate('/ranking')}
+        />
         <Wallet balance={user!.balance} />
       </div>
       <div className={styles.game}>

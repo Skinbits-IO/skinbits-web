@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { api, API_BASE, User, UserGameInfo } from '../../../shared';
+import { api, API_BASE, Rank, User, UserGameInfo } from '../../../shared';
 
 export async function addUser(initData: string): Promise<{
   user: User;
@@ -49,7 +49,7 @@ export async function getUser(): Promise<{
       photoUrl: data.photo_url,
       joinDate: data.join_date,
       tradeLink: data.trade_link,
-      rank: 'bronze',
+      rank: (data.league as Rank).toLowerCase(),
       balance: data.balance,
       balanceBb: data.balance_bb,
     };

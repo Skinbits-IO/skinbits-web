@@ -1,5 +1,7 @@
+import { Rank } from '../types';
+
 export const RANKS: Map<
-  string,
+  Rank,
   {
     color: string;
     milestone: number;
@@ -7,52 +9,52 @@ export const RANKS: Map<
     nextRank?: string;
   }
 > = new Map<
-  string,
+  Rank,
   {
     color: string;
     milestone: number;
     reward?: number;
-    nextRank?: string;
+    nextRank?: Rank;
   }
 >([
   [
-    'bronze',
+    Rank.bronze,
     {
       color: '#CD7F32',
       milestone: 1e5,
       reward: 50000,
-      nextRank: 'silver',
+      nextRank: Rank.silver,
     },
   ],
   [
-    'silver',
+    Rank.silver,
     {
       color: '#C0C0C0',
       milestone: 1e6,
       reward: 250000,
-      nextRank: 'gold',
+      nextRank: Rank.gold,
     },
   ],
   [
-    'gold',
+    Rank.gold,
     {
       color: '#FFD700',
       milestone: 1e8,
       reward: 1e6,
-      nextRank: 'platinum',
+      nextRank: Rank.platinum,
     },
   ],
   [
-    'platinum',
+    Rank.platinum,
     {
       color: '#E5E4E2',
       milestone: 1e9,
       reward: 1e7,
-      nextRank: 'diamond',
+      nextRank: Rank.diamond,
     },
   ],
   [
-    'diamond',
+    Rank.diamond,
     {
       color: '#B9F2FF',
       milestone: 1e12,

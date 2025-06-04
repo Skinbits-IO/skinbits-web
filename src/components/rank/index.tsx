@@ -1,8 +1,8 @@
-import { RANKS } from '../../shared';
+import { Rank as RankEnum, RANKS } from '../../shared';
 import styles from './Rank.module.css';
 
 interface IRankProps {
-  rank: string;
+  rank: RankEnum;
   onClick?: () => void;
 }
 

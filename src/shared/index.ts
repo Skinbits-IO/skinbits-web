@@ -17,4 +17,6 @@ export {
   DONATIONS_PRICE,
   PREMIUM_PLANS,
 } from './constants';
+
 export type { GameSession, User, UserGameInfo } from './types';
+export { Rank } from './types';

@@ -35,7 +35,7 @@
     height: 100%;
     width: 100%;
     padding: 0 25px;
-    padding: 150px 0 100px 0;
+    padding: 130px 0 100px 0;
     display: grid;
     grid-template-rows: 1fr 56px;
     gap: 70px;
