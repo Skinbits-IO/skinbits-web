@@ -13,7 +13,7 @@ export const MarketplacePage = () => {
       description: '',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
-      price: 12000000000000000000,
+      price: 12000000,
       priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
@@ -91,7 +91,11 @@ export const MarketplacePage = () => {
       {openFilter && <Filter />}
       <div className={styles.skinList}>
         {skins.map((skin, key) => {
-          return <SkinCard key={key} skin={skin} />;
+          return (
+            <div key={key} className={styles.card}>
+              <SkinCard skin={skin} />
+            </div>
+          );
         })}
       </div>
     </div>
