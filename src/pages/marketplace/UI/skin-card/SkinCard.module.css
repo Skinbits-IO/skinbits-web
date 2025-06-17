@@ -1,6 +1,7 @@
 .background {
     position: relative;
-    flex: 1;
+    flex: 0 0 50%;
+    box-sizing: border-box;
     height: fit-content;
     min-width: 100%;
     border: 12px;
