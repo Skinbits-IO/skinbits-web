@@ -3,12 +3,12 @@ import {
   PopupCloseButton,
   RocketIcon,
 } from '../../../../components';
-import { RANKS } from '../../../../shared';
+import { Rank, RANKS } from '../../../../shared';
 import styles from './RankingPopup.module.css';
 import { motion } from 'framer-motion';
 
 interface IRankingPopupProps {
-  rank: string;
+  rank: Rank;
   onClose: () => void;
 }
 
@@ -42,7 +42,7 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
           className={styles.imageContainer}
           style={{
             backgroundColor:
-              RANKS.get(rankInfo.nextRank ?? '')?.color ?? '#000000',
+              RANKS.get(rankInfo.nextRank ?? Rank.bronze)?.color ?? '#000000',
           }}
         >
           <div className={styles.title}>{`New rank: ${

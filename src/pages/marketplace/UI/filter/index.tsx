@@ -31,7 +31,7 @@ export const Filter = () => {
   const { weaponTypes, rarities, qualities } = useSearch();
   const allTypes = Object.values(WeaponTypes) as string[];
 
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register } = useForm<FormValues>();
 
   return (
     <div className={styles.background}>

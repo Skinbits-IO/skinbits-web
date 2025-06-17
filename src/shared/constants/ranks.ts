@@ -6,7 +6,7 @@ export const RANKS: Map<
     color: string;
     milestone: number;
     reward?: number;
-    nextRank?: string;
+    nextRank?: Rank;
   }
 > = new Map<
   Rank,

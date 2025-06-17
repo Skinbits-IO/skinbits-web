@@ -49,7 +49,7 @@ export async function getUser(): Promise<{
       photoUrl: data.photo_url,
       joinDate: data.join_date,
       tradeLink: data.trade_link,
-      rank: (data.league as Rank).toLowerCase(),
+      rank: data.league as Rank,
       balance: data.balance,
       balanceBb: data.balance_bb,
     };
