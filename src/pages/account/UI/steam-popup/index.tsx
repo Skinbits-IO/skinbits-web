@@ -1,15 +1,10 @@
 import { motion } from 'framer-motion';
 import styles from './SteamPopup.module.css';
-import {
-  CopyIcon,
-  PopupButton,
-  PopupCloseButton,
-} from '../../../../components';
+import { PopupButton, PopupCloseButton } from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSaveTradeLink } from '../../hooks';
 import WebApp from '@twa-dev/sdk';
 import { YOUTUBE_URL } from '../../../../shared';
-import { useEffect, useRef, useState } from 'react';
 
 interface ISteamPopupProps {
   onClose: () => void;
@@ -31,37 +26,11 @@ export const SteamPopup = ({ onClose }: ISteamPopupProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setValue,
   } = useForm<FormValues>();
   const { mutate } = useSaveTradeLink(onClose);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     mutate(data.tradeLink);
-  };
-
-  const [localLink, setLocalLink] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (localLink) {
-      setValue('tradeLink', localLink, { shouldValidate: true });
-    }
-  }, [localLink]);
-
-  const onPasteClick = async () => {
-    try {
-      const clipText = await navigator.clipboard.readText();
-      if (!clipText) {
-        return;
-      }
-      setLocalLink(clipText.trim());
-      setTimeout(() => {
-        inputRef.current?.setSelectionRange(clipText.length, clipText.length);
-        inputRef.current?.focus();
-      }, 0);
-    } catch (err: any) {
-      console.error('Failed to read clipboard:', err);
-    }
   };
 
   return (
@@ -89,26 +58,19 @@ export const SteamPopup = ({ onClose }: ISteamPopupProps) => {
           </button>
         </div>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.inputContainer}>
-            <input
-              id="tradeLink"
-              type="text"
-              placeholder="Your Steam trade link"
-              className={styles.input}
-              style={errors.tradeLink ? { borderColor: '#ff6b6b' } : {}}
-              {...register('tradeLink', {
-                required: 'Trade link is required',
-                validate: (val) =>
-                  isValidSteamTradeLink(val) ||
-                  'Must be a Steam trade URL like https://steamcommunity.com/tradeoffer/new/?partner=123456&token=ABCDEFGH',
-              })}
-              value={localLink ?? ''}
-              onChange={(e) => setLocalLink(e.target.value)}
-            />
-            <div className={styles.pasteButton} onClick={onPasteClick}>
-              <CopyIcon />
-            </div>
-          </div>
+          <input
+            id="tradeLink"
+            type="text"
+            placeholder="Your Steam trade link"
+            className={styles.input}
+            style={errors.tradeLink ? { borderColor: '#ff6b6b' } : {}}
+            {...register('tradeLink', {
+              required: 'Trade link is required',
+              validate: (val) =>
+                isValidSteamTradeLink(val) ||
+                'Must be a Steam trade URL like https://steamcommunity.com/tradeoffer/new/?partner=123456&token=ABCDEFGH',
+            })}
+          />
           {errors.tradeLink && (
             <p className={styles.error}>{errors.tradeLink.message}</p>
           )}

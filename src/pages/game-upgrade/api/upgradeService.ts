@@ -6,7 +6,7 @@ export async function upgradeUserLevel(
   price: number
 ) {
   try {
-    const response = await api.patch(`/user`, {
+    const response = await api.patch(`/user/upgrade`, {
       type,
       price,
     });

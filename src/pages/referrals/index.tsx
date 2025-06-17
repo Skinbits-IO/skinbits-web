@@ -1,4 +1,4 @@
-import { CopyIcon } from '../../components';
+import { CopyIcon, StandardButton } from '../../components';
 import styles from './ReferralsPage.module.css';
 import { Steps } from './UI';
 
@@ -19,7 +19,7 @@ export const ReferralsPage = () => {
           <Steps />
         </div>
         <div className={styles.buttons}>
-          <button className={styles.button}>Invite fren</button>
+          <StandardButton text="Invite fren" onClick={() => {}} />
           <button className={styles.copyButton}>
             Copy link
             <CopyIcon />

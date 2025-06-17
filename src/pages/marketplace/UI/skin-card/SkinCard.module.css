@@ -1,0 +1,128 @@
+.background {
+    position: relative;
+    height: fit-content;
+    width: 160px;
+    border: 12px;
+    background-color: rgba(217, 217, 217, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+}
+
+.skinImageContainer {
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: fit-content;
+    width: 100%;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.skin {
+    width: fit-content;
+    height: 100%;
+}
+
+.effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px;
+    height: 35px;
+    filter: blur(30px);
+    z-index: -2;
+    border-radius: 50%;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 15px;
+}
+
+.description {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+}
+
+.description h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.description > p {
+    font-size: 10px;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.75;
+}
+
+.prices {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 3px;
+}
+
+.rocketPrice {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+}
+
+.rocketPrice p {
+    display: block;
+    width: 100%;
+    padding-right: 25px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #92D0A7;
+    font-family: 'Bebas Neue';
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.euroPrice {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+}
+
+.euroPrice p {
+    font-size: 10px;
+    font-weight: 600;
+    color: #808080;
+}

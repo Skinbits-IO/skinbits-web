@@ -5,6 +5,7 @@ export { PopupCloseButton } from './popup-close-button';
 export { Header } from './header';
 export { Rank } from './rank';
 export { Devider } from './devider';
+export { StandardButton } from './standard-button';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
@@ -25,3 +26,10 @@ export { StarIcon } from './icons/StarIcon';
 export { CheckIcon } from './icons/CheckIcon';
 
 export { CopyIcon } from './icons/CopyIcon';
+
+export { FilterIcon } from './icons/FilterIcon';
+export { SearchIcon } from './icons/SearchIcon';
+export { OrderIcon } from './icons/OrderIcon';
+export { ExchangeIcon } from './icons/ExchangeIcon';
+
+export { TrashIcon } from './icons/TrashIcon';

@@ -16,7 +16,7 @@ const initialState: IInitialState = {
 };
 
 const statusNotificationsSlice = createSlice({
-  name: 'status-notifications',
+  name: '/status-notifications',
   initialState,
   reducers: {
     addNotification: (state, action: PayloadAction<StatusNotification>) => {

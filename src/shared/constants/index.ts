@@ -7,3 +7,4 @@ export {
   BOOST_CARDS,
 } from './upgrades';
 export { DONATIONS_PRICE, PREMIUM_PLANS } from './donation';
+export { RARITIES_COLOR_MAP } from './marketplace';

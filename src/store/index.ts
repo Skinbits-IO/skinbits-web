@@ -5,6 +5,7 @@ import userGameInfoReducer from './slices/game/userGameInfoSlice';
 import gameSessionReducer from './slices/game/gameSessionSlice';
 import notificationReducer from './slices/notificationSlice';
 import statusNotificationsReducer from './slices/statusNotificationSlice';
+import searchReducer from './slices/marketplace/searchSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     gameSession: gameSessionReducer,
     notification: notificationReducer,
     statusNotifications: statusNotificationsReducer,
+    search: searchReducer,
   },
 });
 

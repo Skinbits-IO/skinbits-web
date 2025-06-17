@@ -111,6 +111,12 @@
     font-weight: 500;
 }
 
+.input:focus,
+.input:active {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
 .pasteButton {
     height: 100%;
     display: flex;

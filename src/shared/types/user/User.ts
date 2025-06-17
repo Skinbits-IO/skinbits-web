@@ -1,3 +1,5 @@
+import { Rank } from '../Rank';
+
 export interface User {
   telegramId: number;
   firstName: string;
@@ -8,7 +10,7 @@ export interface User {
   photoUrl: string;
   joinDate: string;
   tradeLink: string;
-  rank: string;
+  rank: Rank;
   balance: number;
   balanceBb: number;
 }

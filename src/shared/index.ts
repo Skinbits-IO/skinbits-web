@@ -16,7 +16,8 @@ export {
   BOOST_CARDS,
   DONATIONS_PRICE,
   PREMIUM_PLANS,
+  RARITIES_COLOR_MAP,
 } from './constants';
 
 export type { GameSession, User, UserGameInfo } from './types';
-export { Rank } from './types';
+export { Rank, WeaponTypes, Rarities, Qualities } from './types';
