@@ -13,7 +13,7 @@ export const MarketplacePage = () => {
       description: '',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
-      price: 1200000000000000000,
+      price: 12000000000000000000,
       priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
