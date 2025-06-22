@@ -1,11 +1,18 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   PopupButton,
   PopupCloseButton,
   RocketIcon,
 } from '../../../../components';
-import { Rank, RANKS } from '../../../../shared';
+import {
+  Rank,
+  RANKS,
+  useStatusNotification,
+  useUser,
+} from '../../../../shared';
 import styles from './RankingPopup.module.css';
 import { motion } from 'framer-motion';
+import { claimRewardForNewRank } from '../../api';
 
 interface IRankingPopupProps {
   rank: Rank;
@@ -13,12 +20,27 @@ interface IRankingPopupProps {
 }
 
 export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
+  const queryClient = useQueryClient();
+  const addNotification = useStatusNotification();
+  const { user } = useUser();
+
   const rankInfo = RANKS.get(rank);
   if (!rankInfo) return null;
 
   const formatedPrice = new Intl.NumberFormat('en-US').format(
     rankInfo.reward ?? 0
   );
+
+  const claimRewardMutation = useMutation({
+    mutationFn: (data: { newBalance: number }) =>
+      claimRewardForNewRank(data.newBalance),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+    onError: (err) => {
+      addNotification('error', err.message || 'Failed to claim reward', 3000);
+    },
+  });
 
   return (
     <>
@@ -58,7 +80,14 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
           <p className={styles.price}>{`+${formatedPrice}`}</p>
           <RocketIcon size={19} color="#D2F7B6" />
         </div>
-        <PopupButton text="Claim" onClick={() => {}} />
+        <PopupButton
+          text="Claim"
+          onClick={() =>
+            claimRewardMutation.mutate({
+              newBalance: user!.balance + (rankInfo.reward ?? 0),
+            })
+          }
+        />
       </motion.div>
     </>
   );

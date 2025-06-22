@@ -1,45 +1,47 @@
-import axios from 'axios';
-import { api, Rank } from '../../../shared';
+import { api } from '../../../shared';
 import { RankUser } from '../types';
 
-interface GetTopUsersResponse {
-  success: true;
-  message: string;
-  data: RankUser[];
+interface RawRankUser {
+  telegram_id: string;
+  first_name: string;
+  last_name: string | null;
+  username: string | null;
+  photo_url: string | null;
+  rank?: string; // e.g. "1"
+  total_balance_earned: number; // e.g. 0
+  total_taps: number; // e.g. 1820
 }
 
-export async function getTopUsersByLeague(league: Rank) {
-  try {
-    const response = await api.get<GetTopUsersResponse>(`/user/leaderboard`, {
-      data: { lague: league },
-    });
-    return response.data.data;
-  } catch (error) {
-    let errorMessage = `Failed get top users in ${league}`;
-    if (axios.isAxiosError(error) && error.response) {
-      errorMessage = error.response.data.error || errorMessage;
-    }
-    throw new Error(errorMessage);
-  }
+/**
+ * Convert one raw server object into your RankUser type
+ */
+function parseRankUser(raw: RawRankUser): RankUser {
+  return {
+    telegramId: Number(raw.telegram_id),
+    firstName: raw.first_name,
+    lastName: raw.last_name ?? '',
+    username: raw.username ?? '',
+    photoUrl: raw.photo_url ?? undefined,
+    rank: raw.rank != null ? Number(raw.rank) : undefined,
+    totalBalanceEarned: raw.total_balance_earned,
+    totalTaps: raw.total_taps,
+  };
 }
 
-interface GetUserRankInLeagueResponse {
-  success: true;
-  message: string;
-  data: RankUser;
+/**
+ * Fetch and parse the top‐100 list
+ */
+export async function getTopUsersByLeague(league: string): Promise<RankUser[]> {
+  const resp = await api.get<RawRankUser[]>(`/user/leaderboard`, {
+    params: { league: league.toUpperCase() },
+  });
+  return resp.data.map(parseRankUser);
 }
 
-export async function getUserRankInLeague() {
-  try {
-    const response = await api.get<GetUserRankInLeagueResponse>(
-      `/user/leaderboard/rank`
-    );
-    return response.data.data;
-  } catch (error) {
-    let errorMessage = `Failed get user place in league`;
-    if (axios.isAxiosError(error) && error.response) {
-      errorMessage = error.response.data.error || errorMessage;
-    }
-    throw new Error(errorMessage);
-  }
+/**
+ * Fetch and parse the single “my rank” endpoint
+ */
+export async function getUserRankInLeague(): Promise<RankUser> {
+  const resp = await api.get<RawRankUser>(`/user/leaderboard/rank`);
+  return parseRankUser(resp.data);
 }

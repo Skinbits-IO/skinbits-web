@@ -1,0 +1,1 @@
+export { claimRewardForNewRank } from './userService';

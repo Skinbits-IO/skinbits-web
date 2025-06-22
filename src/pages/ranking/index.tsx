@@ -1,12 +1,14 @@
 import styles from './RankingPage.module.css';
 import { Header, Rank } from '../../components';
 import { ProgressWidget, RankCard, WinnerRankCard } from './UI';
-import { RankUser } from './types';
 import { useUser } from '../../shared';
 import { useLeaderboard, useUserLeaderboard } from './hooks';
 import { Rank as RankEnum } from '../../shared';
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const RankingPage = () => {
+  const queryClient = useQueryClient();
   const { user } = useUser();
   const rank = user!.rank as RankEnum;
 
@@ -14,17 +16,25 @@ export const RankingPage = () => {
     useLeaderboard(rank);
   const { data, isPending } = useUserLeaderboard();
 
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['leaderboard-top', rank] });
+    queryClient.invalidateQueries({ queryKey: ['leaderboard-user'] });
+  }, [user]);
+
   return (
     <div className={styles.background}>
       <Header />
       <div className={styles.upperSection}>
         <Rank rank={rank} />
-        <ProgressWidget rank={rank} totalEarned={10000} />
+        <ProgressWidget
+          rank={rank}
+          totalEarned={user?.totalBalanceEarned ?? 0}
+        />
       </div>
       <div className={styles.rankings}>
         {!isPending &&
           data &&
-          (data.place === 1 ? (
+          (data.rank === 1 ? (
             <WinnerRankCard user={data} />
           ) : (
             <RankCard user={data} />
@@ -32,11 +42,17 @@ export const RankingPage = () => {
         <div className={styles.ranking}>
           {!isLeaderboardPending &&
             leaderboard &&
-            leaderboard.map((user: RankUser) => {
-              if (user.place === 1) {
-                return <WinnerRankCard key={`${user.place}-key`} user={user} />;
+            leaderboard.map((user, index) => {
+              if (index === 0) {
+                return <WinnerRankCard key={`${index}-key`} user={user} />;
               } else {
-                return <RankCard key={`${user.place}-key`} user={user} />;
+                return (
+                  <RankCard
+                    key={`${index}-key`}
+                    index={index + 1}
+                    user={user}
+                  />
+                );
               }
             })}
         </div>

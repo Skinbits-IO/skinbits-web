@@ -8,15 +8,18 @@ interface IWinnerRankCardProps {
 }
 
 export const WinnerRankCard = ({ user }: IWinnerRankCardProps) => {
+  const url =
+    user!.photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
+
   return (
     <div className={styles.background}>
-      <div className={styles.rank}>{`#${user.place}`}</div>
+      <div className={styles.rank}>#1</div>
       <div className={styles.userInfo}>
-        <img src={user.photoUrl} alt="image" />
-        <p>{user.fullName}</p>
+        <img src={url} alt="image" />
+        <p>{user.firstName + ' ' + user.lastName}</p>
       </div>
       <div className={styles.totalEarned}>
-        <p>{formatPoints(user.totalEarned)}</p>
+        <p>{formatPoints(user.totalBalanceEarned)}</p>
         <RocketIcon size={16} color="#FFFFFF" />
       </div>
     </div>

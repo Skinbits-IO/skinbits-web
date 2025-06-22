@@ -13,4 +13,6 @@ export interface User {
   rank: Rank;
   balance: number;
   balanceBb: number;
+  totalBalanceEarned: number;
+  totalTaps: number;
 }
