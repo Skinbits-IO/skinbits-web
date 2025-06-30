@@ -1,4 +1,5 @@
-import { Qualities, Rarities } from '../../../shared';
+import { Qualities } from './Qualities';
+import { Rarities } from './Rarities';
 
 export type Skin = {
   title: string;
@@ -6,6 +7,5 @@ export type Skin = {
   rarity: Rarities;
   quality: Qualities;
   price: number;
-  priceEuro: number;
   imageUrl: string;
 };

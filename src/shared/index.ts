@@ -5,6 +5,7 @@ export {
   useUserGameInfo,
   useGameSession,
   useStatusNotification,
+  useBackButton,
 } from './hooks';
 export {
   RANKS,
@@ -19,5 +20,5 @@ export {
   RARITIES_COLOR_MAP,
 } from './constants';
 
-export type { GameSession, User, UserGameInfo } from './types';
+export type { GameSession, User, UserGameInfo, Skin } from './types';
 export { Rank, WeaponTypes, Rarities, Qualities } from './types';

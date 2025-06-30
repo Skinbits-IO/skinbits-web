@@ -10,6 +10,7 @@ import {
   MarketplacePage,
   RankingPage,
   ReferralsPage,
+  SkinPage,
 } from './pages';
 import {
   AuthProvider,
@@ -39,7 +40,10 @@ function App() {
             <Route path="/upgrade" element={<GameUpgradePage />} />
 
             <Route path="/ranking" element={<RankingPage />} />
+
             <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/marketplace/skin-page" element={<SkinPage />} />
+
             <Route path="/referrals" element={<ReferralsPage />} />
             <Route path="/account" element={<AccountPage />} />
           </Routes>

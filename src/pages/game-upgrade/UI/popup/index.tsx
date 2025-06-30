@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import styles from './Popup.module.css';
 import {
+  Description,
   PopupButton,
   PopupCloseButton,
   RocketIcon,
@@ -52,7 +53,7 @@ export const Popup = ({
           />
           <div className={styles.title}>{card.title}</div>
         </div>
-        <div className={styles.description}>{card.description}</div>
+        <Description text={card.description} />
         <div className={styles.priceContainer}>
           <RocketIcon size={19} color="#D2F7B6" />
           <p className={styles.price}>{formatedPrice}</p>

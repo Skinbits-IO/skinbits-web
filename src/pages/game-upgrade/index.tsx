@@ -1,7 +1,5 @@
 import styles from './GameUpgradePage.module.css';
-import WebApp from '@twa-dev/sdk';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card } from './types';
@@ -10,6 +8,7 @@ import {
   FARM_LEVEL_PRICES,
   LEVEL_PRICES,
   UPGRADE_CARDS,
+  useBackButton,
   useStatusNotification,
   useUser,
   useUserGameInfo,
@@ -18,12 +17,12 @@ import { upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 
 export const GameUpgradePage = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { user } = useUser();
   const { user: userGameInfo } = useUserGameInfo();
   const addNotification = useStatusNotification();
+  useBackButton();
 
   const [selectedUpgradeCard, setSelectedUpgradeCard] = useState<
     (Card & { price: number }) | null
@@ -32,23 +31,6 @@ export const GameUpgradePage = () => {
   const [selectedBoostCard, setSelectedBoostCard] = useState<
     (Card & { price: number; amount: number }) | null
   >(null);
-
-  useEffect(() => {
-    WebApp.ready();
-
-    const backButton = WebApp.BackButton;
-    const handleBackButtonClick = () => {
-      navigate(-1);
-    };
-
-    backButton.show();
-    backButton.onClick(handleBackButtonClick);
-
-    return () => {
-      backButton.hide();
-      backButton.offClick(handleBackButtonClick);
-    };
-  }, []);
 
   const upgradeLevelMutation = useMutation({
     mutationFn: (data: { type: 'tap' | 'fuel' | 'farm'; price: number }) =>

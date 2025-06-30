@@ -1,83 +1,76 @@
 import { useState } from 'react';
 import styles from './MarketplacePage.module.css';
 import { Filter, Header, SkinCard } from './UI';
-import { Skin } from './types';
-import { Qualities, Rarities } from '../../shared';
+import { Qualities, Rarities, Skin } from '../../shared';
+import { useNavigate } from 'react-router';
 
 export const MarketplacePage = () => {
+  const navigate = useNavigate();
   const [openFilter, setOpenFilter] = useState(false);
 
   const skins: Skin[] = [
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
     {
       title: 'Sport Gloves',
-      description: '',
+      description: 'fjipgjipjgpowropggpmfopjm3pgip3gipj3pigj3jg3jogj3ogj3joio',
       rarity: Rarities.ExceedinglyRare,
       quality: Qualities.FactoryNew,
       price: 12000000,
-      priceEuro: 1000,
       imageUrl: './skin-placeholder.png',
     },
   ];
@@ -93,7 +86,12 @@ export const MarketplacePage = () => {
         {skins.map((skin, key) => {
           return (
             <div key={key} className={styles.card}>
-              <SkinCard skin={skin} />
+              <SkinCard
+                skin={skin}
+                onClick={() =>
+                  navigate('/marketplace/skin-page', { state: { skin } })
+                }
+              />
             </div>
           );
         })}

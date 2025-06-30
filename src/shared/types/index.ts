@@ -1,6 +1,6 @@
 export type { User, UserGameInfo } from './user';
 export type { GameSession } from './GameSession';
+export type { Skin } from './skins';
+
 export { Rank } from './Rank';
-export { WeaponTypes } from './WeaponTypes';
-export { Rarities } from './Rarities';
-export { Qualities } from './Qualities';
+export { WeaponTypes, Rarities, Qualities } from './skins';

@@ -5,7 +5,9 @@ export { PopupCloseButton } from './popup-close-button';
 export { Header } from './header';
 export { Rank } from './rank';
 export { Devider } from './devider';
+export { SkinImage } from './skin-image';
 export { StandardButton } from './standard-button';
+export { Description } from './description';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
