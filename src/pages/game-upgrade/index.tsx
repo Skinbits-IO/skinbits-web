@@ -139,7 +139,7 @@ export const GameUpgradePage = () => {
                 price: selectedUpgradeCard.price,
               });
             }}
-            isUpgradeRequestPending={upgradeLevelMutation.isPending}
+            isRequestPending={upgradeLevelMutation.isPending}
             onExit={() => setSelectedUpgradeCard(null)}
           />
         )}

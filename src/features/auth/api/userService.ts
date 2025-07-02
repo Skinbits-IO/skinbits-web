@@ -33,10 +33,8 @@ export async function getUser(): Promise<{
       farmLevel: data.farm_level,
       tapLevel: data.tap_level,
       fuelLevel: data.fuel_level,
-      boost1Quantity: data.boost1_quantity,
-      boost1ActivatedAt: data.boost1_activated_at,
-      boost2Quantity: data.boost2_quantity,
-      boost2ActivatedAt: data.boost2_activated_at,
+      boost1Quantity: data.boost1_quantity ?? 0,
+      boost2Quantity: data.boost2_quantity ?? 0,
     };
 
     const user: User = {

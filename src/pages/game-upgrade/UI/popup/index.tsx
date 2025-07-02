@@ -13,7 +13,7 @@ interface IPopupProps {
   card: Card & { price: number; amount?: number };
   onActivate?: () => void;
   onUpgrade: () => void;
-  isUpgradeRequestPending?: boolean;
+  isRequestPending?: boolean;
   onExit: () => void;
 }
 
@@ -21,11 +21,12 @@ export const Popup = ({
   card,
   onActivate,
   onUpgrade,
-  isUpgradeRequestPending,
+  isRequestPending,
   onExit,
 }: IPopupProps) => {
   const { user } = useUser();
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
+  const isBoost = card.amount !== undefined;
 
   return (
     <>
@@ -58,8 +59,11 @@ export const Popup = ({
           <RocketIcon size={19} color="#D2F7B6" />
           <p className={styles.price}>{formatedPrice}</p>
         </div>
-        <div className={styles.buttonContainer}>
-          {card.amount && onActivate && (
+        <div
+          className={styles.buttonContainer}
+          style={{ gridTemplateColumns: isBoost ? '1fr 1fr' : '1fr' }}
+        >
+          {isBoost && onActivate && (
             <PopupButton
               disabled={card.amount === 0}
               text={`Activate (${card.amount})`}
@@ -68,8 +72,8 @@ export const Popup = ({
           )}
           <PopupButton
             disabled={user!.balance < card.price}
-            text={card.amount ? 'Buy' : 'Upgrade'}
-            isRequestPending={isUpgradeRequestPending}
+            text={isBoost ? 'Buy' : 'Upgrade'}
+            isRequestPending={isRequestPending}
             onClick={() => onUpgrade()}
           />
         </div>

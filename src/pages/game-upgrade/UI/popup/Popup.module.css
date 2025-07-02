@@ -101,9 +101,7 @@
 }
 
 .buttonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
     gap: 10px;
     width: 100%;
 }

@@ -1,26 +1,16 @@
+import { useNavigate } from 'react-router';
 import { RocketIcon } from '../../../../components';
+import { useUserGameInfo } from '../../../../shared';
 import styles from './FarmButton.module.css';
 
 interface IFarmButtonProps {
-  status: string;
   progress: number;
 }
 
-export const FarmButton = ({ status, progress }: IFarmButtonProps) => {
-  const isFarmingAvailable = status !== 'unavailable';
-
-  const buttonText = (): string => {
-    switch (status) {
-      case 'active':
-        return 'Farming Ends in ';
-      case 'inactive':
-        return 'Start farming for 6h';
-      case 'buyable':
-        return 'Buy farm';
-      default:
-        return 'Farming on level 5';
-    }
-  };
+export const FarmButton = ({ progress }: IFarmButtonProps) => {
+  const navigate = useNavigate();
+  const { user } = useUserGameInfo();
+  const isFarmingAvailable = user?.farmLevel !== 0;
 
   return (
     <div
@@ -33,6 +23,7 @@ export const FarmButton = ({ status, progress }: IFarmButtonProps) => {
             }
           : { backgroundColor: 'rgba(255, 255, 255, 0.03)' }
       }
+      onClick={() => navigate('/upgrade')}
     >
       {!isFarmingAvailable && (
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
@@ -45,7 +36,9 @@ export const FarmButton = ({ status, progress }: IFarmButtonProps) => {
               : styles.unavailableButtonText
           }
         >
-          {buttonText()}
+          {user?.farmLevel !== 0
+            ? 'Start farming for 6h'
+            : 'Buy farm for 10 000'}
         </p>
         <div className={styles.rocketContainer}>
           {isFarmingAvailable && <p className={styles.rocketText}>10 000</p>}

@@ -17,7 +17,7 @@ export const UpgradeCard = ({
   onClick,
 }: IUpgradeCardProps) => {
   const formatedPrice = new Intl.NumberFormat('en-US').format(price);
-  const levelPercentage = level ? Math.min(level / 25, 1) * 100 : 0;
+  const levelPercentage = level ? Math.min(level / 20, 1) * 100 : 0;
 
   return (
     <div className={styles.background}>
@@ -39,7 +39,11 @@ export const UpgradeCard = ({
             <div className={styles.levelContainer}>{level}</div>
           </div>
         )}
-        <button className={styles.button} onClick={() => onClick()}>
+        <button
+          className={styles.button}
+          disabled={price === 0}
+          onClick={() => onClick()}
+        >
           <ArrowIcon size={14} />
         </button>
       </div>

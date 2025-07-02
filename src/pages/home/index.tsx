@@ -54,7 +54,6 @@ export const HomePage = () => {
           progress={
             100 * ((userGameInfo!.tapLevel + userGameInfo!.fuelLevel) / 10)
           }
-          status="unavailable"
         />
       </div>
     </div>
