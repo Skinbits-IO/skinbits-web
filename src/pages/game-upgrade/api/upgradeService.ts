@@ -19,3 +19,31 @@ export async function upgradeUserLevel(
     throw new Error(errorMessage);
   }
 }
+
+export async function buyFarm() {
+  try {
+    const response = await api.post(`/farming/buy`);
+    return response.data;
+  } catch (error) {
+    let errorMessage = `Failed to buy farming`;
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data.error || errorMessage;
+    }
+    throw new Error(errorMessage);
+  }
+}
+
+export async function upgradeFarm(price: number) {
+  try {
+    const response = await api.patch(`/farming/upgradeFarm`, {
+      price,
+    });
+    return response.data;
+  } catch (error) {
+    let errorMessage = `Failed to buy farming`;
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data.error || errorMessage;
+    }
+    throw new Error(errorMessage);
+  }
+}

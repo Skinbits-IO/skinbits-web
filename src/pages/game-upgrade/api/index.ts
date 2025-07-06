@@ -1,1 +1,1 @@
-export { upgradeUserLevel } from './upgradeService';
+export { upgradeUserLevel, buyFarm, upgradeFarm } from './upgradeService';

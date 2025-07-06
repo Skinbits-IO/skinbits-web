@@ -13,7 +13,7 @@ import {
   useUser,
   useUserGameInfo,
 } from '../../shared';
-import { upgradeUserLevel } from './api';
+import { buyFarm, upgradeFarm, upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 
 export const GameUpgradePage = () => {
@@ -41,6 +41,28 @@ export const GameUpgradePage = () => {
     },
     onError: (err) => {
       addNotification('error', err.message || 'Failed to upgrade level', 3000);
+    },
+  });
+
+  const buyFarmMutation = useMutation({
+    mutationFn: () => buyFarm(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      setSelectedUpgradeCard(null);
+    },
+    onError: (err) => {
+      addNotification('error', err.message || 'Failed to buy farm', 3000);
+    },
+  });
+
+  const upgradeFarmMutation = useMutation({
+    mutationFn: (data: { price: number }) => upgradeFarm(data.price),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      setSelectedUpgradeCard(null);
+    },
+    onError: (err) => {
+      addNotification('error', err.message || 'Failed to upgrade farm', 3000);
     },
   });
 
@@ -134,12 +156,26 @@ export const GameUpgradePage = () => {
                   ? 'tap'
                   : 'farm';
 
-              upgradeLevelMutation.mutate({
-                type: levelType,
-                price: selectedUpgradeCard.price,
-              });
+              if (levelType === 'farm') {
+                if (userGameInfo?.farmLevel === 0) {
+                  buyFarmMutation.mutate();
+                } else {
+                  upgradeFarmMutation.mutate({
+                    price: selectedUpgradeCard.price,
+                  });
+                }
+              } else {
+                upgradeLevelMutation.mutate({
+                  type: levelType,
+                  price: selectedUpgradeCard.price,
+                });
+              }
             }}
-            isRequestPending={upgradeLevelMutation.isPending}
+            isRequestPending={
+              upgradeLevelMutation.isPending ||
+              buyFarmMutation.isPending ||
+              upgradeFarmMutation.isPending
+            }
             onExit={() => setSelectedUpgradeCard(null)}
           />
         )}
