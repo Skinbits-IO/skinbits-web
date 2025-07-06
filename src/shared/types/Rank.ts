@@ -1,6 +1,6 @@
 export enum Rank {
   bronze = 'bronze',
-  silver = 'sivler',
+  silver = 'silver',
   gold = 'gold',
   platinum = 'platinum',
   diamond = 'diamond',

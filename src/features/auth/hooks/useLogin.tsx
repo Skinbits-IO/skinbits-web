@@ -61,7 +61,6 @@ export const useLogin = (error: Error | null) => {
     WebApp.ready();
     let initData = WebApp.initData;
     if (!initData) {
-      console.error('No user data in initData');
       initData = import.meta.env.VITE_TEST_USER_INIT_DATA;
     }
 

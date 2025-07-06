@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   PopupButton,
   PopupCloseButton,
@@ -13,6 +13,9 @@ import {
 import styles from './RankingPopup.module.css';
 import { motion } from 'framer-motion';
 import { claimRewardForNewRank } from '../../api';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../store';
+import { updateUserBalance } from '../../../../store/slices/userSlice';
 
 interface IRankingPopupProps {
   rank: Rank;
@@ -20,7 +23,7 @@ interface IRankingPopupProps {
 }
 
 export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch<AppDispatch>();
   const addNotification = useStatusNotification();
   const { user } = useUser();
 
@@ -35,7 +38,8 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
     mutationFn: (data: { newBalance: number }) =>
       claimRewardForNewRank(data.newBalance),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      if (rankInfo.reward) dispatch(updateUserBalance(rankInfo.reward));
+      onClose();
     },
     onError: (err) => {
       addNotification('error', err.message || 'Failed to claim reward', 3000);
@@ -82,6 +86,7 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
         </div>
         <PopupButton
           text="Claim"
+          isRequestPending={claimRewardMutation.isPending}
           onClick={() =>
             claimRewardMutation.mutate({
               newBalance: user!.balance + (rankInfo.reward ?? 0),
