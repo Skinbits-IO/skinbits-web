@@ -1,6 +1,11 @@
 import styles from './RankingPage.module.css';
 import { Header, Rank } from '../../components';
-import { ProgressWidget, RankCard, WinnerRankCard } from './UI';
+import {
+  ProgressWidget,
+  RankCard,
+  RankCardSkeleton,
+  WinnerRankCard,
+} from './UI';
 import { useUser } from '../../shared';
 import { useLeaderboard, useUserLeaderboard } from './hooks';
 import { Rank as RankEnum } from '../../shared';
@@ -32,15 +37,27 @@ export const RankingPage = () => {
         />
       </div>
       <div className={styles.rankings}>
-        {!isPending &&
+        {isPending ? (
+          <RankCardSkeleton />
+        ) : (
           data &&
           (data.rank === 1 ? (
             <WinnerRankCard user={data} />
           ) : (
             <RankCard user={data} />
-          ))}
+          ))
+        )}
         <div className={styles.ranking}>
-          {!isLeaderboardPending &&
+          {isLeaderboardPending ? (
+            <>
+              <RankCardSkeleton />
+              <RankCardSkeleton />
+              <RankCardSkeleton />
+              <RankCardSkeleton />
+              <RankCardSkeleton />
+              <RankCardSkeleton />
+            </>
+          ) : (
             leaderboard &&
             leaderboard.map((user, index) => {
               if (index === 0) {
@@ -54,7 +71,8 @@ export const RankingPage = () => {
                   />
                 );
               }
-            })}
+            })
+          )}
         </div>
       </div>
     </div>
