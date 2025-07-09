@@ -1,0 +1,54 @@
+@keyframes pulse {
+  0%   { opacity: 0.6 }
+  50%  { opacity: 1 }
+  100% { opacity: 0.6 }
+}
+
+.background {
+  position: relative;
+  height: 64px;
+  border-radius: 12px;
+  background-color: #2a2a2a;
+  overflow: hidden;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.progressBar {
+  height: 4px;
+  width: 0;
+  background-color: #444;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 100%;
+}
+
+.line {
+  height: 16px;
+  background-color: #444;
+  border-radius: 8px;
+}
+
+.rocketContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rocketTextPlaceholder {
+  width: 40px;
+  height: 16px;
+  background-color: #444;
+  border-radius: 8px;
+}
+
+.rocketIconPlaceholder {
+  width: 32px;
+  height: 32px;
+  background-color: #444;
+  border-radius: 50%;
+}

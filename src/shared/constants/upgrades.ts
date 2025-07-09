@@ -24,7 +24,7 @@ export const LEVEL_PRICES: Map<number, number> = new Map<number, number>([
 ]);
 
 export const FARM_LEVEL_PRICES: Map<number, number> = new Map<number, number>([
-  [1, 10000],
+  [1, 250000],
   [2, 5000],
   [3, 10000],
   [4, 25000],

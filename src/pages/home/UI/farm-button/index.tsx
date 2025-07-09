@@ -1,16 +1,75 @@
 import { useNavigate } from 'react-router';
 import { RocketIcon } from '../../../../components';
-import { useUserGameInfo } from '../../../../shared';
+import { useStatusNotification, useUserGameInfo } from '../../../../shared';
 import styles from './FarmButton.module.css';
+import { FarmStatus } from '../../types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { claimFarmSession, startFarmSession } from '../../api';
+import { formatTimeRemaining, toIsoUtcNoMs } from '../../utils';
 
 interface IFarmButtonProps {
+  status: FarmStatus;
   progress: number;
+  endTime: string;
+  openPopup: () => void;
 }
 
-export const FarmButton = ({ progress }: IFarmButtonProps) => {
+export const FarmButton = ({
+  status,
+  progress,
+  endTime,
+  openPopup,
+}: IFarmButtonProps) => {
   const navigate = useNavigate();
+  const addNotification = useStatusNotification();
+  const queryClient = useQueryClient();
+
   const { user } = useUserGameInfo();
   const isFarmingAvailable = user?.farmLevel !== 0;
+
+  const getButtonText = (): string => {
+    switch (status) {
+      case FarmStatus.Inactive:
+        return 'Start farming for 4h';
+      case FarmStatus.Active:
+        return `Farming ends in ${formatTimeRemaining(endTime)}`;
+      case FarmStatus.Claim:
+        return 'Claim farmed rockets';
+      case FarmStatus.Buy:
+      default:
+        return 'Buy farm for 250 000';
+    }
+  };
+
+  const startFarmMutation = useMutation({
+    mutationFn: (data: { startTime: string; amountFarmed: number }) =>
+      startFarmSession(data.startTime, data.amountFarmed),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
+    },
+    onError: (err) => {
+      addNotification(
+        'error',
+        err.message || 'Failed to start farm session',
+        3000
+      );
+    },
+  });
+
+  const claimFarmMutation = useMutation({
+    mutationFn: (data: { amountFarmed: number }) =>
+      claimFarmSession(data.amountFarmed),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
+    },
+    onError: (err) => {
+      addNotification(
+        'error',
+        err.message || 'Failed to claim farm session',
+        3000
+      );
+    },
+  });
 
   return (
     <div
@@ -23,7 +82,22 @@ export const FarmButton = ({ progress }: IFarmButtonProps) => {
             }
           : { backgroundColor: 'rgba(255, 255, 255, 0.03)' }
       }
-      onClick={() => navigate('/upgrade')}
+      onClick={() => {
+        if (status === FarmStatus.Active) {
+          openPopup();
+        } else if (status === FarmStatus.Inactive) {
+          startFarmMutation.mutate({
+            startTime: toIsoUtcNoMs(),
+            amountFarmed: (user?.farmLevel ?? 1) * 100000,
+          });
+        } else if (status === FarmStatus.Buy) {
+          navigate('/upgrade');
+        } else if (status === FarmStatus.Claim) {
+          claimFarmMutation.mutate({
+            amountFarmed: (user?.farmLevel ?? 1) * 100000,
+          });
+        }
+      }}
     >
       {!isFarmingAvailable && (
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
@@ -36,12 +110,14 @@ export const FarmButton = ({ progress }: IFarmButtonProps) => {
               : styles.unavailableButtonText
           }
         >
-          {user?.farmLevel !== 0
-            ? 'Start farming for 6h'
-            : 'Buy farm for 10 000'}
+          {getButtonText()}
         </p>
         <div className={styles.rocketContainer}>
-          {isFarmingAvailable && <p className={styles.rocketText}>10 000</p>}
+          {status === FarmStatus.Claim && (
+            <p className={styles.rocketText}>
+              {(user?.farmLevel ?? 1) * 100000}
+            </p>
+          )}
           <div
             className={styles.rocketIcon}
             style={
