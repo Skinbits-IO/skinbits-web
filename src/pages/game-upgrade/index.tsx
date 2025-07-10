@@ -13,7 +13,7 @@ import {
   useUser,
   useUserGameInfo,
 } from '../../shared';
-import { buyFarm, upgradeFarm, upgradeUserLevel } from './api';
+import { buyFarm, updateBoost, upgradeFarm, upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 
 export const GameUpgradePage = () => {
@@ -66,6 +66,18 @@ export const GameUpgradePage = () => {
     },
   });
 
+  const updateBoostMutation = useMutation({
+    mutationFn: (data: { type: 'tapboost' | 'fuelboost'; quantity: number }) =>
+      updateBoost(data.type, data.quantity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      setSelectedBoostCard(null);
+    },
+    onError: (err) => {
+      addNotification('error', err.message || 'Failed to update boost', 3000);
+    },
+  });
+
   return (
     <div className={styles.background}>
       <img
@@ -79,11 +91,12 @@ export const GameUpgradePage = () => {
           <CardContainer
             title="Boosts"
             content={BOOST_CARDS.map((item, index) => {
+              const titleStarts = item.title.split(' ')[0];
               let amount: number;
-              if (index === 0) {
-                amount = userGameInfo!.boost1Quantity;
+              if (titleStarts === 'Fuel') {
+                amount = userGameInfo!.fuelboostQuantity;
               } else {
-                amount = userGameInfo!.boost2Quantity;
+                amount = userGameInfo!.tapboostQuantity;
               }
 
               return (
@@ -139,8 +152,23 @@ export const GameUpgradePage = () => {
           <Popup
             key={`popup-${selectedBoostCard.title}`}
             card={selectedBoostCard}
-            onActivate={() => {}}
-            onUpgrade={() => {}}
+            isRequestPending={updateBoostMutation.isPending}
+            onActivate={() => {
+              const titleStarts = selectedBoostCard.title.split(' ')[0];
+              let type: 'tapboost' | 'fuelboost' = 'tapboost';
+              if (titleStarts === 'Fuel') {
+                type = 'fuelboost';
+              }
+              updateBoostMutation.mutate({ type, quantity: -1 });
+            }}
+            onUpgrade={() => {
+              const titleStarts = selectedBoostCard.title.split(' ')[0];
+              let type: 'tapboost' | 'fuelboost' = 'tapboost';
+              if (titleStarts === 'Fuel') {
+                type = 'fuelboost';
+              }
+              updateBoostMutation.mutate({ type, quantity: 1 });
+            }}
             onExit={() => setSelectedBoostCard(null)}
           />
         )}
