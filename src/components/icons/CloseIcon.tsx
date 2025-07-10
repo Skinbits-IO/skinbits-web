@@ -7,7 +7,7 @@ interface CloseIconProps {
 export const CloseIcon = ({
   size = 22,
   color = '#FFFFFF',
-  opacity = 0.15,
+  opacity = 0.5,
   ...props
 }: CloseIconProps) => (
   <svg
