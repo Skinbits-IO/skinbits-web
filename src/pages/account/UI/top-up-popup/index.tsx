@@ -4,7 +4,6 @@ import { Devider, PopupCloseButton } from '../../../../components';
 import { Card, ModeSwitcher } from './UI';
 import { useState } from 'react';
 import { DONATIONS_PRICE } from '../../../../shared';
-import WebApp from '@twa-dev/sdk';
 
 interface ITopUpPopupProps {
   onClose: () => void;
@@ -12,17 +11,6 @@ interface ITopUpPopupProps {
 
 export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
   const [mode, setMode] = useState<'ton' | 'star'>('ton');
-
-  const onBuy = (rockets: number, price: number) => {
-    WebApp.sendData(
-      JSON.stringify({
-        action: 'buy_rockets',
-        mode,
-        rockets,
-        price,
-      })
-    );
-  };
 
   return (
     <>
@@ -55,7 +43,7 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                   rockets={prices.rockets}
                   price={prices.price}
                   mode={mode}
-                  onClick={() => onBuy(prices.rockets, prices.price)}
+                  onClick={() => {}}
                 />
               );
             }
