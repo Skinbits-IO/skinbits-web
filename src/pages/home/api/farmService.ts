@@ -50,13 +50,15 @@ interface ClaimAvailability {
 export async function checkClaimAvailability(): Promise<ClaimAvailability> {
   try {
     const resp = await api.get<{
-      success: boolean;
-      message: string;
+      message: {
+        success: boolean;
+        message: string;
+      };
     }>('/farming/isAvailableToClaim');
 
     return {
-      canClaim: resp.data.success,
-      message: resp.data.message,
+      canClaim: resp.data.message.success,
+      message: resp.data.message.message,
     };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data) {
