@@ -5,14 +5,15 @@ interface ICardProps {
   mode: 'ton' | 'star';
   rockets: number;
   price: number;
+  onClick: () => void;
 }
 
-export const Card = ({ mode, rockets, price }: ICardProps) => {
+export const Card = ({ mode, rockets, price, onClick }: ICardProps) => {
   const formattedRockets = new Intl.NumberFormat('en-US').format(rockets);
   const formattedPrice = new Intl.NumberFormat('en-UK').format(price);
 
   return (
-    <div className={styles.background}>
+    <div className={styles.background} onClick={onClick}>
       <div className={styles.rockets}>
         <RocketIcon size={20} color="#000000" />
         <p>Buy - {formattedRockets}</p>
