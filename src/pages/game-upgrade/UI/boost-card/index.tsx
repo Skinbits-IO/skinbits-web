@@ -6,6 +6,7 @@ interface IBoostCardProps {
   photoUrl: string;
   price: number;
   amount: number;
+  disabled?: boolean;
   onClick: () => void;
 }
 
@@ -14,6 +15,7 @@ export const BoostCard = ({
   photoUrl,
   price,
   amount,
+  disabled = false,
   onClick,
 }: IBoostCardProps) => {
   const formatedPrice = new Intl.NumberFormat('en-US').format(price);
@@ -29,7 +31,11 @@ export const BoostCard = ({
       </div>
       <div className={styles.row}>
         <div className={styles.amountText}>{amount}</div>
-        <button className={styles.button} onClick={() => onClick()}>
+        <button
+          className={styles.button}
+          onClick={() => onClick()}
+          disabled={disabled}
+        >
           <ArrowIcon size={14} />
         </button>
       </div>

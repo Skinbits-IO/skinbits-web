@@ -1,0 +1,1 @@
+export { getProperUserFromApi } from './getUser';

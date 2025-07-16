@@ -12,6 +12,47 @@
     background-position: center;
 }
 
+/* add this class to your game‐widget container when boost is active */
+.boostActive {
+  position: relative;
+  /* make sure your widget already has border‐radius:12px */
+}
+
+/* the pseudo‐element draws an inset border that pulses */
+.boostActive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 4px solid #FFD700;
+  border-radius: 1.25rem;
+  pointer-events: none;
+  animation: pulse-gold-border 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-gold-border {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.tapBoostBanner {
+  position: absolute;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(255,215,0,1), rgba(255,235,59,0.8));
+  color: #000;
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
 .amo {
     position: absolute;
     right: 1.125rem;
@@ -19,11 +60,45 @@
     font-size: 0.75rem;
     font-weight: 400;
     color: #AFAFAF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .amoBold {
     font-size: 0.875rem;
     font-weight: 600;
+}
+
+.infinity {
+  display: inline-block;
+  font-size: inherit;
+  font-weight: inherit;
+  /* gradient text */
+  background: linear-gradient(
+    120deg,
+    #fadb14 0%,
+    #ffe58f 25%,
+    #faad14 50%,
+    #ffe58f 75%,
+    #fadb14 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  /* shimmer */
+  position: relative;
+  font-size: 20px;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .game {

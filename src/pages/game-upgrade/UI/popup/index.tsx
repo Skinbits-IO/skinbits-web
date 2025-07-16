@@ -8,6 +8,7 @@ import {
 } from '../../../../components';
 import { Card } from '../../types';
 import { useUser } from '../../../../shared';
+import { useEffect, useState } from 'react';
 
 interface IPopupProps {
   card: Card & { price: number; amount?: number };
@@ -25,8 +26,14 @@ export const Popup = ({
   onExit,
 }: IPopupProps) => {
   const { user } = useUser();
+
+  const [activateLoading, setActivateLoading] = useState(false);
   const formatedPrice = new Intl.NumberFormat('en-US').format(card.price);
   const isBoost = card.amount !== undefined;
+
+  useEffect(() => {
+    if (!isRequestPending) setActivateLoading(false);
+  }, [isRequestPending]);
 
   return (
     <>
@@ -67,13 +74,17 @@ export const Popup = ({
             <PopupButton
               disabled={card.amount === 0}
               text={`Activate (${card.amount})`}
-              onClick={() => onActivate()}
+              isRequestPending={activateLoading}
+              onClick={() => {
+                setActivateLoading(true);
+                onActivate();
+              }}
             />
           )}
           <PopupButton
             disabled={user!.balance < card.price}
             text={isBoost ? 'Buy' : 'Upgrade'}
-            isRequestPending={isRequestPending}
+            isRequestPending={isRequestPending && !activateLoading}
             onClick={() => onUpgrade()}
           />
         </div>

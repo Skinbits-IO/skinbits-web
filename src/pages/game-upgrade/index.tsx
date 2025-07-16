@@ -9,19 +9,23 @@ import {
   LEVEL_PRICES,
   UPGRADE_CARDS,
   useBackButton,
+  useBoost,
   useStatusNotification,
   useUser,
   useUserGameInfo,
 } from '../../shared';
-import { buyFarm, updateBoost, upgradeFarm, upgradeUserLevel } from './api';
+import { buyFarm, upgradeFarm, upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
+import { useUpdateBoost } from './hooks';
 
 export const GameUpgradePage = () => {
   const queryClient = useQueryClient();
+  const addNotification = useStatusNotification();
 
   const { user } = useUser();
   const { user: userGameInfo } = useUserGameInfo();
-  const addNotification = useStatusNotification();
+  const { isActive } = useBoost();
+
   useBackButton();
 
   const [selectedUpgradeCard, setSelectedUpgradeCard] = useState<
@@ -31,6 +35,10 @@ export const GameUpgradePage = () => {
   const [selectedBoostCard, setSelectedBoostCard] = useState<
     (Card & { price: number; amount: number }) | null
   >(null);
+
+  const { updateBoostMutation, isPending: isBoostPending } = useUpdateBoost(
+    () => setSelectedBoostCard(null)
+  );
 
   const upgradeLevelMutation = useMutation({
     mutationFn: (data: { type: 'tap' | 'fuel' | 'farm'; price: number }) =>
@@ -66,18 +74,6 @@ export const GameUpgradePage = () => {
     },
   });
 
-  const updateBoostMutation = useMutation({
-    mutationFn: (data: { type: 'tapboost' | 'fuelboost'; quantity: number }) =>
-      updateBoost(data.type, data.quantity),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      setSelectedBoostCard(null);
-    },
-    onError: (err) => {
-      addNotification('error', err.message || 'Failed to update boost', 3000);
-    },
-  });
-
   return (
     <div className={styles.background}>
       <img
@@ -106,6 +102,7 @@ export const GameUpgradePage = () => {
                   photoUrl={item.photoUrl}
                   price={100_000}
                   amount={amount}
+                  disabled={isActive}
                   onClick={() =>
                     setSelectedBoostCard({ ...item, price: 100_000, amount })
                   }
@@ -152,7 +149,7 @@ export const GameUpgradePage = () => {
           <Popup
             key={`popup-${selectedBoostCard.title}`}
             card={selectedBoostCard}
-            isRequestPending={updateBoostMutation.isPending}
+            isRequestPending={isBoostPending}
             onActivate={() => {
               const titleStarts = selectedBoostCard.title.split(' ')[0];
               let type: 'tapboost' | 'fuelboost' = 'tapboost';

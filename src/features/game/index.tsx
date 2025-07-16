@@ -2,14 +2,21 @@ import { useRef } from 'react';
 import styles from './GameWidget.module.css';
 import { GameRocketIcon } from '../../components';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useManageGameSession, useRocket, useSuperRocket } from './hooks';
+import {
+  useActiveBoost,
+  useManageGameSession,
+  useRocket,
+  useSuperRocket,
+} from './hooks';
 import { SuperRocket, UpgradeButton } from './UI';
-import { useAmo, useUserGameInfo } from '../../shared';
+import { useAmo, useBoost, useUserGameInfo } from '../../shared';
 
 export const GameWidget = () => {
   const gameRef = useRef<HTMLDivElement | null>(null);
   const { user } = useUserGameInfo();
+
   const { amo, maxAmo } = useAmo();
+  const { isActive, type } = useBoost();
 
   const { rocketPositions, flyingIndicators, handleRocketClick } =
     useRocket(gameRef);
@@ -17,11 +24,31 @@ export const GameWidget = () => {
     useSuperRocket();
 
   useManageGameSession();
+  useActiveBoost();
 
   return (
-    <div className={styles.background}>
+    <div
+      className={`
+        ${styles.background}
+        ${isActive ? styles.boostActive : ''}
+      `}
+    >
+      {isActive && type === 'tapboost' && (
+        <div className={styles.tapBoostBanner}>Earn ×10</div>
+      )}
       <span className={styles.amo}>
-        <span className={styles.amoBold}>{amo}</span>
+        <span
+          className={`
+            ${styles.amoBold}
+            ${isActive && type === 'fuelboost' ? styles.infinity : ''}
+          `}
+        >
+          {isActive && type === 'fuelboost' ? (
+            <span className={styles.infinity}>∞</span>
+          ) : (
+            amo
+          )}
+        </span>
         <span>/{maxAmo}</span>
       </span>
       <div className={styles.game} ref={gameRef}>
@@ -54,7 +81,10 @@ export const GameWidget = () => {
                       top: `${flyingIndicators.current.get(index)!.top}px`,
                     }}
                   >
-                    +{user!.tapLevel}
+                    +
+                    {isActive && type === 'tapboost'
+                      ? user!.tapLevel * 10
+                      : user!.tapLevel}
                   </motion.div>
                 )}
               </motion.div>

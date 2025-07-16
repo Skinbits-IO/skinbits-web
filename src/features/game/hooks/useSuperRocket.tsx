@@ -6,12 +6,13 @@ import {
   updateBalanceEarned,
   updateTotalTaps,
 } from '../../../store/slices/game/gameSessionSlice';
-import { useAmo, useUserGameInfo } from '../../../shared';
+import { useAmo, useBoost, useUserGameInfo } from '../../../shared';
 
 export const useSuperRocket = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
+  const { isActive, type } = useBoost();
 
   const [activeSuperRocket, setActiveSuperRocket] = useState<boolean>(false);
   const [superRocketIndicators, setSuperRocketIndicators] = useState<
@@ -30,10 +31,12 @@ export const useSuperRocket = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    dispatch(updateUserBalance(user!.tapLevel));
+    const earnedRockets =
+      isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
+    dispatch(updateUserBalance(earnedRockets));
 
     dispatch(updateTotalTaps(1));
-    dispatch(updateBalanceEarned(user!.tapLevel));
+    dispatch(updateBalanceEarned(earnedRockets));
 
     const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);

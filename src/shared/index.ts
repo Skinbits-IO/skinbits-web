@@ -1,6 +1,8 @@
 export { api, uploadGameSession } from './api';
 export {
+  useUpdateBalance,
   useAmo,
+  useBoost,
   useUser,
   useUserGameInfo,
   useGameSession,
@@ -19,6 +21,8 @@ export {
   PREMIUM_PLANS,
   RARITIES_COLOR_MAP,
 } from './constants';
+
+export { getProperUserFromApi } from './utils';
 
 export type { GameSession, User, UserGameInfo, Skin } from './types';
 export { Rank, WeaponTypes, Rarities, Qualities } from './types';

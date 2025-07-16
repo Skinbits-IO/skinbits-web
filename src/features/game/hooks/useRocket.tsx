@@ -14,7 +14,7 @@ import {
 } from '../../../store/slices/game/gameSessionSlice';
 import { RocketPosition } from '../types';
 import { computeGrid, generatePosition, markArea } from '../utils';
-import { useAmo, useUserGameInfo } from '../../../shared';
+import { useAmo, useBoost, useUserGameInfo } from '../../../shared';
 
 export const useRocket = (
   gameRef: React.MutableRefObject<HTMLDivElement | null>
@@ -22,6 +22,7 @@ export const useRocket = (
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
+  const { isActive, type } = useBoost();
 
   const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
   const amoRef = useRef<number>(amo);
@@ -34,13 +35,17 @@ export const useRocket = (
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
     const newAmo = amo - user!.tapLevel;
+    const fuelBoost = isActive && type === 'fuelboost';
 
-    if (newAmo >= 0) {
-      dispatch(reduceAmo(user!.tapLevel));
-      dispatch(updateUserBalance(user!.tapLevel));
+    if (newAmo >= 0 || fuelBoost) {
+      if (!fuelBoost) dispatch(reduceAmo(user!.tapLevel));
+
+      const earnedRockets =
+        isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
+      dispatch(updateUserBalance(earnedRockets));
 
       dispatch(updateTotalTaps(1));
-      dispatch(updateBalanceEarned(user!.tapLevel));
+      dispatch(updateBalanceEarned(earnedRockets));
 
       const newRocketPosition = generatePosition(gameRef);
       const updatedPositions = rocketPositions.map((pos, i) =>
