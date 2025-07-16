@@ -11,9 +11,10 @@ interface FarmAvailability {
 export async function checkFarmAvailability(): Promise<FarmAvailability> {
   try {
     const resp = await api.get<{
-      message: { success: boolean; message: string };
+      success: boolean;
+      message: string;
     }>('/farming/isAvailableToFarm');
-    const { success, message } = resp.data.message;
+    const { success, message } = resp.data;
     if (success) {
       return { canFarm: true, message };
     }
@@ -50,15 +51,13 @@ interface ClaimAvailability {
 export async function checkClaimAvailability(): Promise<ClaimAvailability> {
   try {
     const resp = await api.get<{
-      message: {
-        success: boolean;
-        message: string;
-      };
+      success: boolean;
+      message: string;
     }>('/farming/isAvailableToClaim');
 
     return {
-      canClaim: resp.data.message.success,
-      message: resp.data.message.message,
+      canClaim: resp.data.success,
+      message: resp.data.message,
     };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data) {

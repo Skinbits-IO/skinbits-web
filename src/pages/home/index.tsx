@@ -41,7 +41,6 @@ export const HomePage = () => {
   });
 
   const getFarmStatus = (): FarmStatus => {
-    console.log(claimData);
     if (claimData?.canClaim) {
       return FarmStatus.Claim;
     }
