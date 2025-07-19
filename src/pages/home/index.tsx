@@ -7,7 +7,7 @@ import { setUserRank } from '../../store/slices/userSlice';
 import { Header, Rank } from '../../components';
 import { FarmButton, FarmCancelPopup, RankingPopup, Wallet } from './UI';
 import { useNavigate } from 'react-router';
-import { useRanking } from './hooks';
+import { useFarmState, useRanking } from './hooks';
 import { FarmStatus, Rank as RankEnum, RANKS, useUser } from '../../shared';
 import { useQuery } from '@tanstack/react-query';
 import { checkFarmAvailability, getFarmingStatus } from './api';
@@ -23,6 +23,7 @@ export const HomePage = () => {
   const navigate = useNavigate();
 
   const { user } = useUser();
+  const { session } = useFarmState();
   const { showNewRankPopup, setShowNewRankPopup } = useRanking();
 
   const [showFarmCancelPopup, setShowFarmCancelPopup] =

@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { claimFarmSession, startFarmSession } from '../../api';
 import { formatTimeRemaining, toIsoUtcNoMs } from '../../utils';
 import { useFarmState } from '../../hooks';
+import { useEffect, useState } from 'react';
 
 interface IFarmButtonProps {
   progress: number;
@@ -24,20 +25,7 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
   const { user } = useUserGameInfo();
   const { status, session } = useFarmState();
   const isFarmingAvailable = user?.farmLevel !== 0;
-
-  const getButtonText = (): string => {
-    switch (status) {
-      case FarmStatus.Inactive:
-        return 'Start farming for 4h';
-      case FarmStatus.Active:
-        return `Farming ends in ${formatTimeRemaining(session?.endTime ?? '')}`;
-      case FarmStatus.Claim:
-        return 'Claim farmed rockets';
-      case FarmStatus.Buy:
-      default:
-        return 'Buy farm for 250 000';
-    }
-  };
+  const [timeLeft, setTimeLeft] = useState<string>('');
 
   const startFarmMutation = useMutation({
     mutationFn: (data: { startTime: string; amountFarmed: number }) =>
@@ -69,6 +57,33 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
     },
   });
 
+  // live countdown: recalc every minute while active
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (session) {
+      const update = () => {
+        setTimeLeft(formatTimeRemaining(session.endTime));
+      };
+      update();
+      timer = setInterval(update, 60_000);
+    }
+    return () => clearInterval(timer);
+  }, [session]);
+
+  const getButtonText = (): string => {
+    switch (status) {
+      case FarmStatus.Inactive:
+        return 'Start farming for 4h';
+      case FarmStatus.Active:
+        return `Farming ends in ${timeLeft}`;
+      case FarmStatus.Claim:
+        return 'Claim farmed rockets';
+      case FarmStatus.Buy:
+      default:
+        return 'Buy farm for 250 000';
+    }
+  };
+
   return (
     <div
       className={styles.background}
@@ -95,7 +110,7 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
         }
       }}
     >
-      {!isFarmingAvailable && (
+      {status === FarmStatus.Buy && (
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
       )}
       <div className={styles.content}>
