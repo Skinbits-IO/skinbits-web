@@ -8,7 +8,7 @@ export async function saveTradeLink(tradeLink: string) {
     });
     return response.data;
   } catch (error) {
-    let errorMessage = `Failed to svae the trade link`;
+    let errorMessage = `Failed to save the trade link`;
     if (axios.isAxiosError(error) && error.response) {
       errorMessage = error.response.data.error || errorMessage;
     }

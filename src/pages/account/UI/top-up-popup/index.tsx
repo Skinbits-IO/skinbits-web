@@ -4,6 +4,7 @@ import { Devider, PopupCloseButton } from '../../../../components';
 import { Card, ModeSwitcher } from './UI';
 import { useState } from 'react';
 import { DONATIONS_PRICE } from '../../../../shared';
+import { useDonation } from '../../hooks';
 
 interface ITopUpPopupProps {
   onClose: () => void;
@@ -11,6 +12,7 @@ interface ITopUpPopupProps {
 
 export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
   const [mode, setMode] = useState<'ton' | 'star'>('ton');
+  const { mutate } = useDonation();
 
   return (
     <>
@@ -43,7 +45,14 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                   rockets={prices.rockets}
                   price={prices.price}
                   mode={mode}
-                  onClick={() => {}}
+                  onClick={() => {
+                    mutate({
+                      amount: prices.price as number,
+                      currency: 'XTR',
+                      paymentMethod: 'telegram',
+                      notes: 'Buy in-game rockets to collect the best skins',
+                    });
+                  }}
                 />
               );
             }
