@@ -8,13 +8,15 @@ import { Header, Rank } from '../../components';
 import { FarmButton, FarmCancelPopup, RankingPopup, Wallet } from './UI';
 import { useNavigate } from 'react-router';
 import { useRanking } from './hooks';
-import { Rank as RankEnum, RANKS, useUser } from '../../shared';
+import { FarmStatus, Rank as RankEnum, RANKS, useUser } from '../../shared';
 import { useQuery } from '@tanstack/react-query';
-import { checkClaimAvailability, checkFarmAvailability } from './api';
-import { FarmStatus } from './types';
+import { checkFarmAvailability, getFarmingStatus } from './api';
 import { FarmButtonSkeleton } from './UI/farm-button-skeleton';
-import { toIsoUtcNoMs } from './utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  setFarmingSession,
+  setFarmingStatus,
+} from '../../store/slices/game/farmSlice';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,25 +36,28 @@ export const HomePage = () => {
   });
 
   const { data: claimData, isPending: isPendingClaim } = useQuery({
-    queryKey: ['farm-claim-availability'],
-    queryFn: () => checkClaimAvailability(),
+    queryKey: ['farming-status'],
+    queryFn: () => getFarmingStatus(),
     retry: 0,
     staleTime: Infinity,
   });
 
-  const getFarmStatus = (): FarmStatus => {
-    if (claimData?.canClaim) {
-      return FarmStatus.Claim;
+  useEffect(() => {
+    if (claimData && claimData.session) {
+      dispatch(setFarmingSession(claimData.session));
     }
 
-    if (availableData?.canFarm) {
-      return FarmStatus.Inactive;
-    } else if (!availableData?.canFarm) {
-      return FarmStatus.Active;
+    if (availableData) {
+      dispatch(setFarmingStatus(FarmStatus.Inactive));
+    } else if (!availableData) {
+      dispatch(setFarmingStatus(FarmStatus.Active));
     }
 
-    return FarmStatus.Buy;
-  };
+    if (claimData) {
+      if (claimData.canClaim) dispatch(setFarmingStatus(FarmStatus.Claim));
+      if (claimData.session) dispatch(setFarmingSession(claimData.session));
+    }
+  }, [claimData, availableData]);
 
   return (
     <div className={styles.background}>
@@ -86,13 +91,7 @@ export const HomePage = () => {
         <GameWidget />
         {!isPendingFarm || !isPendingClaim ? (
           <FarmButton
-            status={getFarmStatus()}
             progress={100 * (user!.balance / 250000)}
-            endTime={
-              availableData && availableData.endsAt
-                ? availableData.endsAt
-                : toIsoUtcNoMs()
-            }
             openPopup={() => setShowFarmCancelPopup(!showFarmCancelPopup)}
           />
         ) : (

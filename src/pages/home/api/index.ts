@@ -1,7 +1,7 @@
 export { claimRewardForNewRank } from './userService';
 export {
   checkFarmAvailability,
-  checkClaimAvailability,
+  getFarmingStatus,
   startFarmSession,
   cancelFarmSession,
   claimFarmSession,

@@ -24,5 +24,11 @@ export {
 
 export { getProperUserFromApi } from './utils';
 
-export type { GameSession, User, UserGameInfo, Skin } from './types';
-export { Rank, WeaponTypes, Rarities, Qualities } from './types';
+export type {
+  GameSession,
+  User,
+  UserGameInfo,
+  Skin,
+  FarmingSession,
+} from './types';
+export { Rank, WeaponTypes, Rarities, Qualities, FarmStatus } from './types';

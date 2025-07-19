@@ -1,83 +1,58 @@
 import axios from 'axios';
-import { api } from '../../../shared';
+import { api, FarmingSession } from '../../../shared';
 
-interface FarmAvailability {
-  canFarm: boolean;
-  message: string;
-  endsAt?: string;
-  claimed?: boolean;
-}
-
-export async function checkFarmAvailability(): Promise<FarmAvailability> {
+export async function checkFarmAvailability(): Promise<boolean> {
   try {
-    const resp = await api.get<{
-      success: boolean;
-      message: string;
-    }>('/farming/isAvailableToFarm');
-    const { success, message } = resp.data;
-    if (success) {
-      return { canFarm: true, message };
-    }
-    const endsAtMatch = message.match(/Ends at:\s*([^\.]+)/);
-    const claimedMatch = message.match(/Claimed:\s*(true|false)/);
-    const endsAt = endsAtMatch
-      ? new Date(endsAtMatch[1]).toISOString()
-      : undefined;
-    const claimed = claimedMatch ? claimedMatch[1] === 'true' : undefined;
-    return { canFarm: false, message, endsAt, claimed };
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response?.data) {
-      const { success, message } = err.response.data as {
-        success: boolean;
-        message: string;
-      };
-      const endsAtMatch = message.match(/Ends at:\s*([^\.]+)/);
-      const claimedMatch = message.match(/Claimed:\s*(true|false)/);
-      const endsAt = endsAtMatch
-        ? new Date(endsAtMatch[1]).toISOString()
-        : undefined;
-      const claimed = claimedMatch ? claimedMatch[1] === 'true' : undefined;
-      return { canFarm: success, message, endsAt, claimed };
+    const resp = await api.get<boolean>('/farming/isAvailableToFarm');
+    return resp.data;
+  } catch (err: any) {
+    if (axios.isAxiosError(err) && err.response?.status === 400) {
+      return false;
     }
     throw err;
   }
 }
 
-interface ClaimAvailability {
-  canClaim: boolean;
-  message: string;
-}
-
-export async function checkClaimAvailability(): Promise<ClaimAvailability> {
-  try {
-    const resp = await api.get<{
-      success: boolean;
-      message: string;
-    }>('/farming/isAvailableToClaim');
-
-    return {
-      canClaim: resp.data.success,
-      message: resp.data.message,
-    };
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response?.data) {
-      const data = err.response.data as {
-        success: boolean;
-        message: string;
-      };
-      return {
-        canClaim: data.success,
-        message: data.message,
-      };
-    }
-    throw err;
-  }
-}
-
-interface FarmingSession {
-  id: number;
+// exactly what the server returns
+interface RawFarmingSession {
+  farming_session_id: number;
   start_time: string;
   end_time: string;
+  amount_farmed: number;
+  is_claimed: boolean;
+  telegram_id: number;
+}
+
+interface FarmingStatus {
+  canClaim: boolean;
+  session?: FarmingSession;
+}
+
+export async function getFarmingStatus(): Promise<FarmingStatus> {
+  try {
+    const resp = await api.get<RawFarmingSession>('/farming/status');
+    const raw = resp.data;
+
+    const session: FarmingSession = {
+      sessionId: raw.farming_session_id,
+      startTime: raw.start_time,
+      endTime: raw.end_time,
+      amountFarmed: raw.amount_farmed,
+      isClaimed: raw.is_claimed,
+      telegramId: raw.telegram_id,
+    };
+
+    const now = Date.now();
+    const ended = new Date(session.endTime).getTime();
+    const canClaim = now >= ended && !session.isClaimed;
+
+    return { canClaim, session };
+  } catch (err: any) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
+      return { canClaim: false };
+    }
+    throw err;
+  }
 }
 
 export async function startFarmSession(
@@ -112,11 +87,9 @@ export async function cancelFarmSession() {
   }
 }
 
-export async function claimFarmSession(amountFarmed: number) {
+export async function claimFarmSession() {
   try {
-    const response = await api.post<FarmingSession>(`/farming/claimFarm`, {
-      amount_farmed: amountFarmed,
-    });
+    const response = await api.post<FarmingSession>(`/farming/claim`);
     return response.data;
   } catch (error) {
     let errorMessage = `Failed to claim farming session`;

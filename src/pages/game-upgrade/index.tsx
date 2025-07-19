@@ -14,7 +14,7 @@ import {
   useUser,
   useUserGameInfo,
 } from '../../shared';
-import { buyFarm, upgradeFarm, upgradeUserLevel } from './api';
+import { buyFarm, upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 import { useUpdateBoost } from './hooks';
 
@@ -60,17 +60,6 @@ export const GameUpgradePage = () => {
     },
     onError: (err) => {
       addNotification('error', err.message || 'Failed to buy farm', 3000);
-    },
-  });
-
-  const upgradeFarmMutation = useMutation({
-    mutationFn: (data: { price: number }) => upgradeFarm(data.price),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      setSelectedUpgradeCard(null);
-    },
-    onError: (err) => {
-      addNotification('error', err.message || 'Failed to upgrade farm', 3000);
     },
   });
 
@@ -181,14 +170,8 @@ export const GameUpgradePage = () => {
                   ? 'tap'
                   : 'farm';
 
-              if (levelType === 'farm') {
-                if (userGameInfo?.farmLevel === 0) {
-                  buyFarmMutation.mutate();
-                } else {
-                  upgradeFarmMutation.mutate({
-                    price: selectedUpgradeCard.price,
-                  });
-                }
+              if (levelType === 'farm' && userGameInfo?.farmLevel === 0) {
+                buyFarmMutation.mutate();
               } else {
                 upgradeLevelMutation.mutate({
                   type: levelType,
@@ -197,9 +180,7 @@ export const GameUpgradePage = () => {
               }
             }}
             isRequestPending={
-              upgradeLevelMutation.isPending ||
-              buyFarmMutation.isPending ||
-              upgradeFarmMutation.isPending
+              upgradeLevelMutation.isPending || buyFarmMutation.isPending
             }
             onExit={() => setSelectedUpgradeCard(null)}
           />

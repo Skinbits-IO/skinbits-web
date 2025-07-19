@@ -1,30 +1,28 @@
 import { useNavigate } from 'react-router';
 import { RocketIcon } from '../../../../components';
-import { useStatusNotification, useUserGameInfo } from '../../../../shared';
+import {
+  FarmStatus,
+  useStatusNotification,
+  useUserGameInfo,
+} from '../../../../shared';
 import styles from './FarmButton.module.css';
-import { FarmStatus } from '../../types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { claimFarmSession, startFarmSession } from '../../api';
 import { formatTimeRemaining, toIsoUtcNoMs } from '../../utils';
+import { useFarmState } from '../../hooks';
 
 interface IFarmButtonProps {
-  status: FarmStatus;
   progress: number;
-  endTime: string;
   openPopup: () => void;
 }
 
-export const FarmButton = ({
-  status,
-  progress,
-  endTime,
-  openPopup,
-}: IFarmButtonProps) => {
+export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
   const navigate = useNavigate();
   const addNotification = useStatusNotification();
   const queryClient = useQueryClient();
 
   const { user } = useUserGameInfo();
+  const { status, session } = useFarmState();
   const isFarmingAvailable = user?.farmLevel !== 0;
 
   const getButtonText = (): string => {
@@ -32,7 +30,7 @@ export const FarmButton = ({
       case FarmStatus.Inactive:
         return 'Start farming for 4h';
       case FarmStatus.Active:
-        return `Farming ends in ${formatTimeRemaining(endTime)}`;
+        return `Farming ends in ${formatTimeRemaining(session?.endTime ?? '')}`;
       case FarmStatus.Claim:
         return 'Claim farmed rockets';
       case FarmStatus.Buy:
@@ -46,6 +44,7 @@ export const FarmButton = ({
       startFarmSession(data.startTime, data.amountFarmed),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
+      queryClient.invalidateQueries({ queryKey: ['farming-status'] });
     },
     onError: (err) => {
       addNotification(
@@ -57,8 +56,7 @@ export const FarmButton = ({
   });
 
   const claimFarmMutation = useMutation({
-    mutationFn: (data: { amountFarmed: number }) =>
-      claimFarmSession(data.amountFarmed),
+    mutationFn: () => claimFarmSession(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
     },
@@ -93,9 +91,7 @@ export const FarmButton = ({
         } else if (status === FarmStatus.Buy) {
           navigate('/upgrade');
         } else if (status === FarmStatus.Claim) {
-          claimFarmMutation.mutate({
-            amountFarmed: (user?.farmLevel ?? 1) * 100000,
-          });
+          claimFarmMutation.mutate();
         }
       }}
     >
@@ -113,9 +109,11 @@ export const FarmButton = ({
           {getButtonText()}
         </p>
         <div className={styles.rocketContainer}>
-          {status === FarmStatus.Claim && (
+          {(status === FarmStatus.Claim || status === FarmStatus.Active) && (
             <p className={styles.rocketText}>
-              {(user?.farmLevel ?? 1) * 100000}
+              {status === FarmStatus.Claim
+                ? session?.amountFarmed
+                : (user?.farmLevel ?? 1) * 100000}
             </p>
           )}
           <div
