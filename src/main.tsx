@@ -12,7 +12,7 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 const queryClient = new QueryClient();
 
 const manifestUrl =
-  'https://skinbits-io.github.io/skinbits-web/tonconnect-manifest.json';
+  window.location.origin + '/skinbits-web/tonconnect-manifest.json';
 
 createRoot(document.getElementById('root')!).render(
   <CookiesProvider>
