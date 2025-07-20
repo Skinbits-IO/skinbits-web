@@ -127,6 +127,15 @@ export function useTonPayment() {
     updateStatus('idle', '', null);
   }, [updateStatus]);
 
+  // Or even simpler - just try to open the modal
+  const testModal = () => {
+    try {
+      tonConnectUI.openModal();
+    } catch (error) {
+      console.error('Failed to open modal:', error);
+    }
+  };
+
   return {
     // Payment state
     status: paymentState.status,
@@ -143,5 +152,6 @@ export function useTonPayment() {
     // Payment action
     payWithTon,
     resetPayment,
+    testModal,
   };
 }

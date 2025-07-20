@@ -6,7 +6,7 @@ import { useTonPayment } from './useTonPayment';
 
 export const useDonation = () => {
   const addNotification = useStatusNotification();
-  const { payWithTon } = useTonPayment();
+  const { payWithTon, testModal } = useTonPayment();
 
   const buyItem = async (itemName: string, price: number) => {
     const success = await payWithTon({
@@ -43,11 +43,13 @@ export const useDonation = () => {
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        (async () =>
+        (async () => {
+          testModal();
           await buyItem(
             'Buy more rockets to get the best skins',
             data.donation.amount
-          ))();
+          );
+        })();
       }
     },
     onError: (err) => {
