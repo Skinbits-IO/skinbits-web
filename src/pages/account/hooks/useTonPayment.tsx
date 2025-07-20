@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
+import { useTonConnectUI } from '@tonconnect/ui-react';
 import WebApp from '@twa-dev/sdk';
-import { useMainContract } from './hooks';
 
 export type TonPaymentStatus = 'idle' | 'processing' | 'success' | 'error';
 
@@ -9,17 +9,18 @@ interface TonPaymentState {
   message: string;
   lastPurchase: {
     itemName: string;
-    tonPrice: number;
+    tonAmount: string;
   } | null;
 }
 
 interface TonPaymentOptions {
   itemName: string;
-  tonPrice: number;
+  tonAmount: number;
+  contractAddress?: string;
 }
 
 export function useTonPayment() {
-  const { sendPurchase } = useMainContract();
+  const [tonConnectUI] = useTonConnectUI();
 
   const [paymentState, setPaymentState] = useState<TonPaymentState>({
     status: 'idle',
@@ -38,18 +39,23 @@ export function useTonPayment() {
     []
   );
 
+  // Convert TON to nanotons (1 TON = 1,000,000,000 nanotons)
+  const tonToNano = (ton: number): string => {
+    return Math.floor(ton * 1_000_000_000).toString();
+  };
+
   const payWithTon = useCallback(
     async (options: TonPaymentOptions): Promise<boolean> => {
-      const { itemName, tonPrice } = options;
+      const { itemName, tonAmount, contractAddress } = options;
 
-      updateStatus('processing', `Processing TON payment for ${itemName}...`);
+      updateStatus('processing', `Processing payment for ${itemName}...`);
 
       try {
         // Handle free items
-        if (tonPrice === 0) {
+        if (tonAmount === 0) {
           updateStatus('success', `${itemName} accessed successfully (Free)`, {
             itemName,
-            tonPrice,
+            tonAmount: '0',
           });
 
           if (WebApp.HapticFeedback) {
@@ -59,18 +65,34 @@ export function useTonPayment() {
           return true;
         }
 
-        // Process paid TON transaction
-        const success = await sendPurchase(tonPrice, itemName);
+        // Check if wallet is connected
+        if (!tonConnectUI.connected) {
+          updateStatus('error', 'Please connect your TON wallet first');
+          return false;
+        }
 
-        if (success) {
-          updateStatus(
-            'success',
-            `${itemName} purchased successfully with TON!`,
+        // Create transaction
+        const transaction = {
+          messages: [
             {
-              itemName,
-              tonPrice,
-            }
-          );
+              address:
+                contractAddress ||
+                'UQDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4', // Your contract
+              amount: tonToNano(tonAmount),
+              payload: btoa(itemName), // Base64 encode item name as payload
+            },
+          ],
+          validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes
+        };
+
+        // Send transaction
+        const result = await tonConnectUI.sendTransaction(transaction);
+
+        if (result) {
+          updateStatus('success', `${itemName} purchased successfully!`, {
+            itemName,
+            tonAmount: tonAmount + '',
+          });
 
           // Success feedback
           if (WebApp.HapticFeedback) {
@@ -83,12 +105,11 @@ export function useTonPayment() {
 
           return true;
         } else {
-          updateStatus('error', 'TON transaction failed');
+          updateStatus('error', 'Transaction was cancelled');
           return false;
         }
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'TON payment failed';
+      } catch (error: any) {
+        const errorMessage = error?.message || 'Payment failed';
         updateStatus('error', errorMessage);
 
         // Error feedback
@@ -99,7 +120,7 @@ export function useTonPayment() {
         return false;
       }
     },
-    [sendPurchase, updateStatus]
+    [tonConnectUI, updateStatus]
   );
 
   const resetPayment = useCallback(() => {
@@ -114,6 +135,10 @@ export function useTonPayment() {
     isProcessing: paymentState.status === 'processing',
     isSuccess: paymentState.status === 'success',
     isError: paymentState.status === 'error',
+
+    // Wallet info
+    connected: tonConnectUI.connected,
+    wallet: tonConnectUI.wallet,
 
     // Payment action
     payWithTon,

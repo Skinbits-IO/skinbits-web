@@ -12,6 +12,12 @@ export default defineConfig({
     }),
     basicSsl(),
   ],
+  resolve: {
+    alias: {
+      buffer: 'buffer',
+      process: 'process/browser',
+    },
+  },
   base: '/skinbits-web/',
   server: {
     https: true,

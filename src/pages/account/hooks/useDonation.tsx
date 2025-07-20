@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useStatusNotification } from '../../../shared';
 import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
-import { useTonPayment } from '../../../features';
+import { useTonPayment } from './useTonPayment';
 
 export const useDonation = () => {
   const addNotification = useStatusNotification();
@@ -11,7 +11,7 @@ export const useDonation = () => {
   const buyItem = async (itemName: string, price: number) => {
     const success = await payWithTon({
       itemName: itemName,
-      tonPrice: price,
+      tonAmount: price,
     });
 
     if (success) {

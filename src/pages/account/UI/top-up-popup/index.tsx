@@ -48,7 +48,7 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                   onClick={() => {
                     mutate({
                       amount: prices.price as number,
-                      currency: mode === 'star' ? 'XTR' : 'USD',
+                      currency: mode === 'star' ? 'XTR' : 'TON',
                       paymentMethod: 'telegram',
                       notes: 'Buy in-game rockets to collect the best skins',
                     });

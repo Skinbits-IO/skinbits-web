@@ -3,20 +3,25 @@ import { BrowserRouter } from 'react-router';
 import App from './App.tsx';
 import './reset.css';
 import './index.css';
-
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CookiesProvider } from 'react-cookie';
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 const queryClient = new QueryClient();
+
+const manifestUrl =
+  'https://Skinbits-IO.github.io/payment/tonconnect-manifest.json';
 
 createRoot(document.getElementById('root')!).render(
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <BrowserRouter basename="/skinbits-web/">
-          <App />
+          <TonConnectUIProvider manifestUrl={manifestUrl}>
+            <App />
+          </TonConnectUIProvider>
         </BrowserRouter>
       </Provider>
     </QueryClientProvider>
