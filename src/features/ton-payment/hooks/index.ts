@@ -1,0 +1,1 @@
+export { useMainContract } from './useMainContract';

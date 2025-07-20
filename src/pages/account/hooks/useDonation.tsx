@@ -2,9 +2,23 @@ import { useMutation } from '@tanstack/react-query';
 import { useStatusNotification } from '../../../shared';
 import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
+import { useTonPayment } from '../../../features';
 
 export const useDonation = () => {
   const addNotification = useStatusNotification();
+  const { payWithTon } = useTonPayment();
+
+  const buyItem = async (itemName: string, price: number) => {
+    const success = await payWithTon({
+      itemName: itemName,
+      tonPrice: price,
+    });
+
+    if (success) {
+      console.log(`Player bought ${itemName} for ${price} TON`);
+      alert(`Player bought ${itemName} for ${price} TON`);
+    }
+  };
 
   return useMutation({
     mutationFn: (data: {
@@ -14,22 +28,26 @@ export const useDonation = () => {
       notes: string;
     }) => createDonation(data),
     onSuccess: (data) => {
-      if (WebApp.openInvoice) {
-        WebApp.openInvoice(data.invoiceLink, (status) => {
-          if (status === 'paid') {
-            console.log('Payment successful!');
-            alert('Payment successful!');
-          } else if (status === 'cancelled') {
-            console.log('Payment was cancelled.');
-            alert('Payment was cancelled.');
-          } else {
-            console.log('Payment failed or was closed.');
-            alert('Payment failed or was closed.');
-          }
-        });
+      if (data.invoiceLink && data.donation.currency === 'XTR') {
+        if (WebApp.openInvoice) {
+          WebApp.openInvoice(data.invoiceLink, (status) => {
+            if (status === 'paid') {
+              alert('Payment successful!');
+            } else if (status === 'cancelled') {
+              alert('Payment was cancelled.');
+            } else {
+              alert('Payment failed or was closed.');
+            }
+          });
+        } else {
+          WebApp.openLink(data.invoiceLink);
+        }
       } else {
-        console.warn('openInvoice is not supported. Opening link directly.');
-        WebApp.openLink(data.invoiceLink);
+        (async () =>
+          await buyItem(
+            'Buy more rockets to get the best skins',
+            data.donation.amount
+          ))();
       }
     },
     onError: (err) => {
