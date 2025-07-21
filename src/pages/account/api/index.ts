@@ -1,2 +1,2 @@
 export { saveTradeLink } from './steamService';
-export { createDonation } from './donationService';
+export { createDonation, updateDonationStatus } from './donationService';

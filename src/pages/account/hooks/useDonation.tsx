@@ -3,28 +3,34 @@ import { useStatusNotification } from '../../../shared';
 import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useTonPayment } from './useTonPayment';
+import { useUpdateDonation } from './useUpdateDonation';
+import { useState } from 'react';
 
 export const useDonation = () => {
   const addNotification = useStatusNotification();
   const { payWithTon } = useTonPayment();
+  const updateMutation = useUpdateDonation();
 
-  return useMutation({
+  const [paymentFinished, setPaymentFinished] = useState(true);
+
+  const createMutation = useMutation({
     mutationFn: (data: {
       amount: number;
       currency: string;
       paymentMethod: string;
       notes: string;
     }) => createDonation(data),
-
     onSuccess: (data) => {
-      console.log('Donation created:', data);
+      setPaymentFinished(false);
 
       if (data.invoiceLink && data.donation.currency === 'XTR') {
-        // Handle Telegram Stars payment
-        console.log('Processing Stars payment...');
-
         if (WebApp.openInvoice) {
           WebApp.openInvoice(data.invoiceLink, (status) => {
+            updateMutation.mutate({
+              id: data.donation.donation_id,
+              status: status === 'paid' ? 'success' : 'failed',
+            });
+
             if (status === 'paid') {
               alert('Payment successful!');
             } else if (status === 'cancelled') {
@@ -32,34 +38,33 @@ export const useDonation = () => {
             } else {
               alert('Payment failed or was closed.');
             }
+
+            setPaymentFinished(true);
           });
         } else {
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        // Handle TON payment - just call payWithTon, it handles everything!
-        console.log('Processing TON payment...');
-
         payWithTon({
           itemName: 'Buy more rockets to get the best skins',
           tonAmount: data.donation.amount,
         })
           .then((success) => {
-            if (success) {
-              console.log(
-                `✅ TON payment successful for ${data.donation.amount} TON`
-              );
-            } else {
-              console.log(`❌ TON payment failed or was cancelled`);
-            }
+            updateMutation.mutate({
+              id: data.donation.donation_id,
+              status: success ? 'success' : 'failed',
+            });
+
+            setPaymentFinished(true);
           })
           .catch((error) => {
             console.error('TON payment error:', error);
           });
       }
     },
-
     onError: (err) => {
+      setPaymentFinished(false);
+
       console.error('Donation error:', err);
       addNotification(
         'error',
@@ -68,4 +73,10 @@ export const useDonation = () => {
       );
     },
   });
+
+  return {
+    createMutation,
+    isPending:
+      updateMutation.isPending || createMutation.isPending || !paymentFinished,
+  };
 };

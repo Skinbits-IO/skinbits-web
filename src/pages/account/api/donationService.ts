@@ -37,3 +37,21 @@ export async function createDonation(body: {
     throw new Error(errorMessage);
   }
 }
+
+export async function updateDonationStatus(id: number, status: string) {
+  try {
+    const response = await api.put<{ data: DonationResponse }>(
+      `/donations/${id}`,
+      {
+        status,
+      }
+    );
+    return response.data.data;
+  } catch (error) {
+    let errorMessage = `Failed to update donation status`;
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data.error || errorMessage;
+    }
+    throw new Error(errorMessage);
+  }
+}

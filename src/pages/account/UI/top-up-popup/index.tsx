@@ -12,7 +12,7 @@ interface ITopUpPopupProps {
 
 export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
   const [mode, setMode] = useState<'ton' | 'star'>('ton');
-  const { mutate } = useDonation();
+  const { createMutation, isPending } = useDonation();
 
   return (
     <>
@@ -46,7 +46,7 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                   price={prices.price}
                   mode={mode}
                   onClick={() => {
-                    mutate({
+                    createMutation.mutate({
                       amount: prices.price as number,
                       currency: mode === 'star' ? 'XTR' : 'TON',
                       paymentMethod: 'telegram',
@@ -56,6 +56,12 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                 />
               );
             }
+          )}
+
+          {isPending && (
+            <div className={styles.loaderOverlay}>
+              <div className={styles.spinner} />
+            </div>
           )}
         </div>
       </motion.div>
