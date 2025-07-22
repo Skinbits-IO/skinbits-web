@@ -8,7 +8,13 @@ import { Header, Rank } from '../../components';
 import { FarmButton, FarmCancelPopup, RankingPopup, Wallet } from './UI';
 import { useNavigate } from 'react-router';
 import { useRanking } from './hooks';
-import { FarmStatus, Rank as RankEnum, RANKS, useUser } from '../../shared';
+import {
+  FarmStatus,
+  Rank as RankEnum,
+  RANKS,
+  useUser,
+  useUserGameInfo,
+} from '../../shared';
 import { useQuery } from '@tanstack/react-query';
 import { checkFarmAvailability, getFarmingStatus } from './api';
 import { FarmButtonSkeleton } from './UI/farm-button-skeleton';
@@ -23,6 +29,7 @@ export const HomePage = () => {
   const navigate = useNavigate();
 
   const { user } = useUser();
+  const { user: userGameInfo } = useUserGameInfo();
   const { showNewRankPopup, setShowNewRankPopup } = useRanking();
 
   const [showFarmCancelPopup, setShowFarmCancelPopup] =
@@ -49,7 +56,7 @@ export const HomePage = () => {
 
     if (availableData) {
       dispatch(setFarmingStatus(FarmStatus.Inactive));
-    } else if (!availableData) {
+    } else if (!availableData && userGameInfo?.farmLevel !== 0) {
       dispatch(setFarmingStatus(FarmStatus.Active));
     }
 

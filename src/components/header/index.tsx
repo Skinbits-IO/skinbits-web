@@ -20,7 +20,9 @@ export const Header = ({ children }: IHeaderProps) => {
     <div className={styles.background}>
       <div className={styles.greeting}>
         <img className={styles.avatar} src={url} alt="image" />
-        <h6 className={styles.text}>Hi, {user!.username} 👋</h6>
+        <h6 className={styles.text}>
+          Hi, {user!.username === '' ? user!.firstName : user!.username} 👋
+        </h6>
       </div>
       <div className={styles.buttons}>
         {children}
