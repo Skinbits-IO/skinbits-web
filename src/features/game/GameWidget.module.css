@@ -29,6 +29,19 @@
   animation: pulse-gold-border 1.8s ease-in-out infinite;
 }
 
+.boostTimer {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.6);
+  color: #FFD700;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  z-index: 5;
+}
+
 @keyframes pulse-gold-border {
   0%, 100% {
     opacity: 1;

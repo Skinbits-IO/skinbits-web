@@ -11,7 +11,7 @@ export async function updateBoost(
       quantity,
     });
 
-    const data = response.data.user;
+    const data = response.data;
     return getProperUserFromApi(data);
   } catch (error) {
     console.log(error);
