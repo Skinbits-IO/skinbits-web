@@ -40,7 +40,7 @@ export async function createDonation(body: {
 
 export async function updateDonationStatus(id: number, status: string) {
   try {
-    const response = await api.put<{ data: DonationResponse }>(
+    const response = await api.patch<{ data: DonationResponse }>(
       `/donations/${id}`,
       {
         status,
