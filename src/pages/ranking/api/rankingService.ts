@@ -7,9 +7,9 @@ interface RawRankUser {
   last_name: string | null;
   username: string | null;
   photo_url: string | null;
-  rank?: string; // e.g. "1"
-  total_balance_earned: number; // e.g. 0
-  total_taps: number; // e.g. 1820
+  rank?: string;
+  total_balance_earned: number;
+  total_taps: number;
 }
 
 /**

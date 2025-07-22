@@ -5,7 +5,7 @@ export const useUserLeaderboard = () => {
   return useQuery({
     queryKey: ['leaderboard-user'],
     queryFn: () => getUserRankInLeague(),
-    staleTime: 10 * (60 * 1000),
+    staleTime: Infinity,
     gcTime: 15 * (60 * 1000),
   });
 };

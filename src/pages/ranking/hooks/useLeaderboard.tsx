@@ -6,7 +6,7 @@ export const useLeaderboard = (league: Rank) => {
   return useQuery({
     queryKey: ['leaderboard-top', league],
     queryFn: () => getTopUsersByLeague(league),
-    staleTime: 10 * (60 * 1000),
+    staleTime: Infinity,
     gcTime: 15 * (60 * 1000),
   });
 };

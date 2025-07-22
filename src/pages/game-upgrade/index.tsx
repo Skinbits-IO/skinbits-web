@@ -1,7 +1,7 @@
 import styles from './GameUpgradePage.module.css';
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Card } from './types';
 import {
   BOOST_CARDS,
@@ -17,9 +17,13 @@ import {
 import { buyFarm, upgradeUserLevel } from './api';
 import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
 import { useUpdateBoost } from './hooks';
+import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
+import { setUser } from '../../store/slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
 
 export const GameUpgradePage = () => {
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch<AppDispatch>();
   const addNotification = useStatusNotification();
 
   const { user } = useUser();
@@ -43,8 +47,9 @@ export const GameUpgradePage = () => {
   const upgradeLevelMutation = useMutation({
     mutationFn: (data: { type: 'tap' | 'fuel' | 'farm'; price: number }) =>
       upgradeUserLevel(data.type, data.price),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+    onSuccess: (data) => {
+      dispatch(setUser(data.user));
+      dispatch(setUserGameInfo(data.userGameInfo));
       setSelectedUpgradeCard(null);
     },
     onError: (err) => {
@@ -54,8 +59,9 @@ export const GameUpgradePage = () => {
 
   const buyFarmMutation = useMutation({
     mutationFn: () => buyFarm(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+    onSuccess: (data) => {
+      dispatch(setUser(data.user));
+      dispatch(setUserGameInfo(data.userGameInfo));
       setSelectedUpgradeCard(null);
     },
     onError: (err) => {

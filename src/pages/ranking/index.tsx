@@ -9,22 +9,14 @@ import {
 import { useUser } from '../../shared';
 import { useLeaderboard, useUserLeaderboard } from './hooks';
 import { Rank as RankEnum } from '../../shared';
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 export const RankingPage = () => {
-  const queryClient = useQueryClient();
   const { user } = useUser();
   const rank = user!.rank as RankEnum;
 
   const { data: leaderboard, isPending: isLeaderboardPending } =
     useLeaderboard(rank);
   const { data, isPending } = useUserLeaderboard();
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['leaderboard-top', rank] });
-    queryClient.invalidateQueries({ queryKey: ['leaderboard-user'] });
-  }, [user]);
 
   return (
     <div className={styles.background}>
