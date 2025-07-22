@@ -1,22 +1,25 @@
 import { motion } from 'framer-motion';
 import { PopupCloseButton, PopupButton } from '../../../../components';
 import styles from './FarmCancelPopup.module.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../../shared';
+import { useMutation } from '@tanstack/react-query';
+import { FarmStatus, useStatusNotification } from '../../../../shared';
 import { cancelFarmSession } from '../../api';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../store';
+import { setFarmingStatus } from '../../../../store/slices/game/farmSlice';
 
 interface IFarmCancelPopupProps {
   onClose: () => void;
 }
 
 export const FarmCancelPopup = ({ onClose }: IFarmCancelPopupProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const addNotification = useStatusNotification();
-  const queryClient = useQueryClient();
 
   const cancelFarmMutation = useMutation({
     mutationFn: () => cancelFarmSession(),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
+      dispatch(setFarmingStatus(FarmStatus.Inactive));
       onClose();
     },
     onError: (err) => {

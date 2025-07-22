@@ -60,11 +60,22 @@ export async function startFarmSession(
   amountFarmed: number
 ): Promise<FarmingSession> {
   try {
-    const response = await api.post<FarmingSession>(`/farming/activate`, {
+    const response = await api.post<RawFarmingSession>(`/farming/activate`, {
       start_time: startTime,
       amount_farmed: amountFarmed,
     });
-    return response.data;
+
+    const raw = response.data;
+    const session: FarmingSession = {
+      sessionId: raw.farming_session_id,
+      startTime: raw.start_time,
+      endTime: raw.end_time,
+      amountFarmed: raw.amount_farmed,
+      isClaimed: raw.is_claimed,
+      telegramId: raw.telegram_id,
+    };
+
+    return session;
   } catch (error) {
     let errorMessage = `Failed to start farming session`;
     if (axios.isAxiosError(error) && error.response) {

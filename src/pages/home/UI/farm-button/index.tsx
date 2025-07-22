@@ -6,11 +6,17 @@ import {
   useUserGameInfo,
 } from '../../../../shared';
 import styles from './FarmButton.module.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { claimFarmSession, startFarmSession } from '../../api';
 import { formatTimeRemaining, toIsoUtcNoMs } from '../../utils';
 import { useFarmState } from '../../hooks';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../store';
+import {
+  setFarmingSession,
+  setFarmingStatus,
+} from '../../../../store/slices/game/farmSlice';
 
 interface IFarmButtonProps {
   progress: number;
@@ -19,8 +25,9 @@ interface IFarmButtonProps {
 
 export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const addNotification = useStatusNotification();
-  const queryClient = useQueryClient();
 
   const { user } = useUserGameInfo();
   const { status, session } = useFarmState();
@@ -30,9 +37,9 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
   const startFarmMutation = useMutation({
     mutationFn: (data: { startTime: string; amountFarmed: number }) =>
       startFarmSession(data.startTime, data.amountFarmed),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
-      queryClient.invalidateQueries({ queryKey: ['farming-status'] });
+    onSuccess: (data) => {
+      dispatch(setFarmingSession(data));
+      dispatch(setFarmingStatus(FarmStatus.Active));
     },
     onError: (err) => {
       addNotification(
@@ -45,9 +52,7 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
 
   const claimFarmMutation = useMutation({
     mutationFn: () => claimFarmSession(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['farm-availability'] });
-    },
+    onSuccess: () => dispatch(setFarmingStatus(FarmStatus.Inactive)),
     onError: (err) => {
       addNotification(
         'error',
@@ -114,40 +119,47 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
         <div className={styles.progressBar} style={{ width: `${progress}%` }} />
       )}
       <div className={styles.content}>
-        <p
-          className={
-            isFarmingAvailable
-              ? styles.activeButtonText
-              : styles.unavailableButtonText
-          }
-        >
-          {getButtonText()}
-        </p>
-        <div className={styles.rocketContainer}>
-          {(status === FarmStatus.Claim || status === FarmStatus.Active) && (
-            <p className={styles.rocketText}>
-              {status === FarmStatus.Claim
-                ? session?.amountFarmed
-                : (user?.farmLevel ?? 1) * 100000}
+        {startFarmMutation.isPending || claimFarmMutation.isPending ? (
+          <span className={styles.loader} />
+        ) : (
+          <div className={styles.spaceBetween}>
+            <p
+              className={
+                isFarmingAvailable
+                  ? styles.activeButtonText
+                  : styles.unavailableButtonText
+              }
+            >
+              {getButtonText()}
             </p>
-          )}
-          <div
-            className={styles.rocketIcon}
-            style={
-              isFarmingAvailable
-                ? { backgroundColor: '#000000' }
-                : {
-                    background:
-                      'linear-gradient(90deg, #E2C1F9 0%, #FEBD8E 33%, #FBFFE4 66%, #B6D0F7 100%)',
-                  }
-            }
-          >
-            <RocketIcon
-              size={20}
-              color={isFarmingAvailable ? '#FFFFFF' : '#000000'}
-            />
+            <div className={styles.rocketContainer}>
+              {(status === FarmStatus.Claim ||
+                status === FarmStatus.Active) && (
+                <p className={styles.rocketText}>
+                  {status === FarmStatus.Claim
+                    ? session?.amountFarmed
+                    : (user?.farmLevel ?? 1) * 100000}
+                </p>
+              )}
+              <div
+                className={styles.rocketIcon}
+                style={
+                  isFarmingAvailable
+                    ? { backgroundColor: '#000000' }
+                    : {
+                        background:
+                          'linear-gradient(90deg, #E2C1F9 0%, #FEBD8E 33%, #FBFFE4 66%, #B6D0F7 100%)',
+                      }
+                }
+              >
+                <RocketIcon
+                  size={20}
+                  color={isFarmingAvailable ? '#FFFFFF' : '#000000'}
+                />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
