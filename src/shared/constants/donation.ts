@@ -11,7 +11,7 @@ export const DONATIONS_PRICE: Record<
     { rockets: 1e8, price: 20 },
   ],
   star: [
-    { rockets: 1e6, price: 100.0 },
+    { rockets: 1e6, price: 1 },
     { rockets: 2 * 1e6, price: 250 },
     { rockets: 5 * 1e6, price: 500 },
     { rockets: 1e7, price: 1000 },
