@@ -16,7 +16,7 @@ export function getProperUserFromApi(data: any): {
     telegramId: data.telegram_id,
     firstName: data.first_name,
     lastName: data.last_name,
-    username: data.username,
+    username: data.username ?? '',
     languageCode: data.language_code,
     isPremium: data.is_premium,
     photoUrl: data.photo_url,
