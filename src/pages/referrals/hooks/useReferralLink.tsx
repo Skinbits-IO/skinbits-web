@@ -16,9 +16,11 @@ export const useReferralLink = () => {
     onSuccess: (link) => {
       console.log(link);
       if (openTG) {
-        const text = `Join me on SkinBits and earn points! 🔥\n${link}`;
+        const text = `Join me on SkinBits and earn points! 🔥`;
         const shareUrl =
-          'https://t.me/share/url' + `?text=${encodeURIComponent(text)}`;
+          'https://t.me/share/url' +
+          `?url=${encodeURIComponent(link)}` +
+          `&text=${encodeURIComponent(text)}`;
 
         WebApp.openLink(shareUrl);
       }

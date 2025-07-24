@@ -4,8 +4,7 @@ import styles from './ReferralsPage.module.css';
 import { Steps } from './UI';
 
 export const ReferralsPage = () => {
-  const { mutate: generateLink, isPending: isGeneratePending } =
-    useReferralLink();
+  const { mutate: generateLink } = useReferralLink();
 
   return (
     <div className={styles.background}>
@@ -30,22 +29,9 @@ export const ReferralsPage = () => {
           <button
             className={styles.copyButton}
             onClick={() => generateLink({ openTG: false })}
-            disabled={isGeneratePending}
           >
-            {isGeneratePending ? (
-              <span
-                className={styles.loader}
-                style={{
-                  borderColor: 'white',
-                  borderTopColor: 'rgba(0, 0, 0, 0.25)',
-                }}
-              />
-            ) : (
-              <>
-                Copy link
-                <CopyIcon />
-              </>
-            )}
+            Copy link
+            <CopyIcon />
           </button>
         </div>
       </div>
