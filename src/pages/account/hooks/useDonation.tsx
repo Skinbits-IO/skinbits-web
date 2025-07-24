@@ -21,7 +21,7 @@ export const useDonation = () => {
       setPaymentFinished(true);
       updateMutation.mutate({
         id: donationId,
-        status: isSuccess ? 'success' : 'failed',
+        status: isSuccess ? 'completed' : 'failed',
       });
     }
   }, [donationId, isError, isSuccess, isProcessing]);
@@ -42,7 +42,7 @@ export const useDonation = () => {
           WebApp.openInvoice(data.invoiceLink, (status) => {
             updateMutation.mutate({
               id: data.donation.donation_id,
-              status: status === 'paid' ? 'success' : 'failed',
+              status: status === 'paid' ? 'completed' : 'failed',
             });
 
             if (status === 'paid') {
