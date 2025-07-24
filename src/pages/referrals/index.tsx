@@ -1,7 +1,3 @@
-// src/pages/referrals/ReferralsPage.tsx
-
-import { useState } from 'react';
-import WebApp from '@twa-dev/sdk';
 import { CopyIcon, StandardButton } from '../../components';
 import { useReferralLink } from './hooks';
 import styles from './ReferralsPage.module.css';
