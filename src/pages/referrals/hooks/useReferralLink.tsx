@@ -10,29 +10,101 @@ export const useReferralLink = () => {
 
   const shareReferralLink = (link: string) => {
     const text = `Join me on SkinBits and earn points! 🔥`;
+    console.log('Attempting to share referral link:', link);
 
     // Method 1: Try inline query first (best for mini apps)
     if (WebApp.switchInlineQuery) {
-      const fullText = `${text} ${link}`;
-      WebApp.switchInlineQuery(fullText, ['users', 'groups', 'channels']);
-      return;
+      try {
+        const fullText = `${text} ${link}`;
+        console.log('Trying switchInlineQuery...');
+        WebApp.switchInlineQuery(fullText, ['users', 'groups', 'channels']);
+        return;
+      } catch (error) {
+        console.warn('switchInlineQuery failed:', error);
+        // Continue to next method
+      }
     }
 
     // Method 2: Try Telegram protocol link
     if (WebApp.openTelegramLink) {
-      const shareUrl = `tg://msg_url?url=${encodeURIComponent(
-        link
-      )}&text=${encodeURIComponent(text)}`;
-      WebApp.openTelegramLink(shareUrl);
-      return;
+      try {
+        console.log('Trying openTelegramLink...');
+        const shareUrl = `tg://msg_url?url=${encodeURIComponent(
+          link
+        )}&text=${encodeURIComponent(text)}`;
+        WebApp.openTelegramLink(shareUrl);
+        return;
+      } catch (error) {
+        console.warn('openTelegramLink failed:', error);
+        // Continue to next method
+      }
     }
 
-    // Method 3: Fallback to web share
-    const shareUrl =
-      'https://t.me/share/url' +
-      `?url=${encodeURIComponent(link)}` +
-      `&text=${encodeURIComponent(text)}`;
-    WebApp.openLink(shareUrl);
+    // Method 3: Try Web Share API (mobile)
+    if (navigator.share) {
+      try {
+        console.log('Trying Web Share API...');
+        navigator.share({
+          title: 'SkinBits Referral',
+          text: text,
+          url: link,
+        });
+        return;
+      } catch (error) {
+        console.warn('Web Share API failed:', error);
+        // Continue to next method
+      }
+    }
+
+    // Method 4: Fallback to Telegram web share
+    try {
+      console.log('Using fallback web share...');
+      const shareUrl =
+        'https://t.me/share/url' +
+        `?url=${encodeURIComponent(link)}` +
+        `&text=${encodeURIComponent(text)}`;
+      WebApp.openLink(shareUrl);
+    } catch (error) {
+      console.error('All share methods failed:', error);
+
+      // Last resort: copy to clipboard
+      if (navigator.clipboard) {
+        const fullText = `${text} ${link}`;
+        navigator.clipboard
+          .writeText(fullText)
+          .then(() => {
+            alert('Referral link copied!');
+          })
+          .catch(() => {
+            alert(`Your referral link: ${link}`);
+          });
+      } else {
+        alert(`Your referral link: ${link}`);
+      }
+    }
+  };
+
+  // Copy to clipboard method
+  const copyLinkToClipboard = (link: string) => {
+    const text = `Join me on SkinBits and earn points! 🔥 ${link}`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          alert('Referral link copied!');
+          if (WebApp.HapticFeedback) {
+            WebApp.HapticFeedback.notificationOccurred('success');
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to copy to clipboard:', err);
+          alert(`Your referral link: ${link}`);
+        });
+    } else {
+      // Fallback for older browsers
+      alert(`Your referral link: ${link}`);
+    }
   };
 
   return useMutation({
@@ -45,13 +117,7 @@ export const useReferralLink = () => {
       if (openTG) {
         shareReferralLink(link);
       } else {
-        // Just copy to clipboard if not opening Telegram
-        if (navigator.clipboard) {
-          const text = `Join me on SkinBits and earn points! 🔥 ${link}`;
-          navigator.clipboard.writeText(text).then(() => {
-            WebApp.showAlert?.('Referral link copied to clipboard!');
-          });
-        }
+        copyLinkToClipboard(link);
       }
     },
     onError: (err) => {
