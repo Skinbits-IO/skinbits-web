@@ -8,9 +8,31 @@ export const useReferralLink = () => {
   const addNotification = useStatusNotification();
   const [openTG, setOpenTG] = useState(true);
 
-  const shareInline = (link: string) => {
-    const text = `Join me on SkinBits and earn points! 🔥 ${link}`;
-    WebApp.switchInlineQuery(text, ['users', 'groups', 'channels']);
+  const shareReferralLink = (link: string) => {
+    const text = `Join me on SkinBits and earn points! 🔥`;
+
+    // Method 1: Try inline query first (best for mini apps)
+    if (WebApp.switchInlineQuery) {
+      const fullText = `${text} ${link}`;
+      WebApp.switchInlineQuery(fullText, ['users', 'groups', 'channels']);
+      return;
+    }
+
+    // Method 2: Try Telegram protocol link
+    if (WebApp.openTelegramLink) {
+      const shareUrl = `tg://msg_url?url=${encodeURIComponent(
+        link
+      )}&text=${encodeURIComponent(text)}`;
+      WebApp.openTelegramLink(shareUrl);
+      return;
+    }
+
+    // Method 3: Fallback to web share
+    const shareUrl =
+      'https://t.me/share/url' +
+      `?url=${encodeURIComponent(link)}` +
+      `&text=${encodeURIComponent(text)}`;
+    WebApp.openLink(shareUrl);
   };
 
   return useMutation({
@@ -21,7 +43,15 @@ export const useReferralLink = () => {
     onSuccess: (link) => {
       console.log(link);
       if (openTG) {
-        shareInline(link);
+        shareReferralLink(link);
+      } else {
+        // Just copy to clipboard if not opening Telegram
+        if (navigator.clipboard) {
+          const text = `Join me on SkinBits and earn points! 🔥 ${link}`;
+          navigator.clipboard.writeText(text).then(() => {
+            WebApp.showAlert?.('Referral link copied to clipboard!');
+          });
+        }
       }
     },
     onError: (err) => {
