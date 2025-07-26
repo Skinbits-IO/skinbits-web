@@ -15,8 +15,8 @@ export const useReferralLink = () => {
     // Method 1: Try inline query first (best for mini apps)
     if (WebApp.switchInlineQuery) {
       try {
-        const fullText = `${text} ${link}`;
-        WebApp.switchInlineQuery(fullText, ['users', 'groups']);
+        //const fullText = `${text} ${link}`;
+        WebApp.switchInlineQuery(link, ['users', 'groups']);
         return;
       } catch (error) {
         console.warn('switchInlineQuery failed:', error);
