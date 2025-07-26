@@ -12,18 +12,7 @@ export const useReferralLink = () => {
     const text = `Join me on SkinBits and earn points! 🔥`;
     console.log('Attempting to share referral link:', link);
 
-    // Method 1: Try inline query first (best for mini apps)
-    if (WebApp.switchInlineQuery) {
-      try {
-        //const fullText = `${text} ${link}`;
-        WebApp.switchInlineQuery(link, ['users', 'groups']);
-        return;
-      } catch (error) {
-        console.warn('switchInlineQuery failed:', error);
-      }
-    }
-
-    // Method 2: Try Telegram protocol link
+    // Method 1: Try Telegram protocol link
     if (WebApp.openTelegramLink) {
       try {
         const shareUrl = `tg://msg_url?url=${encodeURIComponent(
@@ -37,7 +26,7 @@ export const useReferralLink = () => {
       }
     }
 
-    // Method 3: Try Web Share API (mobile)
+    // Method 2: Try Web Share API (mobile)
     if (navigator.share) {
       try {
         console.log('Trying Web Share API...');
@@ -53,7 +42,7 @@ export const useReferralLink = () => {
       }
     }
 
-    // Method 4: Fallback to Telegram web share
+    // Method 3: Fallback to Telegram web share
     try {
       console.log('Using fallback web share...');
       const shareUrl =
