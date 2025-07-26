@@ -16,19 +16,16 @@ export const useReferralLink = () => {
     if (WebApp.switchInlineQuery) {
       try {
         const fullText = `${text} ${link}`;
-        console.log('Trying switchInlineQuery...');
         WebApp.switchInlineQuery(fullText, ['users', 'groups', 'channels']);
         return;
       } catch (error) {
         console.warn('switchInlineQuery failed:', error);
-        // Continue to next method
       }
     }
 
     // Method 2: Try Telegram protocol link
     if (WebApp.openTelegramLink) {
       try {
-        console.log('Trying openTelegramLink...');
         const shareUrl = `tg://msg_url?url=${encodeURIComponent(
           link
         )}&text=${encodeURIComponent(text)}`;
@@ -103,7 +100,7 @@ export const useReferralLink = () => {
         });
     } else {
       // Fallback for older browsers
-      alert(`Your referral link: ${link}`);
+      WebApp.showAlert(`Your referral link: ${link}`);
     }
   };
 
