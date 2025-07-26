@@ -1,10 +1,26 @@
-import { CopyIcon, StandardButton } from '../../components';
+import { useQuery } from '@tanstack/react-query';
+import { StandardButton } from '../../components';
+import { getReferrals } from './api';
 import { useReferralLink } from './hooks';
 import styles from './ReferralsPage.module.css';
-import { Steps } from './UI';
+import { Referral, Steps } from './UI';
+import { useUser } from '../../shared';
+import { useEffect } from 'react';
 
 export const ReferralsPage = () => {
   const { mutate: generateLink } = useReferralLink();
+  const { user } = useUser();
+
+  const { data: referrals, isPending } = useQuery({
+    queryKey: ['referrals'],
+    queryFn: () => getReferrals(user!.telegramId),
+    retry: 0,
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    console.log(referrals);
+  }, [referrals, isPending]);
 
   return (
     <div className={styles.background}>
@@ -19,21 +35,24 @@ export const ReferralsPage = () => {
           <h1 className={styles.header}>
             Invite friends <br /> Earn points
           </h1>
-          <Steps />
+          {isPending ? (
+            <div className={styles.centerContainer}>
+              <span className={styles.loader} />
+            </div>
+          ) : referrals && referrals.length > 0 ? (
+            <div className={styles.referralContainer}>
+              <h6>You referrals:</h6>
+              <div className={styles.referrals}>
+                {referrals.map((_, index) => {
+                  return <Referral key={index} />;
+                })}
+              </div>
+            </div>
+          ) : (
+            <Steps />
+          )}
         </div>
-        <div className={styles.buttons}>
-          <StandardButton
-            text="Invite fren"
-            onClick={() => generateLink({ openTG: true })}
-          />
-          <button
-            className={styles.copyButton}
-            onClick={() => generateLink({ openTG: false })}
-          >
-            Copy link
-            <CopyIcon />
-          </button>
-        </div>
+        <StandardButton text="Invite fren" onClick={() => generateLink()} />
       </div>
     </div>
   );
