@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { api } from './api';
-import { GameSession } from '../types';
+import { GameSession, User, UserGameInfo } from '../types';
+import { getProperUserFromApi } from '../utils';
 
-export async function uploadGameSession(session: GameSession) {
-  console.log(session);
+export async function uploadGameSession(
+  session: GameSession
+): Promise<{ user: User; userGameInfo: UserGameInfo }> {
   try {
     const response = await api.post('/gameSession', {
       start_time: session.startTime,
@@ -13,7 +15,8 @@ export async function uploadGameSession(session: GameSession) {
       boosts_used: session.boostsUsed,
     });
 
-    return response.data;
+    const user = response.data.user;
+    return getProperUserFromApi(user);
   } catch (error) {
     let errorMessage = 'Failed to get user!';
     if (axios.isAxiosError(error) && error.response) {

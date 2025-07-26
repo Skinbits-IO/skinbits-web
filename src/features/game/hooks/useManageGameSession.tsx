@@ -5,20 +5,21 @@ import {
   resetGameSession,
   setStartTime,
 } from '../../../store/slices/game/gameSessionSlice';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   GameSession,
   uploadGameSession,
   useGameSession,
   useStatusNotification,
 } from '../../../shared';
+import { setUser } from '../../../store/slices/userSlice';
+import { setUserGameInfo } from '../../../store/slices/game/userGameInfoSlice';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 export const useManageGameSession = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
   const { gameSession } = useGameSession();
 
@@ -32,10 +33,12 @@ export const useManageGameSession = () => {
 
   const addGameSessionmutation = useMutation({
     mutationFn: (session: GameSession) => uploadGameSession(session),
-    onSuccess: () => {
+    onSuccess: (data) => {
       dispatch(resetGameSession());
       localStorage.removeItem('pendingGameSession');
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+
+      dispatch(setUser(data.user));
+      dispatch(setUserGameInfo(data.userGameInfo));
     },
     onError: (err: any) => {
       addNotification('error', err.message || 'Failed to upload session', 3000);

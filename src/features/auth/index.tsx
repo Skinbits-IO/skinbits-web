@@ -4,7 +4,7 @@ import { FC, PropsWithChildren, useEffect } from 'react';
 import { setIsLoading, setUser } from '../../store/slices/userSlice';
 import { Loader } from '../../components';
 import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   resetGameSession,
   setStartTime,
@@ -25,7 +25,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useUser();
 
-  const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
 
   const { data, isPending, error } = useQuery({
@@ -37,14 +36,15 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addGameSessionMutation = useMutation({
     mutationFn: (session: GameSession) => uploadGameSession(session),
-    onSuccess: () => {
+    onSuccess: (data) => {
       dispatch(resetGameSession());
       dispatch(setStartTime(toIsoUtcNoMs()));
-
       localStorage.removeItem('pendingGameSession');
-      queryClient
-        .invalidateQueries({ queryKey: ['user'] })
-        .finally(() => dispatch(setIsLoading(false)));
+
+      dispatch(setUser(data.user));
+      dispatch(setUserGameInfo(data.userGameInfo));
+
+      dispatch(setIsLoading(false));
     },
     onError: (err: any) => {
       addNotification('error', err.message || 'Failed to upload session', 3000);
