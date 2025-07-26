@@ -16,7 +16,7 @@ export const useReferralLink = () => {
     if (WebApp.switchInlineQuery) {
       try {
         const fullText = `${text} ${link}`;
-        WebApp.switchInlineQuery(fullText, ['users', 'groups', 'channels']);
+        WebApp.switchInlineQuery(fullText, ['users', 'groups']);
         return;
       } catch (error) {
         console.warn('switchInlineQuery failed:', error);
@@ -63,21 +63,7 @@ export const useReferralLink = () => {
       WebApp.openLink(shareUrl);
     } catch (error) {
       console.error('All share methods failed:', error);
-
-      // Last resort: copy to clipboard
-      if (navigator.clipboard) {
-        const fullText = `${text} ${link}`;
-        navigator.clipboard
-          .writeText(fullText)
-          .then(() => {
-            alert('Referral link copied!');
-          })
-          .catch(() => {
-            alert(`Your referral link: ${link}`);
-          });
-      } else {
-        alert(`Your referral link: ${link}`);
-      }
+      copyLinkToClipboard(link);
     }
   };
 
@@ -100,7 +86,12 @@ export const useReferralLink = () => {
         });
     } else {
       // Fallback for older browsers
-      WebApp.showAlert(`Your referral link: ${link}`);
+      WebApp.showAlert(
+        '📋 Copy & Share\n\n' +
+          `${link}\n\n` +
+          '👆 Tap and hold to select this text, then copy it.\n' +
+          'Paste in any chat to share!'
+      );
     }
   };
 
