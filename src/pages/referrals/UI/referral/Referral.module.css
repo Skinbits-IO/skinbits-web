@@ -1,10 +1,10 @@
 .background {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 15px;
     width: 100%;
     border-radius: 12px;
     padding: 12px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .profile {
@@ -12,6 +12,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .avatar {
@@ -26,9 +28,15 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: #8E8E8E;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
 }
 
 .priceContainer {
+    min-width: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;

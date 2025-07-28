@@ -33,7 +33,7 @@
 .content {
     position: relative;
     height: 100%;
-    width: 100%;
+    flex: 1;
     padding: 0 25px;
     padding: 130px 0 100px 0;
     display: grid;
@@ -45,7 +45,7 @@
 
 .mainContent {
     height: 100%;
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: start;

@@ -43,8 +43,14 @@ export const ReferralsPage = () => {
             <div className={styles.referralContainer}>
               <h6>You referrals:</h6>
               <div className={styles.referrals}>
-                {referrals.map((_, index) => {
-                  return <Referral key={index} />;
+                {referrals.map((value, index) => {
+                  return (
+                    <Referral
+                      key={index}
+                      username={value.referredUser.username + 'fiosfiosjifjs'}
+                      photoUrl={value.referredUser.photoUrl}
+                    />
+                  );
                 })}
               </div>
             </div>
