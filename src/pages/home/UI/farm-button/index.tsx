@@ -52,7 +52,10 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
 
   const claimFarmMutation = useMutation({
     mutationFn: () => claimFarmSession(),
-    onSuccess: () => dispatch(setFarmingStatus(FarmStatus.Inactive)),
+    onSuccess: () => {
+      dispatch(setFarmingSession(null));
+      dispatch(setFarmingStatus(FarmStatus.Inactive));
+    },
     onError: (err) => {
       addNotification(
         'error',

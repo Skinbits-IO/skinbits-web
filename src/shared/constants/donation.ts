@@ -45,7 +45,7 @@ export const PREMIUM_PLANS: Record<
   gold: {
     price: {
       ton: 0.2,
-      star: 100,
+      star: 1,
     },
     bonuses: [
       '+5 to your levels',

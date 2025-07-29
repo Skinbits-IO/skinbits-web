@@ -1,5 +1,6 @@
 import { CheckIcon, StarIcon, TonIcon } from '../../../../components';
 import { PREMIUM_PLANS } from '../../../../shared';
+import { useSubscription } from '../../hooks';
 import styles from './PremiumCard.module.css';
 
 interface IPremiumCardProps {
@@ -39,6 +40,8 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
       break;
     }
   }
+
+  const { createMutation } = useSubscription();
 
   return (
     <div
@@ -92,6 +95,15 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
         style={{
           color: option === 'free' ? '#000000' : '#FFFFFF',
           backgroundColor: option === 'free' ? '#FFFFFF' : '#000000',
+        }}
+        onClick={() => {
+          createMutation.mutate({
+            subscriptionType: option,
+            amount: plans.price.star,
+            currency: 'XTR',
+            paymentMethod: 'telegram',
+            notes: 'Monthly subscription',
+          });
         }}
       >
         Get started

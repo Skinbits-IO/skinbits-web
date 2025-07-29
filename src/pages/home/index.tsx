@@ -7,7 +7,7 @@ import { setUserRank } from '../../store/slices/userSlice';
 import { Header, Rank } from '../../components';
 import { FarmButton, FarmCancelPopup, RankingPopup, Wallet } from './UI';
 import { useNavigate } from 'react-router';
-import { useRanking } from './hooks';
+import { useFarmState, useRanking } from './hooks';
 import {
   FarmStatus,
   Rank as RankEnum,
@@ -20,6 +20,7 @@ import { checkFarmAvailability, getFarmingStatus } from './api';
 import { FarmButtonSkeleton } from './UI/farm-button-skeleton';
 import { useEffect, useState } from 'react';
 import {
+  setFarmFetched,
   setFarmingSession,
   setFarmingStatus,
 } from '../../store/slices/game/farmSlice';
@@ -31,6 +32,7 @@ export const HomePage = () => {
   const { user } = useUser();
   const { user: userGameInfo } = useUserGameInfo();
   const { showNewRankPopup, setShowNewRankPopup } = useRanking();
+  const { fetched } = useFarmState();
 
   const [showFarmCancelPopup, setShowFarmCancelPopup] =
     useState<boolean>(false);
@@ -50,9 +52,8 @@ export const HomePage = () => {
   });
 
   useEffect(() => {
-    if (claimData && claimData.session) {
-      dispatch(setFarmingSession(claimData.session));
-    }
+    if (fetched) return;
+    if (availableData && claimData) dispatch(setFarmFetched(true));
 
     if (availableData) {
       dispatch(setFarmingStatus(FarmStatus.Inactive));
@@ -64,7 +65,7 @@ export const HomePage = () => {
       if (claimData.canClaim) dispatch(setFarmingStatus(FarmStatus.Claim));
       if (claimData.session) dispatch(setFarmingSession(claimData.session));
     }
-  }, [claimData, availableData]);
+  }, [fetched, claimData, availableData]);
 
   return (
     <div className={styles.background}>
