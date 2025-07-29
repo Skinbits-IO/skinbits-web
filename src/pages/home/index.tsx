@@ -42,6 +42,8 @@ export const HomePage = () => {
     queryFn: () => checkFarmAvailability(),
     retry: 0,
     staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const { data: claimData, isPending: isPendingClaim } = useQuery({
@@ -49,6 +51,8 @@ export const HomePage = () => {
     queryFn: () => getFarmingStatus(),
     retry: 0,
     staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
