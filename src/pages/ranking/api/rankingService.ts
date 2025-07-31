@@ -28,12 +28,13 @@ function parseRankUser(raw: RawRankUser): RankUser {
   };
 }
 
-/**
- * Fetch and parse the top‐100 list
- */
-export async function getTopUsersByLeague(league: string): Promise<RankUser[]> {
+export async function getTopUsersByLeague(
+  league: string,
+  skip: number,
+  limit: number
+): Promise<RankUser[]> {
   const resp = await api.get<RawRankUser[]>(`/user/leaderboard`, {
-    params: { league: league.toUpperCase() },
+    params: { league: league.toUpperCase(), skip, limit },
   });
   return resp.data.map(parseRankUser);
 }

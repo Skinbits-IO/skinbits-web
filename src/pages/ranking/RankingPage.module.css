@@ -48,3 +48,18 @@
     overflow-x: hidden;
     scrollbar-width: none;
 }
+
+.loadMoreButton {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 1);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 12px;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loadMoreButton:disabled {
+    opacity: 0.5;
+}
