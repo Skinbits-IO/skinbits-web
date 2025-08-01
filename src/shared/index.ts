@@ -30,5 +30,6 @@ export type {
   UserGameInfo,
   Skin,
   FarmingSession,
+  Notification,
 } from './types';
 export { Rank, WeaponTypes, Rarities, Qualities, FarmStatus } from './types';

@@ -36,6 +36,9 @@
     font-weight: 400;
     color: #A8A8A8;
     line-height: normal;
+    flex: 1 1 auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 img {

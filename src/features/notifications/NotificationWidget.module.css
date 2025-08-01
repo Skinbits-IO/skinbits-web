@@ -6,7 +6,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
-    z-index: 2;
+    z-index: 998;
 }
 
 .background {
@@ -17,7 +17,7 @@
     background-color: rgba(10, 10, 10, 1);
     padding: 20px 20px calc(18px + var(--tg-safe-area-inset-bottom, 0rem)) 20px;
     border-radius: 24px 24px 0 0;
-    z-index: 3;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -38,7 +38,10 @@
 }
 
 .notifications {
-    height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    align-self: stretch;
+
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -48,4 +51,18 @@
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
+}
+
+.loadMoreButton {
+    background: rgba(255, 255, 255, 1);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 12px;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loadMoreButton:disabled {
+    opacity: 0.5;
 }

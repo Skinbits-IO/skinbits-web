@@ -1,34 +1,21 @@
 import { motion } from 'framer-motion';
 import styles from './NotificationWidget.module.css';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { useDispatch } from 'react-redux';
-import { CustomNotification } from './types';
 import { setNotificationShow } from '../../store/slices/notificationSlice';
-import { PopupCloseButton } from '../../components';
+import { LoadMore, PopupCloseButton } from '../../components';
 import { Notification } from './UI';
+import { useActiveNotifications } from './hooks';
+import { useSelector } from 'react-redux';
 
 export const NotificationWidget = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const notifications: CustomNotification[] = [
-    {
-      type: 'Application name',
-      datetime: Date.now(),
-      title: 'Test notification',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-      imageUrl:
-        'https://www.google.com/url?sa=i&url=https%3A%2F%2Fhatrabbits.com%2Fen%2Frandom-image%2F&psig=AOvVaw0rYzAO8hon86lLz3cE4F-L&ust=1743194780226000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjVoN-Qq4wDFQAAAAAdAAAAABAE',
-    },
-    {
-      type: 'Application name',
-      datetime: Date.now() - 600000,
-      title: 'Test notification',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-      imageUrl:
-        'https://www.google.com/url?sa=i&url=https%3A%2F%2Fhatrabbits.com%2Fen%2Frandom-image%2F&psig=AOvVaw0rYzAO8hon86lLz3cE4F-L&ust=1743194780226000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjVoN-Qq4wDFQAAAAAdAAAAABAE',
-    },
-  ];
+  const { notifications } = useSelector(
+    (state: RootState) => state.notification
+  );
+
+  const { isLoading, isError, isFetching, hasMore, loadMore } =
+    useActiveNotifications(5);
 
   return (
     <>
@@ -38,7 +25,7 @@ export const NotificationWidget = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={() => dispatch(setNotificationShow(false))}
-      ></motion.div>
+      />
       <motion.div
         className={styles.background}
         initial={{ y: '100%' }}
@@ -47,19 +34,20 @@ export const NotificationWidget = () => {
         transition={{ type: 'spring', stiffness: 120, damping: 20 }}
       >
         <PopupCloseButton onTap={() => dispatch(setNotificationShow(false))} />
-        {notifications.length === 0 && (
+
+        {isLoading && <div className={styles.empty}>Loading…</div>}
+        {isError && <div className={styles.empty}>Failed to load.</div>}
+
+        {!isLoading && notifications.length === 0 && (
           <div className={styles.empty}>No notifications</div>
         )}
+
         <div className={styles.notifications}>
-          {notifications.length !== 0 &&
-            notifications.map((notification, key) => {
-              return (
-                <Notification
-                  key={`${key}-notification`}
-                  notification={notification}
-                />
-              );
-            })}
+          {notifications.map((notification, idx) => (
+            <Notification key={idx} notification={notification} />
+          ))}
+
+          {hasMore && <LoadMore isPending={isFetching} onClick={loadMore} />}
         </div>
       </motion.div>
     </>

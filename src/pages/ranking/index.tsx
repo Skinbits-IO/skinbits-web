@@ -1,5 +1,5 @@
 import styles from './RankingPage.module.css';
-import { Header, Rank } from '../../components';
+import { Header, LoadMore, Rank } from '../../components';
 import {
   ProgressWidget,
   RankCard,
@@ -58,21 +58,15 @@ export const RankingPage = () => {
               )
             )}
           {isLeaderboardLoading &&
-            page > 0 &&
-            // show skeleton only when loading more
-            Array.from({ length: limit }).map((_, i) => (
+            Array.from({ length: 7 }).map((_, i) => (
               <RankCardSkeleton key={`loading-${i}`} />
             ))}
 
-          {/* load more */}
           {leaderboard && leaderboard.length === (page + 1) * limit && (
-            <button
-              className={styles.loadMoreButton}
+            <LoadMore
+              isPending={isLeaderboardLoading}
               onClick={() => setPage((p) => p + 1)}
-              disabled={isLeaderboardLoading}
-            >
-              {isLeaderboardLoading ? 'Loading…' : 'Load more'}
-            </button>
+            />
           )}
         </div>
       </div>

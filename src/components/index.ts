@@ -8,6 +8,7 @@ export { Devider } from './devider';
 export { SkinImage } from './skin-image';
 export { StandardButton } from './standard-button';
 export { Description } from './description';
+export { LoadMore } from './load-more';
 
 //Icons
 export { NotificationIcon } from './icons/NotificationIcon';
