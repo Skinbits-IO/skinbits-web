@@ -9,7 +9,8 @@ import {
 import { useUser } from '../../shared';
 import { useLeaderboard, useUserLeaderboard } from './hooks';
 import { Rank as RankEnum } from '../../shared';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { RankUser } from './types';
 
 export const RankingPage = () => {
   const { user } = useUser();
@@ -21,6 +22,15 @@ export const RankingPage = () => {
 
   const { data: leaderboard, isFetching: isLeaderboardLoading } =
     useLeaderboard(rank, page, limit);
+
+  const [users, setUsers] = useState<RankUser[]>([]);
+  useEffect(() => {
+    if (leaderboard)
+      setUsers((prev) => {
+        return [...prev, ...leaderboard];
+      });
+  }, [leaderboard]);
+
   const { data, isPending } = useUserLeaderboard();
 
   return (
@@ -46,7 +56,7 @@ export const RankingPage = () => {
         )}
         <div className={styles.ranking}>
           {leaderboard &&
-            leaderboard.map((u, idx) =>
+            users.map((u, idx) =>
               idx === 0 && page === 0 ? (
                 <WinnerRankCard key={u.telegramId} user={u} />
               ) : (
@@ -62,7 +72,7 @@ export const RankingPage = () => {
               <RankCardSkeleton key={`loading-${i}`} />
             ))}
 
-          {leaderboard && leaderboard.length === (page + 1) * limit && (
+          {leaderboard && users.length === (page + 1) * limit && (
             <LoadMore
               isPending={isLeaderboardLoading}
               onClick={() => setPage((p) => p + 1)}
