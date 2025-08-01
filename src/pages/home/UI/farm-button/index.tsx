@@ -17,6 +17,8 @@ import {
   setFarmingSession,
   setFarmingStatus,
 } from '../../../../store/slices/game/farmSlice';
+import { setUser } from '../../../../store/slices/userSlice';
+import { setUserGameInfo } from '../../../../store/slices/game/userGameInfoSlice';
 
 interface IFarmButtonProps {
   progress: number;
@@ -52,9 +54,12 @@ export const FarmButton = ({ progress, openPopup }: IFarmButtonProps) => {
 
   const claimFarmMutation = useMutation({
     mutationFn: () => claimFarmSession(),
-    onSuccess: () => {
+    onSuccess: (data) => {
       dispatch(setFarmingSession(null));
       dispatch(setFarmingStatus(FarmStatus.Inactive));
+
+      dispatch(setUser(data.user));
+      dispatch(setUserGameInfo(data.userGameInfo));
     },
     onError: (err) => {
       addNotification(

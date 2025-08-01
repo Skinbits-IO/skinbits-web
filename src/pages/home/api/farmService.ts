@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { api, FarmingSession } from '../../../shared';
+import {
+  api,
+  FarmingSession,
+  getProperUserFromApi,
+  User,
+  UserGameInfo,
+} from '../../../shared';
 
 export async function checkFarmAvailability(): Promise<boolean> {
   try {
@@ -98,10 +104,14 @@ export async function cancelFarmSession() {
   }
 }
 
-export async function claimFarmSession() {
+export async function claimFarmSession(): Promise<{
+  user: User;
+  userGameInfo: UserGameInfo;
+}> {
   try {
     const response = await api.post<FarmingSession>(`/farming/claim`);
-    return response.data;
+    const data = response.data;
+    return getProperUserFromApi(data);
   } catch (error) {
     let errorMessage = `Failed to claim farming session`;
     if (axios.isAxiosError(error) && error.response) {
