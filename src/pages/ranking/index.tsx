@@ -55,24 +55,20 @@ export const RankingPage = () => {
           ))
         )}
         <div className={styles.ranking}>
-          {leaderboard &&
-            users.map((u, idx) =>
-              idx === 0 && page === 0 ? (
-                <WinnerRankCard key={u.telegramId} user={u} />
-              ) : (
-                <RankCard
-                  key={u.telegramId}
-                  index={page * limit + idx + 1}
-                  user={u}
-                />
-              )
-            )}
+          {users.map((u, idx) =>
+            idx === 0 ? (
+              <WinnerRankCard key={idx} user={u} />
+            ) : (
+              <RankCard key={idx} index={idx + 1} user={u} />
+            )
+          )}
           {isLeaderboardLoading &&
+            !leaderboard &&
             Array.from({ length: 7 }).map((_, i) => (
               <RankCardSkeleton key={`loading-${i}`} />
             ))}
 
-          {leaderboard && users.length === (page + 1) * limit && (
+          {users.length === (page + 1) * limit && (
             <LoadMore
               isPending={isLeaderboardLoading}
               onClick={() => setPage((p) => p + 1)}
