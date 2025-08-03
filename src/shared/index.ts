@@ -28,6 +28,7 @@ export type {
   GameSession,
   User,
   UserGameInfo,
+  UserSubscription,
   Skin,
   FarmingSession,
   Notification,

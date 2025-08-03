@@ -2,14 +2,24 @@ import { AnimatePresence } from 'framer-motion';
 import { Header, SteamIcon } from '../../components';
 import { useUser } from '../../shared';
 import styles from './AccountPage.module.css';
-import { PremiumCard, SteamPopup, TopUp, TopUpPopup, Wallet } from './UI';
+import {
+  PremiumCard,
+  PremiumCardPopup,
+  SteamPopup,
+  TopUp,
+  TopUpPopup,
+  Wallet,
+} from './UI';
 import { useState } from 'react';
+import { PremiumCardProvider, usePremiumCardContext } from './context';
 
-export const AccountPage = () => {
+const AccountPageContent = () => {
   const { user } = useUser();
 
   const [showDonationPopup, setShowDonationPopup] = useState(false);
   const [showSteamPopup, setShowSteamPopup] = useState(false);
+
+  const { show } = usePremiumCardContext();
 
   return (
     <div className={styles.background}>
@@ -20,6 +30,7 @@ export const AccountPage = () => {
         {showSteamPopup && (
           <SteamPopup onClose={() => setShowSteamPopup(false)} />
         )}
+        {show && <PremiumCardPopup />}
       </AnimatePresence>
       <Header
         children={
@@ -39,5 +50,13 @@ export const AccountPage = () => {
         <PremiumCard option="premium" />
       </div>
     </div>
+  );
+};
+
+export const AccountPage = () => {
+  return (
+    <PremiumCardProvider>
+      <AccountPageContent />
+    </PremiumCardProvider>
   );
 };

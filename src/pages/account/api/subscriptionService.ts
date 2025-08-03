@@ -73,17 +73,3 @@ export async function createSubscription(body: {
     throw new Error(errorMessage);
   }
 }
-
-export async function deactivateSubscription(id: number) {
-  try {
-    const response = await api.patch(`/subscriptions/${id}`);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    let errorMessage = `Failed to deactivate subscriptions`;
-    if (axios.isAxiosError(error) && error.response) {
-      errorMessage = error.response.data.error || errorMessage;
-    }
-    throw new Error(errorMessage);
-  }
-}

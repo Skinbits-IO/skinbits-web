@@ -4,12 +4,12 @@ import { createSubscription } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useTonPayment } from './useTonPayment';
 import { useEffect, useState } from 'react';
-import { useDeactivateSubscription } from './useDeactivateSubscription';
+import { useConfirmInvoice } from './useConfirmInvoice';
 
 export const useSubscription = () => {
   const addNotification = useStatusNotification();
   const { payWithTon, isSuccess, isError, isProcessing } = useTonPayment();
-  const deactivateMutation = useDeactivateSubscription();
+  const confirmInvoiceMutation = useConfirmInvoice();
 
   const [paymentFinished, setPaymentFinished] = useState(true);
   const [subscriptionId, setSubscriptionId] = useState<number>(0);
@@ -20,9 +20,6 @@ export const useSubscription = () => {
       setPaymentFinished(false);
     } else if (!isProcessing && subscriptionId && (isError || isSuccess)) {
       setPaymentFinished(true);
-      if (!isSuccess) {
-        deactivateMutation.mutate({ id: subscriptionId });
-      }
     }
   }, [isError, isSuccess, isProcessing]);
 
@@ -45,9 +42,10 @@ export const useSubscription = () => {
       if (data.invoiceLink) {
         if (WebApp.openInvoice) {
           WebApp.openInvoice(data.invoiceLink, (status) => {
-            if (status !== 'paid') {
-              deactivateMutation.mutate({
-                id: data.subscription.subscriptionId,
+            if (status === 'paid') {
+              confirmInvoiceMutation.mutate({
+                id: data.subscription.paymentId,
+                amount,
               });
             }
 
@@ -88,7 +86,7 @@ export const useSubscription = () => {
   return {
     createMutation,
     isPending:
-      deactivateMutation.isPending ||
+      confirmInvoiceMutation.isPending ||
       createMutation.isPending ||
       !paymentFinished,
   };

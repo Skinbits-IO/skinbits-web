@@ -1,7 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { FC, PropsWithChildren, useEffect } from 'react';
-import { setIsLoading, setUser } from '../../store/slices/userSlice';
+import {
+  setIsLoading,
+  setUser,
+  setUserSubscription,
+} from '../../store/slices/userSlice';
 import { Loader } from '../../components';
 import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -10,7 +14,7 @@ import {
   setStartTime,
 } from '../../store/slices/game/gameSessionSlice';
 import { useLogin } from './hooks';
-import { getUser } from './api';
+import { getUser, getUserSubscription } from './api';
 import {
   GameSession,
   uploadGameSession,
@@ -30,6 +34,13 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data, isPending, error } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
+    retry: 0,
+    staleTime: Infinity,
+  });
+
+  const { data: subscription, isPending: isSubscriptionPending } = useQuery({
+    queryKey: ['user-subcriptiob'],
+    queryFn: () => getUserSubscription(),
     retry: 0,
     staleTime: Infinity,
   });
@@ -54,11 +65,13 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useLogin(error);
 
   useEffect(() => {
-    if (!isPending) {
-      if (data) {
+    if (!isPending && !isSubscriptionPending) {
+      if (data && subscription) {
         const { user, userGameInfo } = data;
         dispatch(setUser(user));
         dispatch(setUserGameInfo(userGameInfo));
+        dispatch(setUserSubscription(subscription));
+
         if (localStorage.getItem('pendingGameSession')) {
           const raw = localStorage.getItem('pendingGameSession');
           if (raw) {
@@ -78,7 +91,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
         }
       }
     }
-  }, [data, isPending]);
+  }, [data, isPending, subscription, isSubscriptionPending]);
 
   if (isLoading) {
     return <Loader />;

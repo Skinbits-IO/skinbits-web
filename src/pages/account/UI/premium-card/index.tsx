@@ -1,6 +1,6 @@
 import { CheckIcon, StarIcon, TonIcon } from '../../../../components';
-import { PREMIUM_PLANS } from '../../../../shared';
-import { useSubscription } from '../../hooks';
+import { PREMIUM_PLANS, useUser } from '../../../../shared';
+import { usePremiumCardContext } from '../../context';
 import styles from './PremiumCard.module.css';
 
 interface IPremiumCardProps {
@@ -41,7 +41,15 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
     }
   }
 
-  const { createMutation } = useSubscription();
+  const { setShow, setItem } = usePremiumCardContext();
+  const { subscription } = useUser();
+
+  const activeBought =
+    subscription &&
+    subscription.subscriptionType === option &&
+    subscription.isActive;
+
+  const activeFree = !activeBought && option === 'free';
 
   return (
     <div
@@ -96,17 +104,19 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
           color: option === 'free' ? '#000000' : '#FFFFFF',
           backgroundColor: option === 'free' ? '#FFFFFF' : '#000000',
         }}
+        disabled={(activeFree || activeBought) ?? false}
         onClick={() => {
-          createMutation.mutate({
-            subscriptionType: option,
-            amount: plans.price.star,
-            currency: 'XTR',
-            paymentMethod: 'telegram',
-            notes: 'Monthly subscription',
+          setItem({
+            option: option as 'gold' | 'premium',
+            price: {
+              ton: plans.price.ton,
+              star: plans.price.star,
+            },
           });
+          setShow(true);
         }}
       >
-        Get started
+        {activeBought || activeFree ? 'Current plan' : 'Get started'}
       </button>
     </div>
   );

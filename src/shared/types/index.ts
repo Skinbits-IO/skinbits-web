@@ -1,4 +1,4 @@
-export type { User, UserGameInfo } from './user';
+export type { User, UserGameInfo, UserSubscription } from './user';
 export type { GameSession } from './GameSession';
 export type { Skin } from './skins';
 export type { FarmingSession } from './FarmSession';

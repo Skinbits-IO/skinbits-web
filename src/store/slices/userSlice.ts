@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Rank, User } from '../../shared';
+import { Rank, User, UserSubscription } from '../../shared';
 
 interface IUserState {
   isLoading: boolean;
   user: User | null;
+  subscription: UserSubscription | null;
 }
 
 const initialState: IUserState = {
   isLoading: true,
   user: null,
+  subscription: null,
 };
 
 const userSlice = createSlice({
@@ -20,6 +22,12 @@ const userSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
+    },
+    setUserSubscription: (
+      state,
+      action: PayloadAction<UserSubscription | null>
+    ) => {
+      state.subscription = action.payload;
     },
     updateUserBalance: (state, action: PayloadAction<number>) => {
       state.user!.balance += action.payload;
@@ -36,6 +44,7 @@ const userSlice = createSlice({
 export const {
   setIsLoading,
   setUser,
+  setUserSubscription,
   updateUserBalance,
   setUserBalance,
   setUserRank,
