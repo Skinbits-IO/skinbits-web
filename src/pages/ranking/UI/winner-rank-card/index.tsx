@@ -8,8 +8,7 @@ interface IWinnerRankCardProps {
 }
 
 export const WinnerRankCard = ({ user }: IWinnerRankCardProps) => {
-  const url =
-    user!.photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
+  const url = user!.photoUrl ?? window.location.origin + '/avatar.jpg';
 
   return (
     <div className={styles.background}>

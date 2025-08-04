@@ -8,8 +8,7 @@ interface ISkinCardProps {
 }
 
 export const SkinCard = ({ skin, onClick }: ISkinCardProps) => {
-  const effectUrl =
-    window.location.origin + '/skinbits-web/skin-background.png';
+  const effectUrl = window.location.origin + '/skin-background.png';
   const formattedPrice = new Intl.NumberFormat('en-US').format(skin.price);
 
   return (

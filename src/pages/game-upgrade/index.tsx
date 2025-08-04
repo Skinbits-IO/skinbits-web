@@ -73,7 +73,7 @@ export const GameUpgradePage = () => {
     <div className={styles.background}>
       <img
         className={styles.spheres}
-        src={window.location.origin + '/skinbits-web/spheres.png'}
+        src={window.location.origin + '/spheres.png'}
         alt="image"
       />
       <div className={styles.content}>

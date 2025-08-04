@@ -26,7 +26,7 @@ export const ReferralsPage = () => {
     <div className={styles.background}>
       <img
         className={styles.spheres}
-        src={`${window.location.origin}/skinbits-web/referrals.png`}
+        src={`${window.location.origin}/referrals.png`}
         alt="referral illustration"
       />
       <div className={styles.shadow} />

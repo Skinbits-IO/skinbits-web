@@ -11,8 +11,7 @@ interface IRankCardProps {
 export const RankCard = ({ index, user }: IRankCardProps) => {
   const place = index ? index : user.rank ?? 0;
   const secondaryColor = place < 4 ? '#000000' : '#FFFFFF';
-  const url =
-    user!.photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
+  const url = user!.photoUrl ?? window.location.origin + '/avatar.jpg';
 
   return (
     <div

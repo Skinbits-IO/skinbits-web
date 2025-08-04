@@ -7,7 +7,7 @@ interface IReferralProps {
 }
 
 export const Referral = ({ username, photoUrl }: IReferralProps) => {
-  const url = photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
+  const url = photoUrl ?? window.location.origin + '/avatar.jpg';
   const formatedPrice = new Intl.NumberFormat('en-US').format(1e6);
 
   return (

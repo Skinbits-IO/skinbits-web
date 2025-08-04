@@ -51,19 +51,19 @@ export const UPGRADE_CARDS: Card[] = [
     title: 'Fuel Amount',
     description:
       'Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount Fuel Amount',
-    photoUrl: '/skinbits-web/upgrades/fuel.jpg',
+    photoUrl: '/upgrades/fuel.jpg',
   },
   {
     title: 'Rocket Level',
     description:
       'Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level Rocket Level',
-    photoUrl: '/skinbits-web/upgrades/launch.jpg',
+    photoUrl: '/upgrades/launch.jpg',
   },
   {
     title: 'Farming Bot',
     description:
       'Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot Farming Bot',
-    photoUrl: '/skinbits-web/upgrades/farm.jpg',
+    photoUrl: '/upgrades/farm.jpg',
   },
 ];
 
@@ -72,12 +72,12 @@ export const BOOST_CARDS: Card[] = [
     title: 'Fuel boost',
     description:
       'Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost Fuel boost',
-    photoUrl: '/skinbits-web/upgrades/fuel-boost.jpg',
+    photoUrl: '/upgrades/fuel-boost.jpg',
   },
   {
     title: 'Rocket boost',
     description:
       'Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost Rocket boost',
-    photoUrl: '/skinbits-web/upgrades/launch-boost.jpg',
+    photoUrl: '/upgrades/launch-boost.jpg',
   },
 ];

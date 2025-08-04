@@ -13,8 +13,7 @@ interface IHeaderProps {
 export const Header = ({ children }: IHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useUser();
-  const url =
-    user!.photoUrl ?? window.location.origin + '/skinbits-web/avatar.jpg';
+  const url = user!.photoUrl ?? window.location.origin + '/avatar.jpg';
 
   return (
     <div className={styles.background}>

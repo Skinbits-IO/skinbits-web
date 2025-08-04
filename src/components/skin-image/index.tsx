@@ -11,7 +11,7 @@ export const SkinImage = ({ image, backgroundColor }: ISkinImageProps) => {
     <div className={styles.background}>
       <img
         className={styles.skin}
-        src={window.location.origin + '/skinbits-web/skin-placeholder.png'}
+        src={window.location.origin + '/skin-placeholder.png'}
         alt="Skin image"
       />
       <img className={styles.effect} src={image} alt="image" />

@@ -7,8 +7,7 @@ interface ISkinInfoProps {
 }
 
 export const SkinInfo = ({ skin }: ISkinInfoProps) => {
-  const effectUrl =
-    window.location.origin + '/skinbits-web/skin-background.png';
+  const effectUrl = window.location.origin + '/skin-background.png';
 
   return (
     <div className={styles.background}>
