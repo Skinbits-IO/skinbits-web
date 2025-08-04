@@ -2,6 +2,7 @@
     position: fixed;
     top: var(--tg-safe-area-inset-top, 0rem);
     bottom: var(--tg-safe-area-inset-bottom, 0rem);
+    min-width:  100vw;
     min-height: calc(
         (var(--tg-viewport-stable-height, 100vh)) - 
         (var(--tg-safe-area-inset-top, 0rem)) - 
@@ -11,13 +12,8 @@
 
 .app {
     position: absolute;
+    min-width: 100%;
+    max-width: 100%;
     top: var(--tg-content-safe-area-inset-top, 0rem);
     bottom: var(--tg-content-safe-area-inset-bottom, 0rem);
-    min-width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    color: white;
-    font-size: 1.25rem;
 }

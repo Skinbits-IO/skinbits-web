@@ -1,0 +1,32 @@
+.background {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.info {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+    color: white;
+}
+
+.info > h5 {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.info > p {
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 75%;
+}

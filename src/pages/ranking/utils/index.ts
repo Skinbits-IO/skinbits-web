@@ -1,0 +1,1 @@
+export { formatPoints } from './rankingUtils';

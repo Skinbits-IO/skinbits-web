@@ -1,0 +1,30 @@
+.background {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 10px;
+}
+
+.balanceText {
+    font-size: 12px;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.7;
+}
+
+.balanceRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.balance {
+    font-size: 32px;
+    font-weight: 400;
+    font-family: 'Bebas Neue';
+    color: #FFFFFF;
+    line-height: normal;
+}

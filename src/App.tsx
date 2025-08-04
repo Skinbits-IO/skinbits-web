@@ -1,32 +1,59 @@
 import { useEffect } from 'react';
+import { Route, Routes } from 'react-router';
 import styles from './App.module.css';
 import WebApp from '@twa-dev/sdk';
-import NavigationBar from './components/NavigationBar/NavigationBar';
-import { Route, Routes } from 'react-router';
-import Home from './pages/Home';
-import Marketplace from './pages/Marketplace';
-import Referrals from './pages/Referrals';
-import Task from './pages/Task';
-import Account from './pages/Account';
+import { NavigationBar } from './components';
+import {
+  AccountPage,
+  GameUpgradePage,
+  HomePage,
+  MarketplacePage,
+  RankingPage,
+  ReferralsPage,
+  SkinPage,
+} from './pages';
+import {
+  AuthProvider,
+  NotificationWidget,
+  StatusNotifications,
+} from './features';
+import { AnimatePresence } from 'framer-motion';
+import { RootState } from './store';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const notification = useSelector((state: RootState) => state.notification);
+
   useEffect(() => {
-    WebApp.setHeaderColor('#000000');
     WebApp.ready();
+    WebApp.setHeaderColor('#000000');
+    WebApp.lockOrientation();
     WebApp.expand();
   }, []);
 
   return (
     <div className={styles.safeArea}>
       <div className={styles.app}>
-        <Routes>
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/task" element={<Task />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/referrals" element={<Referrals />} />
-          <Route path="/account" element={<Account />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/upgrade" element={<GameUpgradePage />} />
+
+            <Route path="/ranking" element={<RankingPage />} />
+
+            <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/marketplace/skin-page" element={<SkinPage />} />
+
+            <Route path="/referrals" element={<ReferralsPage />} />
+            <Route path="/account" element={<AccountPage />} />
+          </Routes>
+        </AuthProvider>
         <NavigationBar />
+
+        <AnimatePresence>
+          {notification.show && <NotificationWidget />}
+        </AnimatePresence>
+        <StatusNotifications />
       </div>
     </div>
   );

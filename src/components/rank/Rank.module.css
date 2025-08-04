@@ -1,0 +1,43 @@
+.background {
+    position: relative;
+    height: 4.75rem;
+    width: 100%;
+    background-color: transparent;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.lightning {
+    position: absolute;
+    bottom: -6.6875rem;
+    height: 5.625rem;
+    width: 5.625rem;
+    border-radius: 2.8125rem;
+    z-index: -1;
+    box-shadow: 0 0 3.5rem var(--rank-color, #FCCB4D); 
+    overflow: visible;
+}
+
+.textBox{
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    padding: 0.625rem 0.9375rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: transparent;
+}
+
+.rankText {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.7;
+}

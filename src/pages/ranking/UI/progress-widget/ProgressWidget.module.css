@@ -1,0 +1,62 @@
+.background {
+    position: relative;
+    height: 4.75rem;
+    width: 100%;
+    padding: 0.7813rem 0.9375rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.background h5 {
+    font-weight: bold;
+    font-size: 0.875rem;
+    color: #FFFFFF;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.row > p {
+    opacity: 50%;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: #FFFFFF;
+}
+
+.reward {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.reward > p {
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'Bebas Neue';
+    color: #92D0A7;
+}
+
+.progressBar {
+    position: relative;
+    margin-top: 0.1875rem;
+    height: 0.1875rem;
+    width: 100%;
+    background-color: rgba(217, 217, 217, 0.1);
+    border-radius: 2.25rem;
+}
+
+.progress {
+    position: absolute;
+    height: inherit;
+    border-radius: inherit;
+    background-color: #D9D9D9;
+}

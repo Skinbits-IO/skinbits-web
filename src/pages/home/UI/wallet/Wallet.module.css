@@ -1,0 +1,39 @@
+.background {
+    position: relative;
+    height: 4.75rem;
+    width: 100%;
+    padding: 0.9375rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    overflow: hidden;
+    
+    background-image: url('/wallet-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.header {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.7;
+}
+
+.balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.0938rem;
+}
+
+.balanceText {
+    font-size: 24px;
+    font-weight: 400;
+    font-family: 'Bebas Neue';
+    color: #FFFFFF;
+}

@@ -1,0 +1,44 @@
+interface GameRocketIconProps {
+  size?: number;
+  opacity?: number;
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export const GameRocketIcon = ({
+  size = 44,
+  opacity = 1,
+  primaryColor = '#CECECE',
+  secondaryColor = '#686868',
+  ...props
+}: GameRocketIconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    opacity={opacity}
+    viewBox="0 0 44 44"
+    fill="none"
+    {...props}
+  >
+    <path
+      fill={`url(#gradient-${primaryColor})`}
+      fillRule="evenodd"
+      d="M36.065 3c2.959-.386 5.397 2.052 5.01 5.01-.566 4.326-2.119 11.673-6.51 16.408-1.398 1.507-3.086 2.899-4.821 4.136l.507 3.55c.142 1-.194 2.008-.908 2.722L23.51 40.66c-1.87 1.87-5.071.802-5.445-1.815l-.778-5.445h.002a5.006 5.006 0 0 1-1.358-.967l-4.288-4.288a5.008 5.008 0 0 1-.967-1.359v.003L5.23 26.01c-2.617-.374-3.685-3.575-1.815-5.445l5.834-5.834a3.209 3.209 0 0 1 2.722-.907l3.55.507c1.237-1.736 2.629-3.424 4.136-4.82C24.393 5.118 31.74 3.565 36.065 3ZM7.953 28.345a1.375 1.375 0 0 1 0 1.945L5.36 32.882a1.375 1.375 0 0 1-1.944-1.945l2.593-2.593a1.375 1.375 0 0 1 1.944 0Zm3.89 3.89a1.375 1.375 0 0 1 0 1.944l-5.186 5.185a1.375 1.375 0 1 1-1.945-1.944l5.186-5.186a1.375 1.375 0 0 1 1.944 0Zm3.888 3.888a1.375 1.375 0 0 1 0 1.945L13.14 40.66a1.375 1.375 0 0 1-1.945-1.945l2.593-2.593a1.375 1.375 0 0 1 1.944 0Zm9.399-17.177a3.667 3.667 0 1 1 5.185-5.185 3.667 3.667 0 0 1-5.185 5.185Z"
+      clipRule="evenodd"
+    />
+    <defs>
+      <linearGradient
+        id={`gradient-${primaryColor}`}
+        x1={21.794}
+        x2={21.794}
+        y1={2.96}
+        y2={41.603}
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor={primaryColor} />
+        <stop offset={1} stopColor={secondaryColor} />
+      </linearGradient>
+    </defs>
+  </svg>
+);

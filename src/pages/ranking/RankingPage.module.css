@@ -1,0 +1,65 @@
+.background {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 1.875rem);
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 0.9375rem;
+    margin: 0.9375rem 0.9375rem 0 0.9375rem;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.upperSection {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 0.8125rem;
+}
+
+.rankings {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2.1875rem;
+    overflow: hidden;
+}
+  
+.ranking {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    padding-bottom: 105px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.loadMoreButton {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 1);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 12px;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loadMoreButton:disabled {
+    opacity: 0.5;
+}

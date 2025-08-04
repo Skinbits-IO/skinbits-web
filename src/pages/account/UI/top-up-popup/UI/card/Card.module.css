@@ -1,0 +1,37 @@
+.background {
+    padding: 15px;
+    height: 60px;
+    width: 100%;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+
+.rockets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.rockets > p  {
+    font-size: 15px;
+    color: #000000;
+    font-weight: 600;
+}
+
+.price {
+    padding: 7px 12px;
+    border-radius: 41px;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    font-size: 14px;
+    color: #FFFFFF;
+    font-weight: 600;
+}

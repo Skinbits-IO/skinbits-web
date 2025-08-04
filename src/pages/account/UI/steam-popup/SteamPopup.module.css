@@ -1,0 +1,135 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(0.25rem);
+    z-index: 2;
+}
+
+.background {
+    position: fixed;
+    bottom: 0;
+    height: fit-content;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 1);
+    padding: 1.25rem 1.25rem calc(18px + var(--tg-safe-area-inset-bottom, 0rem)) 20px;
+    border-radius: 1.5rem 1.5rem 0 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: end;
+    gap: 2.5rem;
+}
+
+.steam {
+    height: 6rem;
+    width: 100%;
+    border-radius: 1rem;;
+
+    overflow: hidden;
+    background-image: url('/steam-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tutorial {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 0.9375rem;
+    padding: 1.3125rem 1.0625rem;
+    border-radius: 0.875rem;
+    border: 0.0625rem dashed rgba(255, 255, 255, 0.1);
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #7C7C7C;
+
+    word-wrap: break-word;
+    word-wrap: break-all;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.tutorial > h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.tutorial > p {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #A0A0A0;
+}
+
+.tutorial > button {
+    height: 2.9375rem;
+    width: 100%;
+    padding: 0.9375rem 0.625rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #C3AFAF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #000000;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.inputContainer {
+    height: fit-content;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 60px;
+    gap: 10px;
+}
+
+.input {
+    padding: 1.3125rem 1.0625rem;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    background: rgba(217, 217, 217, 0.02);
+    color: #C5C5C5;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.input:focus,
+.input:active {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.pasteButton {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+}
+
+.error {
+    margin-top: -1.875rem;
+    margin-left: 0.625rem;
+    color: #ff6b6b;
+    line-height: normal;
+    font-size: 0.75rem;
+}

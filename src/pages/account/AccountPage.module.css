@@ -1,0 +1,34 @@
+.background {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 1.875rem);
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1.875rem;
+    margin: 0.9375rem 0.9375rem 0 0.9375rem;
+    background-color: transparent;
+    padding-bottom: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.steamButton {
+    height: 2.1875rem;
+    width: 2.1875rem;
+    background-color: transparent;
+    border: none;
+    padding: none;
+}
+
+.plans {
+    width: 100%;
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.625rem;
+    scrollbar-width: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}

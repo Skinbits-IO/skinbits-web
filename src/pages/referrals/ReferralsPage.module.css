@@ -1,0 +1,112 @@
+.background {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 1.875rem);
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin: 0.9375rem 0.9375rem 0 0.9375rem;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.spheres {
+    position: fixed;
+    height: 350px;
+    width: 412px;
+    top: -30px;
+    left:0;
+    z-index: -1;
+}
+
+.shadow {
+    position: fixed;
+    top: 190px;
+    height: 100px;
+    width: 100%;
+    background-color: #000000;
+    filter: blur(15px);
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    height: 100%;
+    min-width: 100%;
+    flex: 1;
+    padding: 0 25px;
+    padding: 130px 0 100px 0;
+    display: grid;
+    grid-template-rows: 1fr 56px;
+    gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.mainContent {
+    height: 100%;
+    min-width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 40px;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: 800;
+    color: #FFFFFF;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.referralContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 15px;
+}
+
+.referralContainer > h6 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFFFFF;
+    opacity: 70%;
+}
+
+.referrals {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.centerContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+  
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+}

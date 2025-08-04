@@ -1,0 +1,51 @@
+.background {
+    left: 0.9375rem;
+    right: 0.9375rem;
+    bottom: 0.625rem;
+    position: absolute;
+    background-color: rgba(217, 217, 217, 0.05);
+    min-width: calc(100%-1.875rem);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8125rem 0.875rem;
+    border-radius: 1rem;
+    z-index: 1;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.375rem;
+    width: 2.375rem;
+    border-radius: 2.375rem;
+}
+
+.itemActive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.375rem;
+    width: 2.375rem;
+    background-color: white;
+    border-radius: 2.375rem;
+}
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: white;
+    opacity: 40%;
+}
+
+.iconActive {
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 100%;
+    color: black;
+}
