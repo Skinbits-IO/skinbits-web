@@ -26,6 +26,7 @@ export const useLogin = (error: Error | null) => {
           secure: true,
         });
         queryClient.invalidateQueries({ queryKey: ['user'] });
+        queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
       }
     },
     onError: (error, initData: string) => {
@@ -53,6 +54,7 @@ export const useLogin = (error: Error | null) => {
         });
       }
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
     },
     onError: (error) => addNotification('error', error.message, 2000),
   });

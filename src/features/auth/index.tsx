@@ -39,7 +39,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const { data: subscription, isPending: isSubscriptionPending } = useQuery({
-    queryKey: ['user-subcriptiob'],
+    queryKey: ['user-subscription'],
     queryFn: () => getUserSubscription(),
     retry: 0,
     staleTime: Infinity,
