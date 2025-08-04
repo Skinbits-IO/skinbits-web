@@ -5,7 +5,7 @@ export async function confirmInvoice(id: string, amount: number) {
   try {
     const response = await api.post(`/invoice/confirm`, {
       payment_id: id,
-      curreny: 'XTR',
+      currency: 'XTR',
       amount,
     });
     return response.data;
