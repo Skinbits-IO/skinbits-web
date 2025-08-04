@@ -18,7 +18,6 @@ export default defineConfig({
       process: 'process/browser',
     },
   },
-  base: '/skinbits-web/',
   server: {
     https: true,
     proxy: {
