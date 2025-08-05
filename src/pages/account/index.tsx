@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { PremiumCardProvider, usePremiumCardContext } from './context';
 
 const AccountPageContent = () => {
-  const { user } = useUser();
+  const { user, subscription } = useUser();
 
   const [showDonationPopup, setShowDonationPopup] = useState(false);
   const [showSteamPopup, setShowSteamPopup] = useState(false);
@@ -45,8 +45,11 @@ const AccountPageContent = () => {
       <Wallet balance={user!.balance} />
       <TopUp onClick={() => setShowDonationPopup(true)} />
       <div className={styles.plans}>
-        <PremiumCard option="free" />
-        <PremiumCard option="gold" />
+        {!subscription && <PremiumCard option="free" />}
+        {(!subscription ||
+          (subscription && subscription.subscriptionType === 'gold')) && (
+          <PremiumCard option="gold" />
+        )}
         <PremiumCard option="premium" />
       </div>
     </div>

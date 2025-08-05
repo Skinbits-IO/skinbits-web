@@ -66,11 +66,11 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!isPending && !isSubscriptionPending) {
-      if (data && subscription) {
+      if (data) {
         const { user, userGameInfo } = data;
         dispatch(setUser(user));
         dispatch(setUserGameInfo(userGameInfo));
-        dispatch(setUserSubscription(subscription));
+        dispatch(setUserSubscription(subscription ?? null));
 
         if (localStorage.getItem('pendingGameSession')) {
           const raw = localStorage.getItem('pendingGameSession');
