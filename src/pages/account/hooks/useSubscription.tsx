@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStatusNotification } from '../../../shared';
 import { createSubscription } from '../api';
 import WebApp from '@twa-dev/sdk';
@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react';
 import { useConfirmInvoice } from './useConfirmInvoice';
 
 export const useSubscription = () => {
+  const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
+
   const { payWithTon, isSuccess, isError, isProcessing } = useTonPayment();
   const confirmInvoiceMutation = useConfirmInvoice();
 
@@ -35,20 +37,12 @@ export const useSubscription = () => {
       return createSubscription(data);
     },
     onSuccess: (data) => {
-      console.log(data);
       setPaymentFinished(false);
       setSubscriptionId(data.subscription.subscriptionId);
 
       if (data.invoiceLink) {
         if (WebApp.openInvoice) {
           WebApp.openInvoice(data.invoiceLink, (status) => {
-            if (status === 'paid') {
-              confirmInvoiceMutation.mutate({
-                id: data.subscription.paymentId,
-                amount,
-              });
-            }
-
             if (status === 'paid') {
               alert('Payment successful!');
             } else if (status === 'cancelled') {
@@ -57,6 +51,7 @@ export const useSubscription = () => {
               alert('Payment failed or was closed.');
             }
 
+            queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
             setPaymentFinished(true);
           });
         } else {

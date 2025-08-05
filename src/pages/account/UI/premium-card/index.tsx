@@ -44,11 +44,7 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
   const { setShow, setItem } = usePremiumCardContext();
   const { subscription } = useUser();
 
-  const activeBought =
-    subscription &&
-    subscription.subscriptionType === option &&
-    subscription.isActive;
-
+  const activeBought = subscription && subscription.subscriptionType === option;
   const activeFree = !activeBought && option === 'free';
 
   return (
@@ -116,7 +112,11 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
           setShow(true);
         }}
       >
-        {activeBought || activeFree ? 'Current plan' : 'Get started'}
+        {activeFree || (activeBought && subscription.isActive)
+          ? 'Current plan'
+          : activeBought && !subscription.isActive
+          ? 'Pending'
+          : 'Get started'}
       </button>
     </div>
   );
