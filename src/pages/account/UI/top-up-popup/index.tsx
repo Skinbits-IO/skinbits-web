@@ -47,6 +47,7 @@ export const TopUpPopup = ({ onClose }: ITopUpPopupProps) => {
                   mode={mode}
                   onClick={() => {
                     createMutation.mutate({
+                      donationAmount: prices.rockets,
                       amount: prices.price as number,
                       currency: mode === 'star' ? 'XTR' : 'TON',
                       paymentMethod: 'telegram',

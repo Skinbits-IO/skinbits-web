@@ -28,6 +28,7 @@ export const useDonation = () => {
 
   const createMutation = useMutation({
     mutationFn: (data: {
+      donationAmount: number;
       amount: number;
       currency: string;
       paymentMethod: string;
