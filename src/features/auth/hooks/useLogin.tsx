@@ -17,12 +17,12 @@ export const useLogin = (error: Error | null) => {
       if (data.accessToken && data.refreshToken) {
         cookies.set('accessToken', data.accessToken, {
           path: '/',
-          sameSite: 'lax',
+          sameSite: 'strict',
           secure: true,
         });
         cookies.set('refreshToken', data.refreshToken, {
           path: '/',
-          sameSite: 'lax',
+          sameSite: 'strict',
           secure: true,
         });
         queryClient.invalidateQueries({ queryKey: ['user'] });
