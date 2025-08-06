@@ -47,7 +47,7 @@ export const UpgradeCard = ({
         )}
         <button
           className={styles.button}
-          disabled={price === 0}
+          disabled={level === maxLevel}
           onClick={() => onClick()}
         >
           <ArrowIcon size={14} />
