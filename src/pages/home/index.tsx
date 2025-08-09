@@ -5,9 +5,15 @@ import { AppDispatch } from '../../store';
 import { AnimatePresence } from 'framer-motion';
 import { setUserRank } from '../../store/slices/userSlice';
 import { Header, Rank } from '../../components';
-import { FarmButton, FarmCancelPopup, RankingPopup, Wallet } from './UI';
+import {
+  FarmButton,
+  FarmCancelPopup,
+  RankingPopup,
+  SubscriptionPopup,
+  Wallet,
+} from './UI';
 import { useNavigate } from 'react-router';
-import { useFarmState, useRanking } from './hooks';
+import { useFarmState, useRanking, useSubscription } from './hooks';
 import {
   FarmStatus,
   Rank as RankEnum,
@@ -31,9 +37,13 @@ export const HomePage = () => {
 
   const { user } = useUser();
   const { user: userGameInfo } = useUserGameInfo();
-  const { showNewRankPopup, setShowNewRankPopup } = useRanking();
-  const { fetched } = useFarmState();
 
+  const { showNewRankPopup, setShowNewRankPopup } = useRanking();
+
+  const { show: showSubscription, setShow: setShowSubscription } =
+    useSubscription();
+
+  const { fetched } = useFarmState();
   const [showFarmCancelPopup, setShowFarmCancelPopup] =
     useState<boolean>(false);
 
@@ -89,6 +99,9 @@ export const HomePage = () => {
         )}
         {showFarmCancelPopup && (
           <FarmCancelPopup onClose={() => setShowFarmCancelPopup(false)} />
+        )}
+        {showSubscription && (
+          <SubscriptionPopup onClose={() => setShowSubscription(false)} />
         )}
       </AnimatePresence>
       <Header />
