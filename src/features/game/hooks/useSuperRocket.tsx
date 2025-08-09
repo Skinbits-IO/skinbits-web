@@ -20,7 +20,11 @@ export const useSuperRocket = () => {
   >([]);
 
   useEffect(() => {
-    if (amo % (50 * user!.tapLevel) === 0 && amo !== 0 && amo !== maxAmo) {
+    if (
+      amo % (50 * Math.floor(Math.log2(user!.tapLevel))) === 0 &&
+      amo !== 0 &&
+      amo !== maxAmo
+    ) {
       setActiveSuperRocket(true);
       setTimeout(() => setActiveSuperRocket(false), 3000);
     }
