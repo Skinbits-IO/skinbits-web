@@ -21,7 +21,10 @@ export const useSuperRocket = () => {
   >([]);
 
   useEffect(() => {
-    if (superRocketBuffer % 100 < user!.tapLevel && superRocketBuffer !== 0) {
+    if (
+      superRocketBuffer % (100 * user!.fuelLevel) < user!.tapLevel &&
+      superRocketBuffer !== 0
+    ) {
       setActiveSuperRocket(true);
       setTimeout(() => {
         setActiveSuperRocket(false);
