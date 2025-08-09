@@ -6,14 +6,15 @@ import {
   updateBalanceEarned,
   updateTotalTaps,
 } from '../../../store/slices/game/gameSessionSlice';
-import { useAmo, useBoost, useUserGameInfo } from '../../../shared';
+import { useBoost, useUserGameInfo } from '../../../shared';
+import { useGameContext } from '../context';
 
 export const useSuperRocket = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useUserGameInfo();
-  const { amo, maxAmo } = useAmo();
   const { isActive, type } = useBoost();
 
+  const { superRocketBuffer, setSuperRocketBuffer } = useGameContext();
   const [activeSuperRocket, setActiveSuperRocket] = useState<boolean>(false);
   const [superRocketIndicators, setSuperRocketIndicators] = useState<
     { id: number; x: number; y: number }[]
@@ -21,14 +22,16 @@ export const useSuperRocket = () => {
 
   useEffect(() => {
     if (
-      amo % (50 * Math.floor(Math.log2(user!.tapLevel))) === 0 &&
-      amo !== 0 &&
-      amo !== maxAmo
+      superRocketBuffer % (100 * Math.floor(Math.log2(user!.fuelLevel))) ===
+      0
     ) {
       setActiveSuperRocket(true);
-      setTimeout(() => setActiveSuperRocket(false), 3000);
+      setTimeout(() => {
+        setActiveSuperRocket(false);
+        setSuperRocketBuffer(0);
+      }, 5000);
     }
-  }, [amo]);
+  }, [superRocketBuffer]);
 
   const handleSuperRocketClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();

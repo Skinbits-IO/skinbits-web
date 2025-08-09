@@ -15,6 +15,7 @@ import {
 import { RocketPosition } from '../types';
 import { computeGrid, generatePosition, markArea } from '../utils';
 import { useAmo, useBoost, useUserGameInfo } from '../../../shared';
+import { useGameContext } from '../context';
 
 export const useRocket = (
   gameRef: React.MutableRefObject<HTMLDivElement | null>
@@ -23,6 +24,7 @@ export const useRocket = (
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
   const { isActive, type } = useBoost();
+  const { setSuperRocketBuffer } = useGameContext();
 
   const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
   const amoRef = useRef<number>(amo);
@@ -43,6 +45,7 @@ export const useRocket = (
       const earnedRockets =
         isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
       dispatch(updateUserBalance(earnedRockets));
+      setSuperRocketBuffer((prev) => (prev += earnedRockets));
 
       dispatch(updateTotalTaps(1));
       dispatch(updateBalanceEarned(earnedRockets));
