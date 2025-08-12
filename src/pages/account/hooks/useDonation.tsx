@@ -28,6 +28,7 @@ export const useDonation = () => {
 
   const createMutation = useMutation({
     mutationFn: (data: {
+      donationAmount: number;
       amount: number;
       currency: string;
       paymentMethod: string;
@@ -40,11 +41,6 @@ export const useDonation = () => {
       if (data.invoiceLink && data.donation.currency === 'XTR') {
         if (WebApp.openInvoice) {
           WebApp.openInvoice(data.invoiceLink, (status) => {
-            updateMutation.mutate({
-              id: data.donation.donation_id,
-              status: status === 'paid' ? 'completed' : 'failed',
-            });
-
             if (status === 'paid') {
               alert('Payment successful!');
             } else if (status === 'cancelled') {

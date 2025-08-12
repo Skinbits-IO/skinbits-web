@@ -10,8 +10,9 @@ import {
 } from './hooks';
 import { SuperRocket, UpgradeButton } from './UI';
 import { useAmo, useBoost, useUserGameInfo } from '../../shared';
+import { GameProvider } from './context';
 
-export const GameWidget = () => {
+const GameWidgetContent = () => {
   const gameRef = useRef<HTMLDivElement | null>(null);
   const { user } = useUserGameInfo();
   const { amo, maxAmo } = useAmo();
@@ -129,5 +130,13 @@ export const GameWidget = () => {
       </div>
       <UpgradeButton />
     </div>
+  );
+};
+
+export const GameWidget = () => {
+  return (
+    <GameProvider>
+      <GameWidgetContent />
+    </GameProvider>
   );
 };

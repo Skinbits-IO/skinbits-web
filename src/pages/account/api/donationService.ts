@@ -16,6 +16,7 @@ export interface DonationResponse {
 }
 
 export async function createDonation(body: {
+  donationAmount: number;
   amount: number;
   currency: string;
   paymentMethod: string;
@@ -23,6 +24,7 @@ export async function createDonation(body: {
 }) {
   try {
     const response = await api.post<{ data: DonationResponse }>(`/donations`, {
+      donation_amount: body.donationAmount,
       amount: body.amount,
       currency: body.currency,
       payment_method: body.paymentMethod,

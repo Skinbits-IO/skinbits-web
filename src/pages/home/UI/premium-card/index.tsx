@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router';
 import { CheckIcon, StarIcon, TonIcon } from '../../../../components';
 import { PREMIUM_PLANS, useUser } from '../../../../shared';
-import { usePremiumCardContext } from '../../context';
 import styles from './PremiumCard.module.css';
 
 interface IPremiumCardProps {
@@ -41,7 +41,7 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
     }
   }
 
-  const { setShow, setItem } = usePremiumCardContext();
+  const navigate = useNavigate();
   const { subscription } = useUser();
 
   const activeBought = subscription && subscription.subscriptionType === option;
@@ -100,16 +100,8 @@ export const PremiumCard = ({ option }: IPremiumCardProps) => {
           color: option === 'free' ? '#000000' : '#FFFFFF',
           backgroundColor: option === 'free' ? '#FFFFFF' : '#000000',
         }}
-        disabled={(activeFree || activeBought) ?? false}
         onClick={() => {
-          setItem({
-            option: option as 'gold' | 'premium',
-            price: {
-              ton: plans.price.ton,
-              star: plans.price.star,
-            },
-          });
-          setShow(true);
+          navigate('/account');
         }}
       >
         {activeFree || (activeBought && subscription.isActive)

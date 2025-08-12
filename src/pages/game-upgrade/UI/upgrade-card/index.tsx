@@ -1,5 +1,6 @@
 import styles from './UpgradeCard.module.css';
 import { ArrowIcon } from '../../../../components';
+import { useUser } from '../../../../shared';
 
 interface IUpgradeCardProps {
   title: string;
@@ -16,8 +17,11 @@ export const UpgradeCard = ({
   level,
   onClick,
 }: IUpgradeCardProps) => {
+  const { subscription } = useUser();
   const formatedPrice = new Intl.NumberFormat('en-US').format(price);
-  const levelPercentage = level ? Math.min(level / 20, 1) * 100 : 0;
+
+  const maxLevel = subscription && subscription.isActive ? 20 : 15;
+  const levelPercentage = level ? Math.min(level / maxLevel, 1) * 100 : 0;
 
   return (
     <div className={styles.background}>
@@ -25,7 +29,9 @@ export const UpgradeCard = ({
         <img src={window.location.origin + photoUrl} className={styles.image} />
         <div className={styles.textContainer}>
           <p className={styles.title}>{title}</p>
-          <p className={styles.price}>{price === 0 ? 'Max' : formatedPrice}</p>
+          <p className={styles.price}>
+            {level === maxLevel ? 'Max' : formatedPrice}
+          </p>
         </div>
       </div>
       <div className={styles.row}>
@@ -41,7 +47,7 @@ export const UpgradeCard = ({
         )}
         <button
           className={styles.button}
-          disabled={price === 0}
+          disabled={level === maxLevel}
           onClick={() => onClick()}
         >
           <ArrowIcon size={14} />
