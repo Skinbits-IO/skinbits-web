@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../shared';
 import { createSubscription } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useTonPayment } from './useTonPayment';
 import { useEffect, useState } from 'react';
 import { useConfirmInvoice } from './useConfirmInvoice';
+import { useStatusNotification } from '../../../shared';
 
 export const useSubscription = () => {
   const queryClient = useQueryClient();

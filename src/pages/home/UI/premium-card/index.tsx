@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router';
-import { CheckIcon, StarIcon, TonIcon } from '../../../../components';
-import { PREMIUM_PLANS, useUser } from '../../../../shared';
+import {
+  CheckIcon,
+  PREMIUM_PLANS,
+  StarIcon,
+  TonIcon,
+  useUser,
+} from '../../../../shared';
 import styles from './PremiumCard.module.css';
 
 interface IPremiumCardProps {

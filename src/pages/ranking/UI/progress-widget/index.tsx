@@ -1,10 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { RocketIcon } from '../../../../components';
 import styles from './ProgressWidget.module.css';
-import { Rank, RANKS } from '../../../../shared';
+import { RankEnum, RANKS, RocketIcon } from '../../../../shared';
 
 interface IProgressWidgetProps {
-  rank: Rank;
+  rank: RankEnum;
   totalEarned: number;
 }
 

@@ -1,8 +1,7 @@
-import { motion } from 'framer-motion';
 import styles from './PremiumCardPopup.module.css';
-import { PopupButton, PopupCloseButton } from '../../../../components';
 import { useSubscription } from '../../hooks';
 import { usePremiumCardContext } from '../../context';
+import { Popup, PopupButton } from '../../../../shared';
 
 export const PremiumCardPopup = () => {
   const { item, setShow } = usePremiumCardContext();
@@ -29,43 +28,25 @@ export const PremiumCardPopup = () => {
   };
 
   return (
-    <>
-      <motion.div
-        className={styles.backdrop}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      />
-      <motion.div
-        className={styles.background}
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-      >
-        <div className={styles.closeWrapper}>
-          <PopupCloseButton onTap={() => setShow(false)} />
-        </div>
+    <Popup onClose={() => setShow(false)}>
+      <div className={styles.imageContainer}>
+        <div className={styles.title}>Choose Your Payment Method</div>
+      </div>
 
-        <div className={styles.imageContainer}>
-          <div className={styles.title}>Choose Your Payment Method</div>
-        </div>
+      <div className={styles.description}>
+        Select how you’d like to pay for your premium subscription.
+      </div>
 
-        <div className={styles.description}>
-          Select how you’d like to pay for your premium subscription.
-        </div>
+      <div className={styles.buttonRow}>
+        <PopupButton text="Pay with TON" onClick={handleTonPayment} />
+        <PopupButton text="Pay with Stars" onClick={handleTelegramPayment} />
+      </div>
 
-        <div className={styles.buttonRow}>
-          <PopupButton text="Pay with TON" onClick={handleTonPayment} />
-          <PopupButton text="Pay with Stars" onClick={handleTelegramPayment} />
+      {isPending && (
+        <div className={styles.loaderOverlay}>
+          <div className={styles.spinner} />
         </div>
-
-        {isPending && (
-          <div className={styles.loaderOverlay}>
-            <div className={styles.spinner} />
-          </div>
-        )}
-      </motion.div>
-    </>
+      )}
+    </Popup>
   );
 };

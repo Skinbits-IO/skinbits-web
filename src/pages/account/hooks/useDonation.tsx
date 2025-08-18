@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../shared';
 import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useTonPayment } from './useTonPayment';
 import { useUpdateDonation } from './useUpdateDonation';
 import { useEffect, useState } from 'react';
+import { useStatusNotification } from '../../../shared';
 
 export const useDonation = () => {
   const addNotification = useStatusNotification();

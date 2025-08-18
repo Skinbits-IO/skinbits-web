@@ -1,5 +1,5 @@
+import { ArrowIcon } from '../arrow-icon';
 import styles from './BoostCard.module.css';
-import { ArrowIcon } from '../../../../components';
 
 interface IBoostCardProps {
   title: string;

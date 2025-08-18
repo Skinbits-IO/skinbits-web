@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import WebApp from '@twa-dev/sdk';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addUser, login } from '../api';
+import { login } from '../api';
+import { addUser } from '../../../entities';
 import { useStatusNotification } from '../../../shared';
 
 const cookies = new Cookies();

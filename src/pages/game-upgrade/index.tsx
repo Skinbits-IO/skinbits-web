@@ -8,26 +8,28 @@ import {
   FARM_LEVEL_PRICES,
   LEVEL_PRICES,
   UPGRADE_CARDS,
+  useAppDispatch,
   useBackButton,
   useBoost,
   useStatusNotification,
   useUser,
-  useUserGameInfo,
 } from '../../shared';
 import { buyFarm, upgradeUserLevel } from './api';
-import { Balance, BoostCard, CardContainer, Popup, UpgradeCard } from './UI';
-import { useUpdateBoost } from './hooks';
-import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
-import { setUser } from '../../store/slices/userSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
+import {
+  Balance,
+  BoostCard,
+  CardContainer,
+  CustomPopup,
+  UpgradeCard,
+} from './ui';
+import { setUser } from '../../entities';
+import { useUpdateBoost } from '../../features';
 
 export const GameUpgradePage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const addNotification = useStatusNotification();
 
   const { user } = useUser();
-  const { user: userGameInfo } = useUserGameInfo();
   const { isActive } = useBoost();
 
   useBackButton();
@@ -48,8 +50,7 @@ export const GameUpgradePage = () => {
     mutationFn: (data: { type: 'tap' | 'fuel' | 'farm'; price: number }) =>
       upgradeUserLevel(data.type, data.price),
     onSuccess: (data) => {
-      dispatch(setUser(data.user));
-      dispatch(setUserGameInfo(data.userGameInfo));
+      dispatch(setUser(data));
       setSelectedUpgradeCard(null);
     },
     onError: (err) => {
@@ -60,8 +61,7 @@ export const GameUpgradePage = () => {
   const buyFarmMutation = useMutation({
     mutationFn: () => buyFarm(),
     onSuccess: (data) => {
-      dispatch(setUser(data.user));
-      dispatch(setUserGameInfo(data.userGameInfo));
+      dispatch(setUser(data));
       setSelectedUpgradeCard(null);
     },
     onError: (err) => {
@@ -85,9 +85,9 @@ export const GameUpgradePage = () => {
               const titleStarts = item.title.split(' ')[0];
               let amount: number;
               if (titleStarts === 'Fuel') {
-                amount = userGameInfo!.fuelboostQuantity;
+                amount = user!.fuelboostQuantity;
               } else {
-                amount = userGameInfo!.tapboostQuantity;
+                amount = user!.tapboostQuantity;
               }
 
               return (
@@ -112,10 +112,10 @@ export const GameUpgradePage = () => {
 
               const level =
                 titleStarts === 'Fuel'
-                  ? userGameInfo!.fuelLevel
+                  ? user!.fuelLevel
                   : titleStarts === 'Rocket'
-                  ? userGameInfo!.tapLevel
-                  : userGameInfo!.farmLevel;
+                  ? user!.tapLevel
+                  : user!.farmLevel;
 
               let price: number;
 
@@ -141,7 +141,7 @@ export const GameUpgradePage = () => {
       </div>
       <AnimatePresence>
         {selectedBoostCard && (
-          <Popup
+          <CustomPopup
             key={`popup-${selectedBoostCard.title}`}
             card={selectedBoostCard}
             isRequestPending={isBoostPending}
@@ -165,7 +165,7 @@ export const GameUpgradePage = () => {
           />
         )}
         {selectedUpgradeCard && (
-          <Popup
+          <CustomPopup
             key={`popup-${selectedUpgradeCard.title}`}
             card={selectedUpgradeCard}
             onUpgrade={() => {
@@ -176,7 +176,7 @@ export const GameUpgradePage = () => {
                   ? 'tap'
                   : 'farm';
 
-              if (levelType === 'farm' && userGameInfo?.farmLevel === 0) {
+              if (levelType === 'farm' && user?.farmLevel === 0) {
                 buyFarmMutation.mutate();
               } else {
                 upgradeLevelMutation.mutate({

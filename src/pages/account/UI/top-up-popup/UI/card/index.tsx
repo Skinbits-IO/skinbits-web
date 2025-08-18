@@ -1,4 +1,4 @@
-import { RocketIcon, StarIcon, TonIcon } from '../../../../../../components';
+import { RocketIcon, StarIcon, TonIcon } from '../../../../../../shared';
 import styles from './Card.module.css';
 
 interface ICardProps {

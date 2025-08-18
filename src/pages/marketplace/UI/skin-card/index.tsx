@@ -1,5 +1,9 @@
-import { RocketIcon, SkinImage } from '../../../../components';
-import { RARITIES_COLOR_MAP, Skin } from '../../../../shared';
+import {
+  RARITIES_COLOR_MAP,
+  RocketIcon,
+  Skin,
+  SkinImage,
+} from '../../../../shared';
 import styles from './SkinCard.module.css';
 
 interface ISkinCardProps {

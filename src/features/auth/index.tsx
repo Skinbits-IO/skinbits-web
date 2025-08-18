@@ -1,32 +1,29 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
 import { FC, PropsWithChildren, useEffect } from 'react';
-import {
-  setIsLoading,
-  setUser,
-  setUserSubscription,
-} from '../../store/slices/userSlice';
-import { Loader } from '../../components';
-import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  resetGameSession,
-  setStartTime,
-} from '../../store/slices/game/gameSessionSlice';
 import { useLogin } from './hooks';
-import { getUser, getUserSubscription } from './api';
 import {
-  GameSession,
-  uploadGameSession,
+  Loader,
+  useAppDispatch,
   useStatusNotification,
   useUser,
 } from '../../shared';
+import {
+  GameSession,
+  getUser,
+  getUserSubscription,
+  resetGameSession,
+  setIsLoading,
+  setStartTime,
+  setUser,
+  setUserSubscription,
+  uploadGameSession,
+} from '../../entities';
 
 const toIsoUtcNoMs = (d: Date = new Date()) =>
   d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { isLoading } = useUser();
 
   const addNotification = useStatusNotification();
@@ -52,9 +49,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       dispatch(setStartTime(toIsoUtcNoMs()));
       localStorage.removeItem('pendingGameSession');
 
-      dispatch(setUser(data.user));
-      dispatch(setUserGameInfo(data.userGameInfo));
-
+      dispatch(setUser(data));
       dispatch(setIsLoading(false));
     },
     onError: (err: any) => {
@@ -67,9 +62,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!isPending && !isSubscriptionPending) {
       if (data) {
-        const { user, userGameInfo } = data;
-        dispatch(setUser(user));
-        dispatch(setUserGameInfo(userGameInfo));
+        dispatch(setUser(data));
         dispatch(setUserSubscription(subscription ?? null));
 
         if (localStorage.getItem('pendingGameSession')) {

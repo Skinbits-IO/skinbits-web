@@ -1,4 +1,4 @@
-import { RocketIcon } from '../../../../components';
+import { RocketIcon } from '../../../../shared';
 import { RankUser } from '../../types';
 import { formatPoints } from '../../utils';
 import styles from './RankCard.module.css';

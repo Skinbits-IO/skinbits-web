@@ -1,85 +1,26 @@
 import styles from './HomePage.module.css';
-import { GameWidget } from '../../features';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
+import { FarmButton, FarmCancelPopup, GameWidget } from '../../features';
 import { AnimatePresence } from 'framer-motion';
-import { setUserRank } from '../../store/slices/userSlice';
-import { Header, Rank } from '../../components';
-import {
-  FarmButton,
-  FarmCancelPopup,
-  RankingPopup,
-  SubscriptionPopup,
-  Wallet,
-} from './UI';
+import { Header } from '../../widgets';
+import { RankingPopup, SubscriptionPopup, Wallet } from './ui';
 import { useNavigate } from 'react-router';
-import { useFarmState, useRanking, useSubscription } from './hooks';
-import {
-  FarmStatus,
-  Rank as RankEnum,
-  RANKS,
-  useUser,
-  useUserGameInfo,
-} from '../../shared';
-import { useQuery } from '@tanstack/react-query';
-import { checkFarmAvailability, getFarmingStatus } from './api';
-import { FarmButtonSkeleton } from './UI/farm-button-skeleton';
-import { useEffect, useState } from 'react';
-import {
-  setFarmFetched,
-  setFarmingSession,
-  setFarmingStatus,
-} from '../../store/slices/game/farmSlice';
+import { useRanking, useSubscription } from './hooks';
+import { Rank, RankEnum, RANKS, useAppDispatch, useUser } from '../../shared';
+import { useState } from 'react';
+import { setUserRank } from '../../entities';
 
 export const HomePage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { user } = useUser();
-  const { user: userGameInfo } = useUserGameInfo();
-
   const { showNewRankPopup, setShowNewRankPopup } = useRanking();
 
   const { show: showSubscription, setShow: setShowSubscription } =
     useSubscription();
 
-  const { fetched } = useFarmState();
   const [showFarmCancelPopup, setShowFarmCancelPopup] =
     useState<boolean>(false);
-
-  const { data: availableData, isPending: isPendingFarm } = useQuery({
-    queryKey: ['farm-availability'],
-    queryFn: () => checkFarmAvailability(),
-    retry: 0,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  const { data: claimData, isPending: isPendingClaim } = useQuery({
-    queryKey: ['farming-status'],
-    queryFn: () => getFarmingStatus(),
-    retry: 0,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  useEffect(() => {
-    if (fetched) return;
-    if (availableData && claimData) dispatch(setFarmFetched(true));
-
-    if (availableData) {
-      dispatch(setFarmingStatus(FarmStatus.Inactive));
-    } else if (!availableData && userGameInfo?.farmLevel !== 0) {
-      dispatch(setFarmingStatus(FarmStatus.Active));
-    }
-
-    if (claimData) {
-      if (claimData.canClaim) dispatch(setFarmingStatus(FarmStatus.Claim));
-      if (claimData.session) dispatch(setFarmingSession(claimData.session));
-    }
-  }, [fetched, claimData, availableData]);
 
   return (
     <div className={styles.background}>
@@ -114,14 +55,9 @@ export const HomePage = () => {
       </div>
       <div className={styles.game}>
         <GameWidget />
-        {!isPendingFarm || !isPendingClaim ? (
-          <FarmButton
-            progress={100 * (user!.balance / 250000)}
-            openPopup={() => setShowFarmCancelPopup(!showFarmCancelPopup)}
-          />
-        ) : (
-          <FarmButtonSkeleton />
-        )}
+        <FarmButton
+          openPopup={() => setShowFarmCancelPopup(!showFarmCancelPopup)}
+        />
       </div>
     </div>
   );

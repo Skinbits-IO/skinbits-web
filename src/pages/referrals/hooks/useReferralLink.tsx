@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../shared';
 import { generateReferralLink } from '../api';
 import WebApp from '@twa-dev/sdk';
+import { useStatusNotification } from '../../../shared';
 
 export const useReferralLink = () => {
   const addNotification = useStatusNotification();

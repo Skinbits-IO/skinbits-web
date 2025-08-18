@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { useAppSelector } from '../useAppSelector';
 
 export const useGameSession = () =>
-  useSelector((state: RootState) => state.gameSession);
+  useAppSelector((state) => state.gameSession);

@@ -1,4 +1,4 @@
-import { RocketIcon } from '../../../../components';
+import { RocketIcon } from '../../../../shared';
 import { WalletButton } from './UI';
 import styles from './Wallet.module.css';
 

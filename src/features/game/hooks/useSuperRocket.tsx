@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { updateUserBalance } from '../../../store/slices/userSlice';
+import { useAppDispatch, useBoost, useUser } from '../../../shared';
+import { useGameContext } from '../context';
 import {
   updateBalanceEarned,
   updateTotalTaps,
-} from '../../../store/slices/game/gameSessionSlice';
-import { useBoost, useUserGameInfo } from '../../../shared';
-import { useGameContext } from '../context';
+  updateUserBalance,
+} from '../../../entities';
 
 export const useSuperRocket = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useUserGameInfo();
+  const dispatch = useAppDispatch();
+  const { user } = useUser();
   const { isActive, type } = useBoost();
 
   const { superRocketBuffer, setSuperRocketBuffer } = useGameContext();

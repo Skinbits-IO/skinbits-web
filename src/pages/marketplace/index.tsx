@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import styles from './MarketplacePage.module.css';
-import { Filter, Header, SkinCard } from './UI';
+import { SkinCard } from './ui';
 import { Qualities, Rarities, Skin } from '../../shared';
 import { useNavigate } from 'react-router';
+import { Search } from '../../widgets';
 
 export const MarketplacePage = () => {
   const navigate = useNavigate();
-  const [openFilter, setOpenFilter] = useState(false);
 
   const skins: Skin[] = [
     {
@@ -77,11 +76,7 @@ export const MarketplacePage = () => {
 
   return (
     <div className={styles.background}>
-      <Header
-        filterActive={openFilter}
-        onFilterTap={() => setOpenFilter(!openFilter)}
-      />
-      {openFilter && <Filter />}
+      <Search />
       <div className={styles.skinList}>
         {skins.map((skin, key) => {
           return (

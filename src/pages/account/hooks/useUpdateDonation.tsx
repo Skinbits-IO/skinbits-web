@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../shared';
 import { updateDonationStatus } from '../api';
+import { useStatusNotification } from '../../../shared';
 
 export const useUpdateDonation = () => {
   const addNotification = useStatusNotification();

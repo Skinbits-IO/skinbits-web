@@ -1,5 +1,10 @@
-import { CheckIcon, StarIcon, TonIcon } from '../../../../components';
-import { PREMIUM_PLANS, useUser } from '../../../../shared';
+import {
+  CheckIcon,
+  PREMIUM_PLANS,
+  StarIcon,
+  TonIcon,
+  useUser,
+} from '../../../../shared';
 import { usePremiumCardContext } from '../../context';
 import styles from './PremiumCard.module.css';
 

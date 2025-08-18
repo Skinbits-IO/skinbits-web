@@ -1,4 +1,4 @@
-export enum Rank {
+export enum RankEnum {
   bronze = 'bronze',
   silver = 'silver',
   gold = 'gold',

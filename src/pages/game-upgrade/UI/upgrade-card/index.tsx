@@ -1,6 +1,6 @@
 import styles from './UpgradeCard.module.css';
-import { ArrowIcon } from '../../../../components';
 import { useUser } from '../../../../shared';
+import { ArrowIcon } from '../arrow-icon';
 
 interface IUpgradeCardProps {
   title: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ModeSwitcher.module.css';
-import { StarIcon, TonIcon } from '../../../../../../components';
+import { StarIcon, TonIcon } from '../../../../../../shared';
 
 export const ModeSwitcher: React.FC<{
   mode: 'ton' | 'star';

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useStatusNotification } from '../../../shared';
 import { confirmInvoice } from '../api';
+import { useStatusNotification } from '../../../shared';
 
 export const useConfirmInvoice = () => {
   const addNotification = useStatusNotification();

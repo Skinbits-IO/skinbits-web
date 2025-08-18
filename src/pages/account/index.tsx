@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
-import { Header, SteamIcon } from '../../components';
-import { useUser } from '../../shared';
+import { Header } from '../../widgets';
+import { SteamIcon, useUser } from '../../shared';
 import styles from './AccountPage.module.css';
 import {
   PremiumCard,
