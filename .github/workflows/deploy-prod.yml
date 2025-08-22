@@ -31,9 +31,9 @@ jobs:
         username: ${{ secrets.PROD_USERNAME }}
         key: ${{ secrets.PROD_SSH_KEY }}
         script: |
-          cd /var/www/skinbits-api
+          cd /var/www/skinbits-web
           git pull origin main
-          npm ci --production
+          npm ci
           npm run build
-          pm2 restart skinbits-api
+          pm2 restart skinbits-web
           echo "Deployment completed successfully!"

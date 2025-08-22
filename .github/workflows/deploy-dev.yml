@@ -31,8 +31,8 @@ jobs:
         username: ${{ secrets.DEV_USERNAME }}
         key: ${{ secrets.DEV_SSH_KEY }}
         script: |
-          cd /var/www/skinbits-api-dev
+          cd /var/www/skinbits-web-dev
           git pull origin dev
           npm ci
           npm run build
-          pm2 restart skinbits-api-dev
+          pm2 restart skinbits-web-dev
