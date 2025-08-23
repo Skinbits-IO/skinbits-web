@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     WebApp.ready();
     WebApp.setHeaderColor('#000000');
+    WebApp.setBackgroundColor('#000000');
     WebApp.lockOrientation();
     WebApp.disableVerticalSwipes();
     WebApp.expand();
