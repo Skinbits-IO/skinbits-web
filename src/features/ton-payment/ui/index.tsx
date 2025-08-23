@@ -12,7 +12,6 @@ export const TonConnectButton = () => {
 
   const { setStatus } = useTonPaymentContext();
   const [show, setShow] = useState(false);
-
   const isConnected = wallet || tonConnectUI.connected;
 
   return (
