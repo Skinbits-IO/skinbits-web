@@ -38,6 +38,7 @@
 
   html {
     font-family: Montserrat;
+    background-color: var(--background);
   }
 
   body {
