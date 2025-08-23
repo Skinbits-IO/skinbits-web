@@ -1,32 +1,20 @@
 import { AnimatePresence } from 'framer-motion';
-import { Header } from '../../widgets';
+import { DonationModal, Header } from '../../widgets';
 import { SteamIcon, useUser } from '../../shared';
 import styles from './AccountPage.module.css';
-import {
-  PremiumCard,
-  PremiumCardPopup,
-  SteamPopup,
-  TopUp,
-  TopUpPopup,
-  Wallet,
-} from './UI';
+import { PremiumCard, PremiumCardPopup, SteamPopup, Wallet } from './UI';
 import { useState } from 'react';
 import { PremiumCardProvider, usePremiumCardContext } from './context';
+import { TonConnectButton, TonPaymentProvider } from '../../features';
 
 const AccountPageContent = () => {
   const { user, subscription } = useUser();
-
-  const [showDonationPopup, setShowDonationPopup] = useState(false);
   const [showSteamPopup, setShowSteamPopup] = useState(false);
-
   const { show } = usePremiumCardContext();
 
   return (
     <div className={styles.background}>
       <AnimatePresence>
-        {showDonationPopup && (
-          <TopUpPopup onClose={() => setShowDonationPopup(false)} />
-        )}
         {showSteamPopup && (
           <SteamPopup onClose={() => setShowSteamPopup(false)} />
         )}
@@ -43,7 +31,7 @@ const AccountPageContent = () => {
         }
       />
       <Wallet balance={user!.balance} />
-      <TopUp onClick={() => setShowDonationPopup(true)} />
+      <DonationModal />
       <div className={styles.plans}>
         {!subscription && <PremiumCard option="free" />}
         {(!subscription ||
@@ -52,6 +40,7 @@ const AccountPageContent = () => {
         )}
         <PremiumCard option="premium" />
       </div>
+      <TonConnectButton />
     </div>
   );
 };
@@ -59,7 +48,9 @@ const AccountPageContent = () => {
 export const AccountPage = () => {
   return (
     <PremiumCardProvider>
-      <AccountPageContent />
+      <TonPaymentProvider>
+        <AccountPageContent />
+      </TonPaymentProvider>
     </PremiumCardProvider>
   );
 };

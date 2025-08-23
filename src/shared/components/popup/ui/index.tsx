@@ -29,8 +29,8 @@ export const Popup = ({
         <div style={{ marginBottom: '-20px' }}>
           <CloseButton onTap={onClose} />
         </div>
+        {children}
       </motion.div>
-      {children}
     </>
   );
 };

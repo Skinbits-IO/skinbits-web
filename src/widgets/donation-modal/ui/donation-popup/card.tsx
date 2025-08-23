@@ -1,5 +1,4 @@
-import { RocketIcon, StarIcon, TonIcon } from '../../../../../../shared';
-import styles from './Card.module.css';
+import { RocketIcon, StarIcon, TonIcon } from '../../../../shared';
 
 interface ICardProps {
   mode: 'ton' | 'star';
@@ -13,12 +12,18 @@ export const Card = ({ mode, rockets, price, onClick }: ICardProps) => {
   const formattedPrice = new Intl.NumberFormat('en-UK').format(price);
 
   return (
-    <div className={styles.background} onClick={onClick}>
-      <div className={styles.rockets}>
+    <div
+      onClick={onClick}
+      className="w-full h-[60px] p-[15px] rounded-xl bg-white flex items-center justify-between"
+    >
+      <div className="flex items-center gap-[5px]">
         <RocketIcon size={20} color="#000000" />
-        <p>Buy - {formattedRockets}</p>
+        <p className="text-[15px] font-semibold text-black">
+          Buy - {formattedRockets}
+        </p>
       </div>
-      <div className={styles.price}>
+
+      <div className="px-[12px] py-[7px] rounded-full bg-black flex items-center gap-[5px] text-[14px] font-semibold text-white">
         {formattedPrice}
         {mode === 'ton' ? (
           <TonIcon size={14} color="#FFFFFF" />

@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Root theme variables */
+:root {
+  /* Borders and UI */
+  --border: rgba(175, 175, 175, 0.2);
+  --input: rgba(175, 175, 175, 0.1);
+  --ring: rgba(255, 255, 255, 0.2);
+
+  /* Border radius */
+  --radius: 0.75rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@theme {
+  --color-background: rgba(1, 1, 1, 1);
+  --color-foreground: rgba(255, 255, 255, 1);
+  --color-muted: rgba(175, 175, 175, 1);
+  --color-accent: #ccc;
+
+  --color-midnight: #121063;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
+}
+
+@layer base {
+  *, *::before, *::after {
+    border-color: var(--border);
+    outline-color: var(--ring);
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  html {
+    font-family: Montserrat;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .h-screen {
+    height: 100dvh;
+  }
+
+  .w-screen {
+    width: 100dvw;
+  }
+
+  .scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    line-height: normal;
+    min-height: 55px;
+  }
+
+  .themed-scrollbar {
+    scrollbar-width: 8px;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 8px;
+    border: 2px solid transparent;
+  }
+
+  .slider-accent > span[data-slot='slider-track'] {
+    background: var(--muted);
+  }
+
+  .slider-accent > span > span[data-slot='slider-thumb'] {
+    background: var(--accent) !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .optimized-blur {
+    transform: translateZ(0);
+  }
+}

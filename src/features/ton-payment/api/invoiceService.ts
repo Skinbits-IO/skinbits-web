@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { api } from '../../../shared';
 
-export async function confirmInvoice(id: string, amount: number) {
+export async function confirmTonInvoice(id: string, amount: number) {
   try {
-    const response = await api.post(`/invoice/confirm`, {
+    const response = await api.post(`/invoice/confirm-ton`, {
       payment_id: id,
-      currency: 'XTR',
-      amount,
+      //currency: 'TON',
     });
     return response.data;
   } catch (error) {

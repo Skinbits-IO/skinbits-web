@@ -1,26 +1,22 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSubscription } from '../api';
+import { useMutation } from '@tanstack/react-query';
+import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useStatusNotification } from '../../../shared';
-import { useTonPayment } from '../../../features';
 
-export const useSubscription = () => {
-  const queryClient = useQueryClient();
+export const useCreateDonation = (
+  onTonPay: (id: string, tonAmount: number) => void
+) => {
   const addNotification = useStatusNotification();
-  const { payWithTon } = useTonPayment();
 
   return useMutation({
     mutationFn: (data: {
-      subscriptionType: string;
       amount: number;
       currency: string;
       paymentMethod: string;
       notes: string;
-    }) => {
-      return createSubscription(data);
-    },
+    }) => createDonation(data),
     onSuccess: (data) => {
-      if (data.invoiceLink) {
+      if (data.invoiceLink && data.donation.currency === 'XTR') {
         if (WebApp.openInvoice) {
           WebApp.openInvoice(data.invoiceLink, (status) => {
             if (status === 'paid') {
@@ -30,14 +26,12 @@ export const useSubscription = () => {
             } else {
               alert('Payment failed or was closed.');
             }
-
-            queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
           });
         } else {
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        payWithTon(data.subscription.paymentId, 0);
+        onTonPay(data.donation.payment_id, data.donation.amount);
       }
     },
     onError: (err) => {

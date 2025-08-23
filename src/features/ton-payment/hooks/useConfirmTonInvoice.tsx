@@ -1,15 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
-import { confirmInvoice } from '../api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStatusNotification } from '../../../shared';
+import { confirmTonInvoice } from '../api';
 
-export const useConfirmInvoice = () => {
+export const useConfirmTonInvoice = () => {
   const addNotification = useStatusNotification();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: { id: string; amount: number }) =>
-      confirmInvoice(data.id, data.amount),
+      confirmTonInvoice(data.id, data.amount),
     onSuccess: (data) => {
       console.log('Invoice confirmed:', data);
+      queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
     },
     onError: (err) => {
       console.error('Invoice confirm error:', err);

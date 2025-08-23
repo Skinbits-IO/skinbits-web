@@ -1,0 +1,1 @@
+export { toIsoUtcNoMs } from './getTime';

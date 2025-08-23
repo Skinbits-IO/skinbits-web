@@ -16,7 +16,6 @@ export interface DonationResponse {
 }
 
 export async function createDonation(body: {
-  donationAmount: number;
   amount: number;
   currency: string;
   paymentMethod: string;
@@ -24,7 +23,6 @@ export async function createDonation(body: {
 }) {
   try {
     const response = await api.post<{ data: DonationResponse }>(`/donations`, {
-      donation_amount: body.donationAmount,
       amount: body.amount,
       currency: body.currency,
       payment_method: body.paymentMethod,
@@ -33,24 +31,6 @@ export async function createDonation(body: {
     return response.data.data;
   } catch (error) {
     let errorMessage = `Failed to create donation`;
-    if (axios.isAxiosError(error) && error.response) {
-      errorMessage = error.response.data.error || errorMessage;
-    }
-    throw new Error(errorMessage);
-  }
-}
-
-export async function updateDonationStatus(id: number, status: string) {
-  try {
-    const response = await api.patch<{ data: DonationResponse }>(
-      `/donations/${id}`,
-      {
-        status,
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    let errorMessage = `Failed to update donation status`;
     if (axios.isAxiosError(error) && error.response) {
       errorMessage = error.response.data.error || errorMessage;
     }

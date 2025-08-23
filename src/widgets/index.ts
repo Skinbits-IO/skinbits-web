@@ -6,3 +6,4 @@ export {
   notificationReducer,
   setNotificationShow,
 } from './notifications';
+export { DonationModal } from './donation-modal';

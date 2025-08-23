@@ -5,10 +5,10 @@ import { Popup, PopupButton } from '../../../../shared';
 
 export const PremiumCardPopup = () => {
   const { item, setShow } = usePremiumCardContext();
-  const { createMutation, isPending } = useSubscription();
+  const { mutate, isPending } = useSubscription();
 
   const handleTonPayment = () => {
-    createMutation.mutate({
+    mutate({
       subscriptionType: item!.option,
       amount: item!.price.ton,
       currency: 'TON',
@@ -18,7 +18,7 @@ export const PremiumCardPopup = () => {
   };
 
   const handleTelegramPayment = () => {
-    createMutation.mutate({
+    mutate({
       subscriptionType: item!.option,
       amount: item!.price.star,
       currency: 'XTR',
