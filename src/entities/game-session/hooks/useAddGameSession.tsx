@@ -15,6 +15,7 @@ export const useAddGameSession = (onSuccess?: () => void) => {
       dispatch(resetGameSession());
       localStorage.removeItem('pendingGameSession');
       dispatch(setUser(data));
+      onSuccess?.();
     },
     onError: (err: any) => {
       addNotification('error', err.message || 'Failed to upload session', 3000);
