@@ -1,2 +1,6 @@
-export { addUser, getUser, updateUserBalance } from './userService';
-export { getUserSubscription } from './subscriptionService';
+export {
+  addUser,
+  getUser,
+  updateUserBalance,
+  saveTradeLink,
+} from './userService';

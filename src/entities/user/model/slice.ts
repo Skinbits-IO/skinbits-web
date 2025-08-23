@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Subscription, User } from '../types';
+import { User } from '../types';
 import { RankEnum } from '../../../shared';
+import { Subscription } from '../../subscription';
 
 interface IUserState {
   isLoading: boolean;

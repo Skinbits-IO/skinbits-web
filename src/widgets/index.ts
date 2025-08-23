@@ -7,3 +7,4 @@ export {
   setNotificationShow,
 } from './notifications';
 export { DonationModal } from './donation-modal';
+export { SubscriptionList } from './subscription-list';

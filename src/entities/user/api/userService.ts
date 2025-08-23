@@ -53,3 +53,18 @@ export async function updateUserBalance(newBalance: number): Promise<User> {
     throw new Error(errorMessage);
   }
 }
+
+export async function saveTradeLink(tradeLink: string) {
+  try {
+    const response = await api.patch(`/user`, {
+      trade_link: tradeLink,
+    });
+    return response.data;
+  } catch (error) {
+    let errorMessage = `Failed to save the trade link`;
+    if (axios.isAxiosError(error) && error.response) {
+      errorMessage = error.response.data.error || errorMessage;
+    }
+    throw new Error(errorMessage);
+  }
+}

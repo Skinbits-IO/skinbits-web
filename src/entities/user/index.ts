@@ -6,7 +6,7 @@ export {
   setUserRank,
   updateUserBalance,
 } from './model';
-export { useUpdateBalance } from './hooks';
-export { getUser, addUser, getUserSubscription } from './api';
+export { useUpdateBalance, useSaveTradeLink } from './hooks';
+export { getUser, addUser } from './api';
 export { getUserFromApi } from './utils';
 export type { User } from './types';
