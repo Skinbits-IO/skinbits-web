@@ -34,7 +34,7 @@ function App() {
           }}
         >
           <div
-            className="absolute min-w-full max-w-full"
+            className="absolute min-w-full max-w-full bg-background"
             style={{
               top: 'var(--tg-content-safe-area-inset-top, 0rem)',
               bottom: 'var(--tg-content-safe-area-inset-bottom, 0rem)',
