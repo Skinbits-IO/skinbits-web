@@ -1,46 +1,37 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import {
-  addAmo,
-  reduceAmo,
-  setAmo,
-  setMaxAmo,
-} from '../../../store/slices/game/amoSlice';
-import { updateUserBalance } from '../../../store/slices/userSlice';
+import { RocketPosition } from '../types';
+import { computeGrid, generatePosition, markArea } from '../utils';
+import { useAppDispatch, useBoost, useUser } from '../../../shared';
+import { useGameContext } from '../context';
 import {
   updateBalanceEarned,
   updateTotalTaps,
-} from '../../../store/slices/game/gameSessionSlice';
-import { RocketPosition } from '../types';
-import { computeGrid, generatePosition, markArea } from '../utils';
-import { useAmo, useBoost, useUserGameInfo } from '../../../shared';
-import { useGameContext } from '../context';
+  updateUserBalance,
+} from '../../../entities';
 
 export const useRocket = (
   gameRef: React.MutableRefObject<HTMLDivElement | null>
 ) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useUserGameInfo();
-  const { amo, maxAmo } = useAmo();
+  const dispatch = useAppDispatch();
+  const { user } = useUser();
   const { isActive, type } = useBoost();
-  const { setSuperRocketBuffer } = useGameContext();
+  const { amo, setAmo, setMaxAmo, setSuperRocketBuffer } = useGameContext();
 
   const regenerationInterval = useRef<NodeJS.Timeout | null>(null);
-  const amoRef = useRef<number>(amo);
+  const amoRef = useRef<number>(amo.current);
   useEffect(() => {
-    amoRef.current = amo;
-  }, [amo]);
+    amoRef.current = amo.current;
+  }, [amo.current]);
 
   const [rocketPositions, setRocketPositions] = useState<RocketPosition[]>([]);
   const flyingIndicators = useRef<Map<number, RocketPosition>>(new Map());
 
   const handleRocketClick = (position: RocketPosition, index: number) => {
-    const newAmo = amo - user!.tapLevel;
+    const newAmo = amo.current - user!.tapLevel;
     const fuelBoost = isActive && type === 'fuelboost';
 
     if (newAmo >= 0 || fuelBoost) {
-      if (!fuelBoost) dispatch(reduceAmo(user!.tapLevel));
+      if (!fuelBoost) setAmo((prev: number) => prev - user!.tapLevel);
 
       const earnedRockets =
         isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
@@ -67,8 +58,8 @@ export const useRocket = (
       // Start regeneration if amo is 0
       if (regenerationInterval.current === null && newAmo === 0) {
         regenerationInterval.current = setInterval(() => {
-          if (amoRef.current < maxAmo) {
-            dispatch(addAmo(user!.fuelLevel));
+          if (amoRef.current < amo.max) {
+            setAmo((prev: number) => prev + user!.fuelLevel);
           }
         }, 1000);
       }
@@ -84,8 +75,8 @@ export const useRocket = (
     setRocketPositions(positions);
 
     const amo = 1000 + (user!.fuelLevel - 1) * 500;
-    dispatch(setAmo(amo));
-    dispatch(setMaxAmo(amo));
+    setAmo(amo);
+    setMaxAmo(amo);
 
     return () => {
       clearInterval(regenerationInterval.current!);

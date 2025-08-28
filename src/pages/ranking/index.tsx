@@ -1,14 +1,14 @@
 import styles from './RankingPage.module.css';
-import { Header, LoadMore, Rank } from '../../components';
+import { Header } from '../../widgets';
 import {
   ProgressWidget,
   RankCard,
   RankCardSkeleton,
   WinnerRankCard,
 } from './UI';
-import { useUser } from '../../shared';
+import { LoadMore, Rank, useUser } from '../../shared';
 import { useLeaderboard, useUserLeaderboard } from './hooks';
-import { Rank as RankEnum } from '../../shared';
+import { RankEnum } from '../../shared';
 import { useEffect, useState } from 'react';
 import { RankUser } from './types';
 

@@ -1,8 +1,7 @@
 import { useLocation, useNavigate } from 'react-router';
-import { Skin, useBackButton } from '../../shared';
+import { Description, Skin, StandardButton, useBackButton } from '../../shared';
 import styles from './SkinPage.module.css';
 import { Price, SkinInfo } from './UI';
-import { Description, StandardButton } from '../../components';
 
 export const SkinPage = () => {
   const { state } = useLocation();

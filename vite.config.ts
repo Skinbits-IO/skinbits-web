@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
       },
     }),
     basicSsl(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {
@@ -19,7 +21,6 @@ export default defineConfig({
     },
   },
   server: {
-    https: true,
     proxy: {
       '/api': {
         target: 'https://skinbits-api-production.up.railway.app/',

@@ -1,6 +1,6 @@
+import { GameRocketIcon } from '../GameRocketIcon';
 import styles from './SuperRocket.module.css';
 import { motion } from 'framer-motion';
-import { GameRocketIcon } from '../../../../components';
 
 interface ISuperRocket {
   userTapLevel: number;

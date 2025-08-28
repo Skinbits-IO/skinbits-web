@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { StandardButton } from '../../components';
 import { getReferrals } from './api';
 import { useReferralLink } from './hooks';
 import styles from './ReferralsPage.module.css';
 import { Referral, Steps } from './UI';
-import { useUser } from '../../shared';
-import { useEffect } from 'react';
+import { StandardButton, useUser } from '../../shared';
 
 export const ReferralsPage = () => {
   const { mutate: generateLink } = useReferralLink();
@@ -17,10 +15,6 @@ export const ReferralsPage = () => {
     retry: 0,
     staleTime: Infinity,
   });
-
-  useEffect(() => {
-    console.log(referrals);
-  }, [referrals, isPending]);
 
   return (
     <div className={styles.background}>

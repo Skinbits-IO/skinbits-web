@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { useAppSelector } from '../useAppSelector';
 
-export const useBoost = () => useSelector((state: RootState) => state.boost);
+export const useBoost = () => useAppSelector((state) => state.boost);

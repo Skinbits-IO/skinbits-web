@@ -1,6 +1,5 @@
 import styles from './SkinInfo.module.css';
-import { SkinImage } from '../../../../components';
-import { RARITIES_COLOR_MAP, Skin } from '../../../../shared';
+import { RARITIES_COLOR_MAP, Skin, SkinImage } from '../../../../shared';
 
 interface ISkinInfoProps {
   skin: Skin;

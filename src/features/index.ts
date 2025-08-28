@@ -1,4 +1,11 @@
-export { NotificationWidget } from './notifications';
-export { GameWidget } from './game';
+export { GameWidget, GameProvider } from './game';
 export { AuthProvider } from './auth';
-export { StatusNotifications } from './status-notifications';
+export * from './boost';
+export * from './farm';
+export {
+  useTonPayment,
+  TonPaymentProvider,
+  useTonPaymentContext,
+  TonConnectButton,
+  TonPaymentStatus,
+} from './ton-payment';

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getTopUsersByLeague } from '../api';
-import { Rank } from '../../../shared';
+import { RankEnum } from '../../../shared';
 
 export const useLeaderboard = (
-  league: Rank,
+  league: RankEnum,
   page: number,
   limit: number = 10
 ) => {

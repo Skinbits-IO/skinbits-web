@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Rank, RANKS, useGameSession, useUser } from '../../../shared';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { setUserRank } from '../../../store/slices/userSlice';
+import {
+  RankEnum,
+  RANKS,
+  useAppDispatch,
+  useGameSession,
+  useUser,
+} from '../../../shared';
+import { setUserRank } from '../../../entities';
 
 export const useRanking = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const { user } = useUser();
   const { gameSession } = useGameSession();
@@ -19,7 +23,7 @@ export const useRanking = () => {
 
     const lastRank = localStorage.getItem('rank');
     if (lastRank && lastRank !== user.rank) {
-      dispatch(setUserRank(lastRank as Rank));
+      dispatch(setUserRank(lastRank as RankEnum));
       setShowNewRankPopup(true);
     }
     localStorage.setItem('rank', user.rank);

@@ -1,4 +1,4 @@
-import { RocketIcon } from '../../../../components';
+import { RocketIcon } from '../../../../shared';
 import styles from './Referral.module.css';
 
 interface IReferralProps {

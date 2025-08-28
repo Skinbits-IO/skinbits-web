@@ -1,0 +1,1 @@
+export { useTonPayment } from './useTonPayment';

@@ -1,4 +1,4 @@
-import { RocketIcon } from '../../../../components';
+import { RocketIcon } from '../../../../shared';
 import styles from './Price.module.css';
 
 interface IPriceProps {

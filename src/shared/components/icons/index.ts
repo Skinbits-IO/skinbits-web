@@ -1,0 +1,9 @@
+export { TrashIcon } from './TrashIcon';
+export { CloseIcon } from './CloseIcon';
+export { ExchangeIcon } from './ExchangeIcon';
+export { RocketIcon } from './RocketIcon';
+export { BackIcon } from './BackIcon';
+export { StarIcon } from './StarIcon';
+export { SteamIcon } from './SteamIcon';
+export { TonIcon } from './TonIcon';
+export { CheckIcon } from './CheckIcon';

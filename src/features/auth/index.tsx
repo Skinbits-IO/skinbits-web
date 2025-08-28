@@ -1,35 +1,20 @@
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
 import { FC, PropsWithChildren, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useLogin } from './hooks';
+import { Loader, toIsoUtcNoMs, useAppDispatch, useUser } from '../../shared';
 import {
+  getUser,
+  getUserSubscription,
   setIsLoading,
+  setStartTime,
   setUser,
   setUserSubscription,
-} from '../../store/slices/userSlice';
-import { Loader } from '../../components';
-import { setUserGameInfo } from '../../store/slices/game/userGameInfoSlice';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  resetGameSession,
-  setStartTime,
-} from '../../store/slices/game/gameSessionSlice';
-import { useLogin } from './hooks';
-import { getUser, getUserSubscription } from './api';
-import {
-  GameSession,
-  uploadGameSession,
-  useStatusNotification,
-  useUser,
-} from '../../shared';
-
-const toIsoUtcNoMs = (d: Date = new Date()) =>
-  d.toISOString().replace(/\.\d{3}Z$/, 'Z');
+  useAddGameSession,
+} from '../../entities';
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { isLoading } = useUser();
-
-  const addNotification = useStatusNotification();
 
   const { data, isPending, error } = useQuery({
     queryKey: ['user'],
@@ -45,21 +30,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     staleTime: Infinity,
   });
 
-  const addGameSessionMutation = useMutation({
-    mutationFn: (session: GameSession) => uploadGameSession(session),
-    onSuccess: (data) => {
-      dispatch(resetGameSession());
-      dispatch(setStartTime(toIsoUtcNoMs()));
-      localStorage.removeItem('pendingGameSession');
-
-      dispatch(setUser(data.user));
-      dispatch(setUserGameInfo(data.userGameInfo));
-
-      dispatch(setIsLoading(false));
-    },
-    onError: (err: any) => {
-      addNotification('error', err.message || 'Failed to upload session', 3000);
-    },
+  const { mutate } = useAddGameSession(() => {
+    dispatch(setStartTime(toIsoUtcNoMs()));
+    dispatch(setIsLoading(false));
   });
 
   useLogin(error);
@@ -67,9 +40,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!isPending && !isSubscriptionPending) {
       if (data) {
-        const { user, userGameInfo } = data;
-        dispatch(setUser(user));
-        dispatch(setUserGameInfo(userGameInfo));
+        dispatch(setUser(data));
         dispatch(setUserSubscription(subscription ?? null));
 
         if (localStorage.getItem('pendingGameSession')) {
@@ -77,7 +48,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
           if (raw) {
             try {
               const pending = JSON.parse(raw);
-              addGameSessionMutation.mutate({
+              mutate({
                 ...pending,
                 endTime: toIsoUtcNoMs(),
               });

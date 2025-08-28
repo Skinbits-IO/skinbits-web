@@ -1,0 +1,105 @@
+name: CI & Deploy
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'vite.config.ts'
+  push:
+    branches: [dev, test, main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build app
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+          retention-days: 1
+
+  deploy-dev:
+    name: Deploy to Development
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy to development server
+        run: |
+          echo "Deploying to development environment"
+          # Add your deployment commands here
+          # Examples:
+          # - rsync to server
+          # - S3 upload
+          # - Vercel deploy
+          # - Netlify deploy
+          # - Custom deployment script
+
+  deploy-test:
+    name: Deploy to Test
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy to test server
+        run: |
+          echo "Deploying to test environment"
+          # Add your deployment commands here
+
+  deploy-prod:
+    name: Deploy to Production
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy to production server
+        run: |
+          echo "Deploying to production environment"
+          # Add your deployment commands here

@@ -1,60 +1,60 @@
-import { Rank } from '../types';
+import { RankEnum } from '../types';
 
 export const RANKS: Map<
-  Rank,
+  RankEnum,
   {
     color: string;
     milestone: number;
     reward?: number;
-    nextRank?: Rank;
+    nextRank?: RankEnum;
   }
 > = new Map<
-  Rank,
+  RankEnum,
   {
     color: string;
     milestone: number;
     reward?: number;
-    nextRank?: Rank;
+    nextRank?: RankEnum;
   }
 >([
   [
-    Rank.bronze,
+    RankEnum.bronze,
     {
       color: '#CD7F32',
       milestone: 1e5,
       reward: 50000,
-      nextRank: Rank.silver,
+      nextRank: RankEnum.silver,
     },
   ],
   [
-    Rank.silver,
+    RankEnum.silver,
     {
       color: '#C0C0C0',
       milestone: 1e6,
       reward: 250000,
-      nextRank: Rank.gold,
+      nextRank: RankEnum.gold,
     },
   ],
   [
-    Rank.gold,
+    RankEnum.gold,
     {
       color: '#FFD700',
       milestone: 1e8,
       reward: 1e6,
-      nextRank: Rank.platinum,
+      nextRank: RankEnum.platinum,
     },
   ],
   [
-    Rank.platinum,
+    RankEnum.platinum,
     {
       color: '#E5E4E2',
       milestone: 1e9,
       reward: 1e7,
-      nextRank: Rank.diamond,
+      nextRank: RankEnum.diamond,
     },
   ],
   [
-    Rank.diamond,
+    RankEnum.diamond,
     {
       color: '#B9F2FF',
       milestone: 1e12,
