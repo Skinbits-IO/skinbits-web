@@ -1,2 +1,2 @@
 export const TON_WALLET_ADDRESS =
-  '0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4';
+  'UQCH_Kc-FCU4l3ogqf1GLcqepAxPW7Bee1xhvIS8srCrgz39';

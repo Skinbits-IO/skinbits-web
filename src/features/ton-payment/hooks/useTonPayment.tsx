@@ -36,7 +36,7 @@ export const useTonPayment = () => {
 
       if (result) {
         setStatus(TonPaymentStatus.Success);
-        mutate({ id, amount: tonAmount });
+        mutate(id);
 
         // Success feedback
         if (WebApp.HapticFeedback) {

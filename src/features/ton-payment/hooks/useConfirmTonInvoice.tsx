@@ -7,10 +7,9 @@ export const useConfirmTonInvoice = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { id: string; amount: number }) =>
-      confirmTonInvoice(data.id, data.amount),
-    onSuccess: (data) => {
-      console.log('Invoice confirmed:', data);
+    mutationFn: (id: string) => confirmTonInvoice(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       queryClient.invalidateQueries({ queryKey: ['user-subscription'] });
     },
     onError: (err) => {

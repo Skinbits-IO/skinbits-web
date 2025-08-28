@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createDonation } from '../api';
 import WebApp from '@twa-dev/sdk';
 import { useStatusNotification } from '../../../shared';
@@ -6,6 +6,7 @@ import { useStatusNotification } from '../../../shared';
 export const useCreateDonation = (
   onTonPay: (id: string, tonAmount: number) => void
 ) => {
+  const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
 
   return useMutation({
@@ -21,6 +22,7 @@ export const useCreateDonation = (
           WebApp.openInvoice(data.invoiceLink, (status) => {
             if (status === 'paid') {
               alert('Payment successful!');
+              queryClient.invalidateQueries({ queryKey: ['user'] });
             } else if (status === 'cancelled') {
               alert('Payment was cancelled.');
             } else {

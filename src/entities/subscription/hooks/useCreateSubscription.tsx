@@ -40,7 +40,6 @@ export const useCreateSubscription = (
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        console.log(amount);
         onTonPay(data.subscription.paymentId, amount);
       }
     },
