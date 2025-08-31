@@ -5,8 +5,10 @@ on:
     branches: [ dev, test, main ]
     paths:
       - 'src/**'
+      - 'public/**'
       - 'package.json'
       - 'package-lock.json'
+      - 'vite.config.ts'
   push:
     branches: [ dev, test, main ]
 
