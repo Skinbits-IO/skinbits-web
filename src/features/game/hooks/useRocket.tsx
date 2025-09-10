@@ -3,14 +3,10 @@ import { RocketPosition } from '../types';
 import { computeGrid, generatePosition, markArea } from '../utils';
 import { useAppDispatch, useBoost, useUser } from '../../../shared';
 import { useGameContext } from '../context';
-import {
-  updateBalanceEarned,
-  updateTotalTaps,
-  updateUserBalance,
-} from '../../../entities';
+import { updateUserBalance } from '../../../entities';
 
 export const useRocket = (
-  gameRef: React.MutableRefObject<HTMLDivElement | null>
+  gameRef: React.MutableRefObject<HTMLDivElement | null>,
 ) => {
   const dispatch = useAppDispatch();
   const { user } = useUser();
@@ -38,12 +34,9 @@ export const useRocket = (
       dispatch(updateUserBalance(earnedRockets));
       setSuperRocketBuffer((prev) => (prev += earnedRockets));
 
-      dispatch(updateTotalTaps(1));
-      dispatch(updateBalanceEarned(earnedRockets));
-
       const newRocketPosition = generatePosition(gameRef);
       const updatedPositions = rocketPositions.map((pos, i) =>
-        i === index ? newRocketPosition : pos
+        i === index ? newRocketPosition : pos,
       );
 
       markArea(position, false);

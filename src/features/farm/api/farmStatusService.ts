@@ -2,18 +2,6 @@ import axios from 'axios';
 import { api } from '../../../shared';
 import { FarmingSession } from '../types';
 
-export async function checkFarmAvailability(): Promise<boolean> {
-  try {
-    const resp = await api.get<boolean>('/farming/isAvailableToFarm');
-    return resp.data;
-  } catch (err: any) {
-    if (axios.isAxiosError(err) && err.response?.status === 400) {
-      return false;
-    }
-    throw err;
-  }
-}
-
 // exactly what the server returns
 interface RawFarmingSession {
   farming_session_id: number;
@@ -48,7 +36,7 @@ export async function getFarmingStatus(): Promise<FarmingStatus> {
     const canClaim = now >= ended && !session.isClaimed;
 
     return { canClaim, session };
-  } catch (err: any) {
+  } catch (err) {
     if (axios.isAxiosError(err) && err.response?.status === 404) {
       return { canClaim: false };
     }

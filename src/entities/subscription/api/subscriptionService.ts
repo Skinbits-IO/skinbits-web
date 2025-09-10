@@ -22,6 +22,7 @@ interface SubscriptionResponse {
   message: string;
   data: {
     subscription: SubscriptionDTO;
+    payload: string;
     invoiceLink: string;
   };
 }
@@ -45,6 +46,7 @@ export async function createSubscription(body: {
     const dto = response.data.data.subscription;
     return {
       invoiceLink: response.data.data.invoiceLink,
+      payload: response.data.data.payload,
       subscription: {
         subscriptionType: dto.subscription_type,
         startTime: new Date(dto.start_time),

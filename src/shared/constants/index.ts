@@ -1,10 +1,4 @@
 export { RANKS } from './ranks';
-export { API_BASE, YOUTUBE_URL } from './server';
-export {
-  LEVEL_PRICES,
-  FARM_LEVEL_PRICES,
-  UPGRADE_CARDS,
-  BOOST_CARDS,
-} from './upgrades';
+export { API_BASE, WEB_SOCKET_URL, YOUTUBE_URL } from './server';
 export { DONATIONS_PRICE, PREMIUM_PLANS } from './donation';
 export { RARITIES_COLOR_MAP } from './marketplace';

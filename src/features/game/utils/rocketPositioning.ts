@@ -5,7 +5,7 @@ const rocketSize = 44;
 const buffer = 12; // Buffer zone in pixels
 const edgeSpacing = 20; // Minimum spacing from edges in pixels
 
-let unavailable = new Set<number>(); // Hash set for instant lookups
+const unavailable = new Set<number>(); // Hash set for instant lookups
 let gridWidth = 0;
 let gridHeight = 0;
 let cols = 0;
@@ -45,7 +45,7 @@ const getDistinctHashes = (pos: RocketPosition): number[] => {
     return [key1, key2];
   }
   // In the general case, build the distinct list with explicit conditionals:
-  let keys: number[] = [];
+  const keys: number[] = [];
   // Always include key1.
   keys.push(key1);
   if (key2 !== key1) {
@@ -95,7 +95,7 @@ export const isValidPosition = (newPos: RocketPosition): boolean => {
  */
 export const markArea = (
   pos: RocketPosition,
-  makeUnavailable: boolean
+  makeUnavailable: boolean,
 ): void => {
   const keys = getDistinctHashes(pos);
   if (keys.length === 1) {
@@ -130,7 +130,7 @@ export const markArea = (
  * The grid cell size is based on the rocket’s size plus its buffer.
  */
 export const computeGrid = (
-  gameRef: MutableRefObject<HTMLDivElement | null>
+  gameRef: MutableRefObject<HTMLDivElement | null>,
 ) => {
   if (!gameRef.current) return;
 
@@ -150,7 +150,7 @@ export const computeGrid = (
  * are already occupied.
  */
 export const generatePosition = (
-  gameRef: MutableRefObject<HTMLDivElement | null>
+  gameRef: MutableRefObject<HTMLDivElement | null>,
 ): RocketPosition => {
   if (!gameRef.current) throw new Error('gameRef is not available');
 

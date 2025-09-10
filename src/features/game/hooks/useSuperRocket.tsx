@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useBoost, useUser } from '../../../shared';
 import { useGameContext } from '../context';
-import {
-  updateBalanceEarned,
-  updateTotalTaps,
-  updateUserBalance,
-} from '../../../entities';
+import { updateUserBalance } from '../../../entities';
 
 export const useSuperRocket = () => {
   const dispatch = useAppDispatch();
@@ -41,15 +37,12 @@ export const useSuperRocket = () => {
       isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
     dispatch(updateUserBalance(earnedRockets));
 
-    dispatch(updateTotalTaps(1));
-    dispatch(updateBalanceEarned(earnedRockets));
-
     const indicatorId = Date.now() + Math.random();
     setSuperRocketIndicators((prev) => [...prev, { id: indicatorId, x, y }]);
 
     setTimeout(() => {
       setSuperRocketIndicators((prev) =>
-        prev.filter((ind) => ind.id !== indicatorId)
+        prev.filter((ind) => ind.id !== indicatorId),
       );
     }, 500);
   };

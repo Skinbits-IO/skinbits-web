@@ -28,10 +28,10 @@ function App() {
             top: 'var(--tg-safe-area-inset-top, 0rem)',
             bottom: 'var(--tg-safe-area-inset-bottom, 0rem)',
             minHeight: `calc(
-            (var(--tg-viewport-stable-height, 100vh)) - 
-            (var(--tg-safe-area-inset-top, 0rem)) - 
-            (var(--tg-safe-area-inset-bottom, 0rem))
-          )`,
+              (var(--tg-viewport-stable-height, 100vh)) -
+              (var(--tg-safe-area-inset-top, 0rem)) -
+              (var(--tg-safe-area-inset-bottom, 0rem))
+            )`,
           }}
         >
           <div

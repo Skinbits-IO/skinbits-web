@@ -5,7 +5,6 @@ import {
   RANKS,
   RocketIcon,
 } from '../../../shared';
-import { useUpdateBalance } from '../../../entities';
 
 interface IRankingPopupProps {
   rank: RankEnum;
@@ -13,13 +12,11 @@ interface IRankingPopupProps {
 }
 
 export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
-  const { mutate, isPending } = useUpdateBalance(onClose);
-
   const rankInfo = RANKS.get(rank);
   if (!rankInfo) return null;
 
   const formattedPrice = new Intl.NumberFormat('en-US').format(
-    rankInfo.reward ?? 0
+    rankInfo.reward ?? 0,
   );
   const nextRankColor =
     RANKS.get(rankInfo.nextRank ?? RankEnum.bronze)?.color ?? '#000000';
@@ -58,15 +55,7 @@ export const RankingPopup = ({ rank, onClose }: IRankingPopupProps) => {
         <RocketIcon size={19} color="#D2F7B6" />
       </div>
 
-      <PopupButton
-        text="Claim"
-        isRequestPending={isPending}
-        onClick={() =>
-          mutate({
-            newBalance: rankInfo.reward ?? 0,
-          })
-        }
-      />
+      <PopupButton text="Claim" onClick={() => {}} />
     </Popup>
   );
 };

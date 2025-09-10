@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { gameSessionReducer, userReducer } from '../entities';
-import { boostReducer, farmReducer } from '../features';
+import { boostReducer, userReducer } from '../entities';
+import { farmReducer } from '../features';
 import { notificationReducer, searchReducer } from '../widgets';
 import { statusNotificationsReducer } from '../shared';
 
@@ -9,7 +9,6 @@ export const store = configureStore({
     user: userReducer,
     boost: boostReducer,
     farm: farmReducer,
-    gameSession: gameSessionReducer,
     notification: notificationReducer,
     statusNotifications: statusNotificationsReducer,
     search: searchReducer,

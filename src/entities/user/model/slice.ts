@@ -6,12 +6,16 @@ import { Subscription } from '../../subscription';
 interface IUserState {
   isLoading: boolean;
   user: User | null;
+  tokens: {
+    wsToken: string;
+  } | null;
   subscription: Subscription | null;
 }
 
 const initialState: IUserState = {
   isLoading: true,
   user: null,
+  tokens: null,
   subscription: null,
 };
 
@@ -25,9 +29,18 @@ const userSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setWsToken: (state, action: PayloadAction<string | null>) => {
+      if (state.tokens && action.payload) {
+        state.tokens.wsToken = action.payload;
+      } else if (!state.tokens && action.payload) {
+        state.tokens = { wsToken: action.payload };
+      } else {
+        state.tokens = null;
+      }
+    },
     setUserSubscription: (
       state,
-      action: PayloadAction<Subscription | null>
+      action: PayloadAction<Subscription | null>,
     ) => {
       state.subscription = action.payload;
     },
@@ -46,6 +59,7 @@ const userSlice = createSlice({
 export const {
   setIsLoading,
   setUser,
+  setWsToken,
   setUserSubscription,
   updateUserBalance,
   setUserBalance,

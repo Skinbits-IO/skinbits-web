@@ -29,15 +29,15 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
 
   const { user } = useUser();
   const { status, session } = useAppSelector((state) => state.farm);
-  const { isPendingClaim, isPendingFarm } = useFarmStatus();
+  const { isPendingClaim } = useFarmStatus();
 
   const isFarmingAvailable = user?.farmLevel !== 0;
   const progress = 100 * (user!.balance / 250000);
   const [timeLeft, setTimeLeft] = useState<string>('');
 
   const startFarmMutation = useMutation({
-    mutationFn: (data: { startTime: string; amountFarmed: number }) =>
-      startFarmSession(data.startTime, data.amountFarmed),
+    mutationFn: (data: { startTime: string }) =>
+      startFarmSession(data.startTime),
     onSuccess: (data) => {
       dispatch(setFarmingSession(data));
       dispatch(setFarmingStatus(FarmStatus.Active));
@@ -46,7 +46,7 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
       addNotification(
         'error',
         err.message || 'Failed to start farm session',
-        3000
+        3000,
       );
     },
   });
@@ -62,7 +62,7 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
       addNotification(
         'error',
         err.message || 'Failed to claim farm session',
-        3000
+        3000,
       );
     },
   });
@@ -94,7 +94,7 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
     }
   };
 
-  return isPendingClaim || isPendingFarm ? (
+  return isPendingClaim ? (
     <FarmButtonSkeleton />
   ) : (
     <div
@@ -113,7 +113,6 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
         } else if (status === FarmStatus.Inactive) {
           startFarmMutation.mutate({
             startTime: toIsoUtcNoMs(),
-            amountFarmed: (user?.farmLevel ?? 1) * 100000,
           });
         } else if (status === FarmStatus.Buy) {
           navigate('/upgrade');

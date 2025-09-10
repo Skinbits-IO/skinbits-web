@@ -4,7 +4,7 @@ import WebApp from '@twa-dev/sdk';
 import { useStatusNotification } from '../../../shared';
 
 export const useCreateDonation = (
-  onTonPay: (id: string, tonAmount: number) => void
+  onTonPay: (id: string, payload: string, tonAmount: number) => void,
 ) => {
   const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
@@ -33,7 +33,7 @@ export const useCreateDonation = (
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        onTonPay(data.donation.payment_id, data.donation.amount);
+        onTonPay(data.donation.payment_id, data.payload, data.donation.amount);
       }
     },
     onError: (err) => {
@@ -41,7 +41,7 @@ export const useCreateDonation = (
       addNotification(
         'error',
         err.message || 'Failed to create donation',
-        3000
+        3000,
       );
     },
   });

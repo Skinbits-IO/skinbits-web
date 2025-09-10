@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRocket, useSuperRocket } from '../hooks';
 import { useBoost, useUser } from '../../../shared';
 import { useGameContext } from '../context';
-import { useManageGameSession } from '../../../entities';
 import { SuperRocket } from './SuperRocket';
 import { UpgradeButton } from './UpgradeButton';
-import { useActiveBoost } from '../../boost';
 import { GameRocketIcon } from './GameRocketIcon';
+import { useSocket } from '../../socket';
+import { useActiveBoost } from '../../../entities';
 
 export const GameWidget = () => {
   const gameRef = useRef<HTMLDivElement | null>(null);
@@ -21,12 +21,12 @@ export const GameWidget = () => {
   const { activeSuperRocket, superRocketIndicators, handleSuperRocketClick } =
     useSuperRocket();
 
-  useManageGameSession();
   useActiveBoost();
+  useSocket((data) => console.log(data));
 
   // countdown state (ms remaining)
   const [timeLeft, setTimeLeft] = useState(
-    isActive && endTime ? Math.max(0, endTime - Date.now()) : 0
+    isActive && endTime ? Math.max(0, endTime - Date.now()) : 0,
   );
 
   useEffect(() => {

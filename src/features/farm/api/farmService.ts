@@ -14,12 +14,10 @@ interface RawFarmingSession {
 
 export async function startFarmSession(
   startTime: string,
-  amountFarmed: number
 ): Promise<FarmingSession> {
   try {
     const response = await api.post<RawFarmingSession>(`/farming/activate`, {
       start_time: startTime,
-      amount_farmed: amountFarmed,
     });
 
     const raw = response.data;
