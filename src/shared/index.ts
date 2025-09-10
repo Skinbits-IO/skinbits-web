@@ -2,7 +2,6 @@ export { api } from './api';
 export {
   useBoost,
   useUser,
-  useGameSession,
   useBackButton,
   useAppDispatch,
   useAppSelector,
