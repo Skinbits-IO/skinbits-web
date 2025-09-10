@@ -2,7 +2,7 @@ name: CI & Deploy
 
 on:
   pull_request:
-    branches: [ dev, test, main ]
+    branches: [dev, test, main]
     paths:
       - 'src/**'
       - 'public/**'
@@ -10,7 +10,7 @@ on:
       - 'package-lock.json'
       - 'vite.config.ts'
   push:
-    branches: [ dev, test, main ]
+    branches: [dev, test, main]
 
 jobs:
   build:
@@ -38,91 +38,83 @@ jobs:
 
       - name: Build app
         run: npm run build
-
-  deploy:
-    name: Deploy to Hetzner
-    needs: [build]
-    if: >
-      github.event_name == 'push' &&
-      (
-        github.ref == 'refs/heads/dev'  ||
-        github.ref == 'refs/heads/test' ||
-        github.ref == 'refs/heads/main'
-      )
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build app
-        run: npm run build
-
-      - name: Deploy to server
-        run: |
-          # Map branch to server details
-          case "${{ github.ref_name }}" in
-            main)  
-              HOST="${{ secrets.PRODUCTION_HOST }}"
-              USER="${{ secrets.PRODUCTION_USER }}"
-              KEY="${{ secrets.PRODUCTION_SSH_KEY }}"
-              APP_DIR="/var/www/skinbits-web"
-              PM2_PROCESS="skinbits-web"
-              BRANCH="main"
-              ;;
-            test)   
-              HOST="${{ secrets.TEST_HOST }}"
-              USER="${{ secrets.TEST_USER }}"
-              KEY="${{ secrets.TEST_SSH_KEY }}"
-              APP_DIR="/var/www/skinbits-web-test"
-              PM2_PROCESS="skinbits-web-test"
-              BRANCH="test"
-              ;;
-            dev)    
-              HOST="${{ secrets.DEV_HOST }}"
-              USER="${{ secrets.DEV_USER }}"
-              KEY="${{ secrets.DEV_SSH_KEY }}"
-              APP_DIR="/var/www/skinbits-web-dev"
-              PM2_PROCESS="skinbits-web-dev"
-              BRANCH="dev"
-              ;;
-            *)     
-              echo "Unknown branch: ${{ github.ref_name }}"
-              exit 1
-              ;;
-          esac
-
-          echo "Deploying to $HOST:$APP_DIR from branch $BRANCH"
-          
-          # Create SSH key file
-          echo "$KEY" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          
-          # Deploy via SSH
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
-            cd $APP_DIR
-            git fetch origin
-            git reset --hard origin/$BRANCH
-            npm ci
-            npm run build
-            # Kill existing process if running
-            pkill -f "npm run preview" || true
-            # Start new process
-            nohup npm run preview > app.log 2>&1 &
-          EOF
-          
-          # Clean up
-          rm -f /tmp/deploy_key
-
-      - name: Notify deployment
-        run: |
-          echo "Deployment to ${{ github.ref_name }} completed successfully"
+#   deploy:
+#     name: Deploy to Hetzner
+#     needs: [build]
+#     if: >
+#       github.event_name == 'push' &&
+#       (
+#         github.ref == 'refs/heads/dev'  ||
+#         github.ref == 'refs/heads/test' ||
+#         github.ref == 'refs/heads/main'
+#       )
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
+#
+#       - name: Install dependencies
+#         run: npm ci
+#
+#       - name: Build app
+#         run: npm run build
+#
+#       - name: Deploy to server
+#         run: |
+#           case "${{ github.ref_name }}" in
+#             main)
+#               HOST="${{ secrets.PRODUCTION_HOST }}"
+#               USER="${{ secrets.PRODUCTION_USER }}"
+#               KEY="${{ secrets.PRODUCTION_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web"
+#               PM2_PROCESS="skinbits-web"
+#               BRANCH="main"
+#               ;;
+#             test)
+#               HOST="${{ secrets.TEST_HOST }}"
+#               USER="${{ secrets.TEST_USER }}"
+#               KEY="${{ secrets.TEST_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web-test"
+#               PM2_PROCESS="skinbits-web-test"
+#               BRANCH="test"
+#               ;;
+#             dev)
+#               HOST="${{ secrets.DEV_HOST }}"
+#               USER="${{ secrets.DEV_USER }}"
+#               KEY="${{ secrets.DEV_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web-dev"
+#               PM2_PROCESS="skinbits-web-dev"
+#               BRANCH="dev"
+#               ;;
+#             *)
+#               echo "Unknown branch: ${{ github.ref_name }}"
+#               exit 1
+#               ;;
+#           esac
+#
+#           echo "Deploying to $HOST:$APP_DIR from branch $BRANCH"
+#
+#           echo "$KEY" > /tmp/deploy_key
+#           chmod 600 /tmp/deploy_key
+#
+#           ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
+#             cd $APP_DIR
+#             git fetch origin
+#             git reset --hard origin/$BRANCH
+#             npm ci
+#             npm run build
+#             pkill -f "npm run preview" || true
+#             nohup npm run preview > app.log 2>&1 &
+#           EOF
+#
+#           rm -f /tmp/deploy_key
+#
+#       - name: Notify deployment
+#         run: |
+#           echo "Deployment to ${{ github.ref_name }} completed successfully"
