@@ -23,13 +23,10 @@ export const BoostCard = ({
     <div className="h-fit w-full flex justify-between items-center">
       {/* Left side */}
       <div className="flex justify-center items-center gap-[0.9375rem]">
-        <div className="relative shrink-0 size-[3.625rem] rounded-[0.875rem] overflow-hidden">
-          <img
-            src={window.location.origin + photoUrl}
-            alt={title}
-            className="h-full w-full object-cover block"
-          />
-        </div>
+        <img
+          src={window.location.origin + photoUrl}
+          className="!h-[3.625rem] !w-[3.625rem] rounded-[0.875rem]"
+        />
         <div className="h-fit w-fit flex flex-col justify-center items-start gap-[0.3125rem]">
           <p className="text-[0.875rem] font-semibold text-[#8C8C8C]">
             {title}

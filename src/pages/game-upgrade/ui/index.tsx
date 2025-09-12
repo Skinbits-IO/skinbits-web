@@ -42,7 +42,7 @@ export const GameUpgradePage = () => {
   return (
     <div className="relative h-full w-full overflow-y-auto overflow-x-hidden scrollbar">
       <img
-        className="absolute h-[350px] w-[412px] right-[-97px] top-[-184px] -z-10"
+        className="absolute !h-[350px] !w-[412px] right-[-97px] top-[-184px] -z-10"
         src={window.location.origin + '/spheres.png'}
         alt="image"
       />
