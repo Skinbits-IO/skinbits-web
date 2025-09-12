@@ -111,9 +111,7 @@ export const GameWidget = () => {
                     }}
                   >
                     +
-                    {isActive && type === 'tapboost'
-                      ? user!.tapLevel * 2
-                      : user!.tapLevel}
+                    {user!.tapLevel * (isActive && type === 'tapboost' ? 2 : 1)}
                   </motion.div>
                 )}
               </motion.div>

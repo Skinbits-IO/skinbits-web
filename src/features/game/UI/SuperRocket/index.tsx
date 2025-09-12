@@ -1,3 +1,4 @@
+import { useBoost } from '../../../../shared';
 import { GameRocketIcon } from '../GameRocketIcon';
 import styles from './SuperRocket.module.css';
 import { motion } from 'framer-motion';
@@ -13,6 +14,8 @@ export const SuperRocket = ({
   superRocketIndicators,
   handleSuperRocketClick,
 }: ISuperRocket) => {
+  const { isActive, type } = useBoost();
+
   return (
     <motion.div
       className={styles.superRocket}
@@ -54,7 +57,7 @@ export const SuperRocket = ({
                 top: indicator.y + 10,
               }}
             >
-              +{userTapLevel}
+              +{userTapLevel * (isActive && type === 'tapboost' ? 2 : 1)}
             </motion.div>
             <motion.div
               key={`burst-${indicator.id}`}
