@@ -72,7 +72,7 @@ export const BOOST_CARDS: Card[] = [
   },
   {
     title: 'Rocket boost',
-    description: 'Purchase and enjoy x10<br/>earnings of the rockets',
+    description: 'Purchase and enjoy x2<br/>earnings of the rockets',
     photoUrl: '/upgrades/launch-boost.jpg',
   },
 ];

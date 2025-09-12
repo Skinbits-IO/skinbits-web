@@ -34,7 +34,7 @@ export const useSuperRocket = () => {
     const y = event.clientY - rect.top;
 
     const earnedRockets =
-      isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
+      isActive && type === 'tapboost' ? user!.tapLevel * 2 : user!.tapLevel;
     dispatch(updateUserBalance(earnedRockets));
 
     const indicatorId = Date.now() + Math.random();

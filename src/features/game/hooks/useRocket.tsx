@@ -30,7 +30,7 @@ export const useRocket = (
       if (!fuelBoost) setAmo((prev: number) => prev - user!.tapLevel);
 
       const earnedRockets =
-        isActive && type === 'tapboost' ? user!.tapLevel * 10 : user!.tapLevel;
+        isActive && type === 'tapboost' ? user!.tapLevel * 2 : user!.tapLevel;
       dispatch(updateUserBalance(earnedRockets));
       setSuperRocketBuffer((prev) => (prev += earnedRockets));
 

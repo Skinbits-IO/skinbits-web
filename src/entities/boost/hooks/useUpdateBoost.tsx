@@ -29,7 +29,7 @@ export const useUpdateBoost = (onSuccess: () => void) => {
       dispatch(setUser(data));
 
       if (isActivating && type) {
-        dispatch(activateBoost({ type, endTime: Date.now() + 180000 }));
+        dispatch(activateBoost({ type, endTime: Date.now() + 60000 }));
         navigate('/');
       }
 

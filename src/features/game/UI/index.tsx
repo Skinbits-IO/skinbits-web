@@ -60,7 +60,7 @@ export const GameWidget = () => {
 
       {/* tap boost banner */}
       {isActive && type === 'tapboost' && (
-        <div className={styles.tapBoostBanner}>Earn ×10</div>
+        <div className={styles.tapBoostBanner}>Earn ×2</div>
       )}
 
       {/* amo / infinity */}
@@ -112,7 +112,7 @@ export const GameWidget = () => {
                   >
                     +
                     {isActive && type === 'tapboost'
-                      ? user!.tapLevel * 10
+                      ? user!.tapLevel * 2
                       : user!.tapLevel}
                   </motion.div>
                 )}

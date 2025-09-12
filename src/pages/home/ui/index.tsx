@@ -1,6 +1,6 @@
 import { FarmButton, FarmCancelPopup, GameWidget } from '../../../features';
 import { AnimatePresence } from 'framer-motion';
-import { Header } from '../../../widgets';
+import { Header, SubscriptionPopup } from '../../../widgets';
 import { useNavigate } from 'react-router';
 import { useRanking, useSubscription } from '../hooks';
 import {
@@ -12,7 +12,6 @@ import {
 } from '../../../shared';
 import { useState } from 'react';
 import { setUserRank } from '../../../entities';
-import { SubscriptionPopup } from './subscription-popup';
 import { RankingPopup } from './ranking-popup';
 import { Wallet } from './wallet';
 

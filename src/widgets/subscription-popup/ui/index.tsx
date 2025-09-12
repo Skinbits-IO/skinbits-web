@@ -1,6 +1,6 @@
 import { Popup, PopupButton } from '../../../shared';
 import { useNavigate } from 'react-router';
-import { SubscriptionList } from '../../../widgets';
+import { SubscriptionList } from '../../subscription-list';
 
 interface ISubscriptionPopup {
   onClose: () => void;
