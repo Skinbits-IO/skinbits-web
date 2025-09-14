@@ -79,7 +79,7 @@ export const GameWidget = () => {
         ref={gameRef}
       >
         <AnimatePresence>
-          {activeSuperRocket &&
+          {!activeSuperRocket &&
             rocketPositions.map((pos, index) => (
               <motion.div key={index}>
                 <motion.div
@@ -113,7 +113,7 @@ export const GameWidget = () => {
                 )}
               </motion.div>
             ))}
-          {!activeSuperRocket && (
+          {activeSuperRocket && (
             <SuperRocket
               userTapLevel={user!.tapLevel}
               superRocketIndicators={superRocketIndicators}
