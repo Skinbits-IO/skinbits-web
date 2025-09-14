@@ -40,9 +40,13 @@ export const useSuperRocket = () => {
   const handleSuperRocketClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!tokens || tokens.tapToken === null || !socketRef.current) return;
 
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
     const newItem = {
       socketFunction: (tapToken: string) => socketAddRocketRequest(tapToken),
-      stateUpdateFunction: () => updateRocketsState(event),
+      stateUpdateFunction: () => updateRocketsState(x, y),
     };
 
     if (isRocketPending) {
@@ -58,11 +62,7 @@ export const useSuperRocket = () => {
     setIsRocketPending(true);
   };
 
-  const updateRocketsState = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
+  const updateRocketsState = (x: number, y: number) => {
     const earnedRockets =
       user!.tapLevel * (isActive && type === 'tapboost' ? 2 : 1);
     dispatch(updateUserBalance(earnedRockets));
