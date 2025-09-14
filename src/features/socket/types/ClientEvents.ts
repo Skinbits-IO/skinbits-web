@@ -1,4 +1,5 @@
 export type ClientEvents = {
   hello: (data: { from: string }) => void;
-  // add more events you emit
+  initTap: () => void;
+  tap: (data: { tapToken: string }) => void;
 };

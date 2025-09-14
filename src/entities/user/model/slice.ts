@@ -7,6 +7,7 @@ interface IUserState {
   isLoading: boolean;
   user: User | null;
   tokens: {
+    tapToken: string | null;
     wsToken: string;
   } | null;
   subscription: Subscription | null;
@@ -33,10 +34,13 @@ const userSlice = createSlice({
       if (state.tokens && action.payload) {
         state.tokens.wsToken = action.payload;
       } else if (!state.tokens && action.payload) {
-        state.tokens = { wsToken: action.payload };
+        state.tokens = { tapToken: null, wsToken: action.payload };
       } else {
         state.tokens = null;
       }
+    },
+    setTapToken: (state, action: PayloadAction<string | null>) => {
+      if (state.tokens) state.tokens.tapToken = action.payload;
     },
     setUserSubscription: (
       state,
@@ -60,6 +64,7 @@ export const {
   setIsLoading,
   setUser,
   setWsToken,
+  setTapToken,
   setUserSubscription,
   updateUserBalance,
   setUserBalance,

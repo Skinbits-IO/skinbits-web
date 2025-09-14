@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useBoost } from '../../../shared';
+import { useAppDispatch, useAppSelector } from '../../../shared';
 import { activateBoost, resetBoost } from '../model';
 
 export const useActiveBoost = () => {
   const dispatch = useAppDispatch();
-  const { isActive, type, endTime } = useBoost();
+  const { isActive, type, endTime } = useAppSelector((state) => state.boost);
 
   useEffect(() => {
     if (isActive && type && endTime) {

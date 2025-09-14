@@ -8,4 +8,3 @@ export {
   TonConnectButton,
   TonPaymentStatus,
 } from './ton-payment';
-export { useSocket } from './socket';

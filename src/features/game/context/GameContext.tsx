@@ -6,6 +6,8 @@ import {
   SetStateAction,
   Dispatch,
 } from 'react';
+import { ClientEvents, ServerEvents, useSocket } from '../../socket';
+import { Socket } from 'socket.io-client';
 
 type GameContextType = {
   amo: {
@@ -14,6 +16,11 @@ type GameContextType = {
   };
   setAmo: Dispatch<SetStateAction<number>>;
   setMaxAmo: Dispatch<SetStateAction<number>>;
+  socketRef: React.MutableRefObject<Socket<ServerEvents, ClientEvents> | null>;
+  isRocketPending: boolean;
+  setIsRocketPending: Dispatch<SetStateAction<boolean>>;
+  hasError: boolean;
+  setHasError: Dispatch<SetStateAction<boolean>>;
   superRocketBuffer: number;
   setSuperRocketBuffer: Dispatch<SetStateAction<number>>;
 };
@@ -24,6 +31,13 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [amo, setAmo] = useState<number>(0);
   const [maxAmo, setMaxAmo] = useState<number>(0);
 
+  const { socketRef } = useSocket(
+    () => setIsPending(false),
+    () => setHasError(true),
+  );
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
+
   const [buffer, setBuffer] = useState<number>(0);
 
   return (
@@ -32,6 +46,11 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         amo: { current: amo, max: maxAmo },
         setAmo,
         setMaxAmo,
+        socketRef,
+        isRocketPending: isPending,
+        setIsRocketPending: setIsPending,
+        hasError,
+        setHasError,
         superRocketBuffer: buffer,
         setSuperRocketBuffer: setBuffer,
       }}

@@ -1,6 +1,5 @@
 export { api } from './api';
 export {
-  useBoost,
   useUser,
   useBackButton,
   useAppDispatch,

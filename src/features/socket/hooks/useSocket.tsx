@@ -1,48 +1,62 @@
-import { useEffect } from 'react';
-import { useUser, WEB_SOCKET_URL } from '../../../shared';
+import { useEffect, useRef } from 'react';
+import { useAppDispatch, useUser, WEB_SOCKET_URL } from '../../../shared';
 import { io, Socket } from 'socket.io-client';
 import { ClientEvents, ServerEvents } from '../types';
+import { setTapToken } from '../../../entities';
 
-export const useSocket = (callback: (data: string) => void) => {
+export const useSocket = (
+  onNewTapToken: () => void,
+  onTokenError: () => void,
+) => {
+  const dispatch = useAppDispatch();
   const { tokens } = useUser();
 
-  const socket: Socket<ServerEvents, ClientEvents> | null = tokens
-    ? io(WEB_SOCKET_URL, {
-        transports: ['websocket'], // skip long polling
-        withCredentials: true, // if your API uses cookies/CORS
-        auth: { token: tokens.wsToken },
-      })
-    : null;
+  const socketRef = useRef<Socket<ServerEvents, ClientEvents> | null>(null);
+  const hadErrorRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (!tokens || !socket) return;
+    if (!tokens) return;
 
-    socket.on('connect', () => {
-      console.log('✅ Connected:', socket.id);
-      socket.emit('hello', { from: 'react-client' });
+    socketRef.current = io(WEB_SOCKET_URL, {
+      transports: ['websocket'],
+      withCredentials: true,
+      query: { token: tokens.wsToken },
     });
 
-    socket.on('message', (data) => {
-      console.log('📩 Message:', data);
-      callback(data);
+    socketRef.current.on('connect', () => {
+      console.log('Client connected:', socketRef.current!.id);
+      socketRef.current!.emit('initTap');
     });
 
-    socket.on('disconnect', (reason) => {
+    socketRef.current.on('newTapToken', (data) => {
+      dispatch(setTapToken(data.tapToken));
+      if (hadErrorRef.current) {
+        hadErrorRef.current = false;
+        onTokenError();
+      } else {
+        onNewTapToken();
+      }
+    });
+
+    socketRef.current.on('error', (data) => {
+      if (data === 'Invalid or expired token') {
+        hadErrorRef.current = true;
+        socketRef.current!.emit('initTap');
+      }
+    });
+
+    socketRef.current.on('disconnect', (reason) => {
       console.log('❌ Disconnected:', reason);
     });
 
-    socket.on('connect_error', (err) => {
-      console.error('⚠️ Connection Error:', err.message);
-    });
-
     return () => {
-      socket.off('connect');
-      socket.off('message');
-      socket.off('disconnect');
-      socket.off('connect_error');
-      socket.disconnect();
-    };
-  }, [tokens]);
+      socketRef.current!.off('connect');
+      socketRef.current!.off('newTapToken');
+      socketRef.current!.off('disconnect');
 
-  return { socket };
+      socketRef.current!.disconnect();
+    };
+  }, [tokens?.wsToken]);
+
+  return { socketRef };
 };

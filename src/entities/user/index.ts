@@ -3,6 +3,7 @@ export {
   setIsLoading,
   setUser,
   setWsToken,
+  setTapToken,
   setUserSubscription,
   setUserRank,
   updateUserBalance,

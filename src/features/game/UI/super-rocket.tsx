@@ -1,7 +1,6 @@
-import { useBoost } from '../../../../shared';
-import { GameRocketIcon } from '../GameRocketIcon';
-import styles from './SuperRocket.module.css';
 import { motion } from 'framer-motion';
+import { useAppSelector } from '../../../shared';
+import { GameRocketIcon } from './game-rocket-icon';
 
 interface ISuperRocket {
   userTapLevel: number;
@@ -14,11 +13,21 @@ export const SuperRocket = ({
   superRocketIndicators,
   handleSuperRocketClick,
 }: ISuperRocket) => {
-  const { isActive, type } = useBoost();
+  const { isActive, type } = useAppSelector((state) => state.boost);
 
   return (
     <motion.div
-      className={styles.superRocket}
+      className="
+        absolute
+        inset-0
+        m-auto
+        flex
+        items-center
+        justify-center
+        w-fit
+        h-fit
+        touch-none
+      "
       initial={{ scale: 0.9, y: -10 }}
       animate={{
         scale: 1,
@@ -47,12 +56,11 @@ export const SuperRocket = ({
           <motion.div key={indicator.id}>
             <motion.div
               key={`indicator-${indicator.id}`}
-              className={styles.plusOne}
+              className="absolute text-white text-[20px] font-bold pointer-events-none"
               initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
               style={{
-                position: 'absolute',
                 left: indicator.x + 10,
                 top: indicator.y + 10,
               }}
@@ -61,7 +69,7 @@ export const SuperRocket = ({
             </motion.div>
             <motion.div
               key={`burst-${indicator.id}`}
-              className={styles.tapCircle}
+              className="absolute w-5 h-5 rounded-full bg-white/80 pointer-events-none"
               initial={{ scale: 0, opacity: 1 }}
               animate={{ scale: 3, opacity: 0 }}
               transition={{ duration: 0.5 }}

@@ -1,20 +1,18 @@
 import { useRef, useState, useEffect } from 'react';
-import styles from './index.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRocket, useSuperRocket } from '../hooks';
-import { useBoost, useUser } from '../../../shared';
+import { useAppSelector, useUser } from '../../../shared';
 import { useGameContext } from '../context';
-import { SuperRocket } from './SuperRocket';
-import { UpgradeButton } from './UpgradeButton';
-import { GameRocketIcon } from './GameRocketIcon';
-import { useSocket } from '../../socket';
 import { useActiveBoost } from '../../../entities';
+import { UpgradeButton } from './upgrade-button';
+import { SuperRocket } from './super-rocket';
+import { GameRocketIcon } from './game-rocket-icon';
 
 export const GameWidget = () => {
   const gameRef = useRef<HTMLDivElement | null>(null);
   const { user } = useUser();
   const { amo } = useGameContext();
-  const { isActive, type, endTime } = useBoost();
+  const { isActive, type, endTime } = useAppSelector((state) => state.boost);
 
   const { rocketPositions, flyingIndicators, handleRocketClick } =
     useRocket(gameRef);
@@ -22,9 +20,7 @@ export const GameWidget = () => {
     useSuperRocket();
 
   useActiveBoost();
-  useSocket((data) => console.log(data));
 
-  // countdown state (ms remaining)
   const [timeLeft, setTimeLeft] = useState(
     isActive && endTime ? Math.max(0, endTime - Date.now()) : 0,
   );
@@ -41,7 +37,6 @@ export const GameWidget = () => {
     return () => clearInterval(iv);
   }, [isActive, endTime]);
 
-  // format mm:ss
   const minutes = Math.floor(timeLeft / 1000 / 60);
   const seconds = Math.floor((timeLeft / 1000) % 60);
   const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -49,30 +44,29 @@ export const GameWidget = () => {
   return (
     <div
       className={`
-        ${styles.background}
-        ${isActive ? styles.boostActive : ''}
+        relative h-full w-full overflow-hidden rounded-[1.25rem] border border-white/10
+        bg-[url('/game-background.png')] bg-cover bg-center bg-no-repeat
+        ${isActive ? 'after:absolute after:inset-0 after:rounded-[1.25rem] after:border-4 after:border-yellow-400 after:pointer-events-none after:animate-[pulse-gold-border_1.8s_ease-in-out_infinite]' : ''}
       `}
     >
-      {/* countdown */}
       {isActive && endTime && (
-        <div className={styles.boostTimer}>{formattedTime}</div>
+        <div className="absolute top-5 left-5 z-10 rounded-md bg-black/60 px-2 py-1 text-sm font-bold text-yellow-400">
+          {formattedTime}
+        </div>
       )}
 
-      {/* tap boost banner */}
       {isActive && type === 'tapboost' && (
-        <div className={styles.tapBoostBanner}>Earn ×2</div>
+        <div className="absolute top-5 left-1/2 z-10 -translate-x-1/2 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-200 px-3 py-1 text-sm font-bold text-black">
+          Earn ×2
+        </div>
       )}
 
-      {/* amo / infinity */}
-      <span className={styles.amo}>
+      <span className="absolute right-4 top-4 flex items-center text-xs font-normal text-[#AFAFAF]">
         <span
-          className={`
-            ${styles.amoBold}
-            ${isActive && type === 'fuelboost' ? styles.infinity : ''}
-          `}
+          className={`text-sm font-semibold ${isActive && type === 'fuelboost' ? 'animate-[shimmer_2s_linear_infinite] bg-gradient-to-r from-yellow-300 via-yellow-100 to-yellow-400 bg-clip-text text-transparent' : ''}`}
         >
           {isActive && type === 'fuelboost' ? (
-            <span className={styles.infinity}>∞</span>
+            <span className="text-[20px]">&infin;</span>
           ) : (
             amo.current
           )}
@@ -80,13 +74,16 @@ export const GameWidget = () => {
         <span>/{amo.max}</span>
       </span>
 
-      <div className={styles.game} ref={gameRef}>
+      <div
+        className="relative top-[30px] mx-[10px] h-[calc(100%-6.5625rem)] w-full bg-transparent"
+        ref={gameRef}
+      >
         <AnimatePresence>
           {!activeSuperRocket &&
             rocketPositions.map((pos, index) => (
               <motion.div key={index}>
                 <motion.div
-                  className={styles.rocket}
+                  className="absolute flex h-[50px] w-[50px] items-center justify-center"
                   initial={{
                     transform: `translate(${pos.left}px, ${pos.top}px)`,
                   }}
@@ -101,7 +98,7 @@ export const GameWidget = () => {
                 {flyingIndicators.current.has(index) && (
                   <motion.div
                     key={`plus-one-${index}`}
-                    className={styles.plusOne}
+                    className="pointer-events-none absolute text-[18px] font-bold text-white"
                     initial={{ opacity: 1, y: 0 }}
                     animate={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
@@ -125,6 +122,7 @@ export const GameWidget = () => {
           )}
         </AnimatePresence>
       </div>
+
       <UpgradeButton />
     </div>
   );

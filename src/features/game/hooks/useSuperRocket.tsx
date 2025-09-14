@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useBoost, useUser } from '../../../shared';
+import { useAppDispatch, useAppSelector, useUser } from '../../../shared';
 import { useGameContext } from '../context';
 import { updateUserBalance } from '../../../entities';
+import { useProcessRockets } from './useProcessRockets';
 
 export const useSuperRocket = () => {
   const dispatch = useAppDispatch();
-  const { user } = useUser();
-  const { isActive, type } = useBoost();
+  const { user, tokens } = useUser();
+  const { isActive, type } = useAppSelector((state) => state.boost);
 
-  const { superRocketBuffer, setSuperRocketBuffer } = useGameContext();
+  const {
+    superRocketBuffer,
+    setSuperRocketBuffer,
+    socketRef,
+    isRocketPending,
+    setIsRocketPending,
+  } = useGameContext();
+  const { currentProcessedItemRef, processingQueueRef } = useProcessRockets();
+
   const [activeSuperRocket, setActiveSuperRocket] = useState<boolean>(false);
   const [superRocketIndicators, setSuperRocketIndicators] = useState<
     { id: number; x: number; y: number }[]
@@ -29,6 +38,27 @@ export const useSuperRocket = () => {
   }, [superRocketBuffer]);
 
   const handleSuperRocketClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!tokens || tokens.tapToken === null || !socketRef.current) return;
+
+    const newItem = {
+      socketFunction: (tapToken: string) => socketAddRocketRequest(tapToken),
+      stateUpdateFunction: () => updateRocketsState(event),
+    };
+
+    if (isRocketPending) {
+      processingQueueRef.current.push(newItem);
+    } else {
+      currentProcessedItemRef.current = newItem;
+      socketAddRocketRequest(tokens.tapToken);
+    }
+  };
+
+  const socketAddRocketRequest = (tapToken: string) => {
+    socketRef.current!.emit('tap', { tapToken });
+    setIsRocketPending(true);
+  };
+
+  const updateRocketsState = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;

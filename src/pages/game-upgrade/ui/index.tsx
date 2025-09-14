@@ -11,13 +11,13 @@ import {
   LEVEL_PRICES,
   UPGRADE_CARDS,
 } from '../lib';
-import { useBackButton, useBoost, useUser } from '../../../shared';
+import { useAppSelector, useBackButton, useUser } from '../../../shared';
 import { Card } from '../types';
 import { useBuyFarm, useUpdateBoost, useUpgradeLevel } from '../../../entities';
 
 export const GameUpgradePage = () => {
   const { user } = useUser();
-  const { isActive } = useBoost();
+  const { isActive } = useAppSelector((state) => state.boost);
 
   useBackButton();
 
