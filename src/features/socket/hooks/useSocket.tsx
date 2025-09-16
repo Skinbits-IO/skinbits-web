@@ -24,7 +24,6 @@ export const useSocket = (
     });
 
     socketRef.current.on('connect', () => {
-      console.log('Client connected:', socketRef.current!.id);
       socketRef.current!.emit('initTap');
     });
 
@@ -45,14 +44,10 @@ export const useSocket = (
       }
     });
 
-    socketRef.current.on('disconnect', (reason) => {
-      console.log('❌ Disconnected:', reason);
-    });
-
     return () => {
       socketRef.current!.off('connect');
       socketRef.current!.off('newTapToken');
-      socketRef.current!.off('disconnect');
+      socketRef.current!.off('error');
 
       socketRef.current!.disconnect();
     };

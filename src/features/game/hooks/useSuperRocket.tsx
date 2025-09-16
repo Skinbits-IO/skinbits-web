@@ -53,13 +53,10 @@ export const useSuperRocket = () => {
       processingQueueRef.current.push(newItem);
     } else {
       currentProcessedItemRef.current = newItem;
-      socketAddRocketRequest(tokens.tapToken);
-    }
-  };
 
-  const socketAddRocketRequest = (tapToken: string) => {
-    socketRef.current!.emit('tap', { tapToken });
-    setIsRocketPending(true);
+      newItem.stateUpdateFunction();
+      newItem.socketFunction(tokens.tapToken);
+    }
   };
 
   const updateRocketsState = (x: number, y: number) => {
@@ -75,6 +72,11 @@ export const useSuperRocket = () => {
         prev.filter((ind) => ind.id !== indicatorId),
       );
     }, 500);
+  };
+
+  const socketAddRocketRequest = (tapToken: string) => {
+    socketRef.current!.emit('tap', { tapToken });
+    setIsRocketPending(true);
   };
 
   return { activeSuperRocket, superRocketIndicators, handleSuperRocketClick };

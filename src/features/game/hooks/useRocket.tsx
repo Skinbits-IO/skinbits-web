@@ -45,17 +45,9 @@ export const useRocket = (
       processingQueueRef.current.push(newItem);
     } else {
       currentProcessedItemRef.current = newItem;
-      socketAddRocketRequest(tokens.tapToken);
-    }
-  };
 
-  const socketAddRocketRequest = (tapToken: string) => {
-    const newAmo = amo.current - user!.tapLevel;
-    const fuelBoost = isActive && type === 'fuelboost';
-
-    if (newAmo >= 0 || fuelBoost) {
-      socketRef.current!.emit('tap', { tapToken });
-      setIsRocketPending(true);
+      newItem.stateUpdateFunction();
+      newItem.socketFunction(tokens.tapToken);
     }
   };
 
@@ -93,6 +85,16 @@ export const useRocket = (
           }
         }, 1000);
       }
+    }
+  };
+
+  const socketAddRocketRequest = (tapToken: string) => {
+    const newAmo = amo.current - user!.tapLevel;
+    const fuelBoost = isActive && type === 'fuelboost';
+
+    if (newAmo >= 0 || fuelBoost) {
+      socketRef.current!.emit('tap', { tapToken });
+      setIsRocketPending(true);
     }
   };
 

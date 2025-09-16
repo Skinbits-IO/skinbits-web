@@ -19,8 +19,8 @@ type GameContextType = {
   socketRef: React.MutableRefObject<Socket<ServerEvents, ClientEvents> | null>;
   isRocketPending: boolean;
   setIsRocketPending: Dispatch<SetStateAction<boolean>>;
-  hasError: boolean;
-  setHasError: Dispatch<SetStateAction<boolean>>;
+  hasTokenError: boolean;
+  setHasTokenError: Dispatch<SetStateAction<boolean>>;
   superRocketBuffer: number;
   setSuperRocketBuffer: Dispatch<SetStateAction<number>>;
 };
@@ -33,10 +33,10 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const { socketRef } = useSocket(
     () => setIsPending(false),
-    () => setHasError(true),
+    () => setHasTokenError(true),
   );
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const [hasTokenError, setHasTokenError] = useState<boolean>(false);
 
   const [buffer, setBuffer] = useState<number>(0);
 
@@ -49,8 +49,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         socketRef,
         isRocketPending: isPending,
         setIsRocketPending: setIsPending,
-        hasError,
-        setHasError,
+        hasTokenError,
+        setHasTokenError,
         superRocketBuffer: buffer,
         setSuperRocketBuffer: setBuffer,
       }}

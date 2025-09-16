@@ -4,7 +4,7 @@ import { useGameContext } from '../context';
 
 export const useProcessRockets = () => {
   const { tokens } = useUser();
-  const { isRocketPending, hasError, setHasError } = useGameContext();
+  const { isRocketPending, hasTokenError, setHasTokenError } = useGameContext();
 
   const currentProcessedItemRef = useRef<{
     socketFunction: (tapToken: string) => void;
@@ -19,20 +19,20 @@ export const useProcessRockets = () => {
 
   useEffect(() => {
     if (isRocketPending || !currentProcessedItemRef.current) return;
-    currentProcessedItemRef.current.stateUpdateFunction();
-
     const item = processingQueueRef.current.shift();
     if (item) {
       currentProcessedItemRef.current = item;
+
+      item.stateUpdateFunction();
       item.socketFunction(tokens!.tapToken!);
     }
   }, [isRocketPending, tokens]);
 
   useEffect(() => {
-    if (!hasError || !currentProcessedItemRef.current) return;
+    if (!hasTokenError || !currentProcessedItemRef.current) return;
     currentProcessedItemRef.current.socketFunction(tokens!.tapToken!);
-    setHasError(false);
-  }, [hasError, tokens]);
+    setHasTokenError(false);
+  }, [hasTokenError, tokens]);
 
   return { currentProcessedItemRef, processingQueueRef };
 };
