@@ -25,10 +25,15 @@ export const RankingPage = () => {
 
   const [users, setUsers] = useState<RankUser[]>([]);
   useEffect(() => {
-    if (leaderboard)
+    if (leaderboard) {
       setUsers((prev) => {
-        return [...prev, ...leaderboard];
+        const existingIds = new Set(prev.map((u) => u.telegramId));
+        const newUsers = leaderboard.filter(
+          (u) => !existingIds.has(u.telegramId),
+        );
+        return [...prev, ...newUsers];
       });
+    }
   }, [leaderboard]);
 
   const { data, isPending } = useUserLeaderboard();
@@ -60,7 +65,7 @@ export const RankingPage = () => {
               <WinnerRankCard key={idx} user={u} />
             ) : (
               <RankCard key={idx} index={idx + 1} user={u} />
-            )
+            ),
           )}
           {isLeaderboardLoading &&
             !leaderboard &&
@@ -68,7 +73,7 @@ export const RankingPage = () => {
               <RankCardSkeleton key={`loading-${i}`} />
             ))}
 
-          {users.length === (page + 1) * limit && (
+          {leaderboard?.length === limit && (
             <LoadMore
               isPending={isLeaderboardLoading}
               onClick={() => setPage((p) => p + 1)}

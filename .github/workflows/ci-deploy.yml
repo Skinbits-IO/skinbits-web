@@ -2,22 +2,21 @@ name: CI & Deploy
 
 on:
   pull_request:
+    branches: [dev, test, main]
     paths:
       - 'src/**'
       - 'public/**'
       - 'package.json'
+      - 'package-lock.json'
       - 'vite.config.ts'
   push:
     branches: [dev, test, main]
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
-  ci:
-    name: Continuous Integration
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,67 +38,83 @@ jobs:
 
       - name: Build app
         run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-          retention-days: 1
-
-  deploy-dev:
-    name: Deploy to Development
-    needs: [ci]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
-      - name: Deploy to development server
-        run: |
-          echo "Deploying to development environment"
-          # Add your deployment commands here
-          # Examples:
-          # - rsync to server
-          # - S3 upload
-          # - Vercel deploy
-          # - Netlify deploy
-          # - Custom deployment script
-
-  deploy-test:
-    name: Deploy to Test
-    needs: [ci]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/test'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
-      - name: Deploy to test server
-        run: |
-          echo "Deploying to test environment"
-          # Add your deployment commands here
-
-  deploy-prod:
-    name: Deploy to Production
-    needs: [ci]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
-      - name: Deploy to production server
-        run: |
-          echo "Deploying to production environment"
-          # Add your deployment commands here
+#   deploy:
+#     name: Deploy to Hetzner
+#     needs: [build]
+#     if: >
+#       github.event_name == 'push' &&
+#       (
+#         github.ref == 'refs/heads/dev'  ||
+#         github.ref == 'refs/heads/test' ||
+#         github.ref == 'refs/heads/main'
+#       )
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
+#
+#       - name: Install dependencies
+#         run: npm ci
+#
+#       - name: Build app
+#         run: npm run build
+#
+#       - name: Deploy to server
+#         run: |
+#           case "${{ github.ref_name }}" in
+#             main)
+#               HOST="${{ secrets.PRODUCTION_HOST }}"
+#               USER="${{ secrets.PRODUCTION_USER }}"
+#               KEY="${{ secrets.PRODUCTION_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web"
+#               PM2_PROCESS="skinbits-web"
+#               BRANCH="main"
+#               ;;
+#             test)
+#               HOST="${{ secrets.TEST_HOST }}"
+#               USER="${{ secrets.TEST_USER }}"
+#               KEY="${{ secrets.TEST_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web-test"
+#               PM2_PROCESS="skinbits-web-test"
+#               BRANCH="test"
+#               ;;
+#             dev)
+#               HOST="${{ secrets.DEV_HOST }}"
+#               USER="${{ secrets.DEV_USER }}"
+#               KEY="${{ secrets.DEV_SSH_KEY }}"
+#               APP_DIR="/var/www/skinbits-web-dev"
+#               PM2_PROCESS="skinbits-web-dev"
+#               BRANCH="dev"
+#               ;;
+#             *)
+#               echo "Unknown branch: ${{ github.ref_name }}"
+#               exit 1
+#               ;;
+#           esac
+#
+#           echo "Deploying to $HOST:$APP_DIR from branch $BRANCH"
+#
+#           echo "$KEY" > /tmp/deploy_key
+#           chmod 600 /tmp/deploy_key
+#
+#           ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
+#             cd $APP_DIR
+#             git fetch origin
+#             git reset --hard origin/$BRANCH
+#             npm ci
+#             npm run build
+#             pkill -f "npm run preview" || true
+#             nohup npm run preview > app.log 2>&1 &
+#           EOF
+#
+#           rm -f /tmp/deploy_key
+#
+#       - name: Notify deployment
+#         run: |
+#           echo "Deployment to ${{ github.ref_name }} completed successfully"

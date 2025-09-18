@@ -1,6 +1,7 @@
 import { RankEnum } from '../../../shared';
 import { User } from '../types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getUserFromApi(data: any): User {
   return {
     telegramId: data.telegram_id,

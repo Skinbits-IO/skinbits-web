@@ -1,8 +1,8 @@
 import { API_BASE } from '../../../shared';
 
 export async function login(
-  initData: string
-): Promise<{ accessToken: string; refreshToken: string }> {
+  initData: string,
+): Promise<{ accessToken: string; refreshToken: string; wsToken: string }> {
   const response = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: {

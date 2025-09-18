@@ -1,2 +1,2 @@
-export { useUpdateBalance } from './useUpdateBalance';
 export { useSaveTradeLink } from './useSaveTradeLink';
+export { useUpgradeLevel } from './useUpgradeLevel';

@@ -8,3 +8,4 @@ export {
 } from './notifications';
 export { DonationModal } from './donation-modal';
 export { SubscriptionList } from './subscription-list';
+export { SubscriptionPopup } from './subscription-popup';

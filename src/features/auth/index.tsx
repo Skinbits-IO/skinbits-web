@@ -1,22 +1,26 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLogin } from './hooks';
-import { Loader, toIsoUtcNoMs, useAppDispatch, useUser } from '../../shared';
+import { Loader, useAppDispatch, useUser } from '../../shared';
 import {
   getUser,
   getUserSubscription,
   setIsLoading,
-  setStartTime,
   setUser,
   setUserSubscription,
-  useAddGameSession,
+  setWsToken,
 } from '../../entities';
+import { getWsToken } from './api';
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { isLoading } = useUser();
+  const { tokens, isLoading } = useUser();
 
-  const { data, isPending, error } = useQuery({
+  const {
+    data: user,
+    isPending,
+    error,
+  } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
     retry: 0,
@@ -28,41 +32,37 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     queryFn: () => getUserSubscription(),
     retry: 0,
     staleTime: Infinity,
+    enabled: !!user,
   });
 
-  const { mutate } = useAddGameSession(() => {
-    dispatch(setStartTime(toIsoUtcNoMs()));
-    dispatch(setIsLoading(false));
+  const { data: wsToken, isPending: isWsTokenPending } = useQuery({
+    queryKey: ['ws-token'],
+    queryFn: () => getWsToken(),
+    retry: 0,
+    staleTime: Infinity,
+    enabled: !!user && !tokens,
   });
 
   useLogin(error);
 
   useEffect(() => {
-    if (!isPending && !isSubscriptionPending) {
-      if (data) {
-        dispatch(setUser(data));
+    if (!isPending && !isSubscriptionPending && (tokens || !isWsTokenPending)) {
+      if (user) {
+        dispatch(setUser(user));
         dispatch(setUserSubscription(subscription ?? null));
+        if (wsToken) dispatch(setWsToken(wsToken));
 
-        if (localStorage.getItem('pendingGameSession')) {
-          const raw = localStorage.getItem('pendingGameSession');
-          if (raw) {
-            try {
-              const pending = JSON.parse(raw);
-              mutate({
-                ...pending,
-                endTime: toIsoUtcNoMs(),
-              });
-            } catch {
-              localStorage.removeItem('pendingGameSession');
-              dispatch(setIsLoading(false));
-            }
-          }
-        } else {
-          dispatch(setIsLoading(false));
-        }
+        dispatch(setIsLoading(false));
       }
     }
-  }, [data, isPending, subscription, isSubscriptionPending]);
+  }, [
+    user,
+    isPending,
+    subscription,
+    isSubscriptionPending,
+    wsToken,
+    isWsTokenPending,
+  ]);
 
   if (isLoading) {
     return <Loader />;

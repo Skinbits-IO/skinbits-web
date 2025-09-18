@@ -1,25 +1,17 @@
 import { useEffect, useState } from 'react';
-import {
-  RankEnum,
-  RANKS,
-  useAppDispatch,
-  useGameSession,
-  useUser,
-} from '../../../shared';
+import { RankEnum, RANKS, useAppDispatch, useUser } from '../../../shared';
 import { setUserRank } from '../../../entities';
 
 export const useRanking = () => {
   const dispatch = useAppDispatch();
 
   const { user } = useUser();
-  const { gameSession } = useGameSession();
-
   const [showNewRankPopup, setShowNewRankPopup] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user) return;
     const rank = RANKS.get(user.rank);
-    const newTotalBalance = user.totalBalanceEarned + gameSession.balanceEarned;
+    const newTotalBalance = user.balance;
 
     const lastRank = localStorage.getItem('rank');
     if (lastRank && lastRank !== user.rank) {
@@ -33,7 +25,7 @@ export const useRanking = () => {
         setShowNewRankPopup(true);
       }
     }
-  }, [user, gameSession]);
+  }, [user]);
 
   return {
     showNewRankPopup,

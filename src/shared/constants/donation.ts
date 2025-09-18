@@ -57,7 +57,7 @@ export const PREMIUM_PLANS: Record<
   premium: {
     price: {
       ton: 1,
-      star: 250,
+      star: 2,
     },
     bonuses: [
       '+10 to your levels',

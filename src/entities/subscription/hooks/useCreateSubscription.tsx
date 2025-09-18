@@ -5,7 +5,7 @@ import { createSubscription } from '../api';
 import { useState } from 'react';
 
 export const useCreateSubscription = (
-  onTonPay: (id: string, tonAmount: number) => void
+  onTonPay: (id: string, payload: string, tonAmount: number) => void,
 ) => {
   const queryClient = useQueryClient();
   const addNotification = useStatusNotification();
@@ -40,7 +40,7 @@ export const useCreateSubscription = (
           WebApp.openLink(data.invoiceLink);
         }
       } else {
-        onTonPay(data.subscription.paymentId, amount);
+        onTonPay(data.subscription.paymentId, data.payload, amount);
       }
     },
     onError: (err) => {
@@ -48,7 +48,7 @@ export const useCreateSubscription = (
       addNotification(
         'error',
         err.message || 'Failed to create subscription',
-        3000
+        3000,
       );
     },
   });

@@ -12,6 +12,7 @@ export interface DonationResponse {
     donation_id: number;
     donation_date: string;
   };
+  payload: string;
   invoiceLink: string;
 }
 

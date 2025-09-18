@@ -1,0 +1,1 @@
+export { GameUpgradePage } from './ui';

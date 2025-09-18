@@ -6,6 +6,7 @@ import { Price, SkinInfo } from './UI';
 export const SkinPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  useBackButton();
 
   if (!state?.skin) {
     navigate('/marketplace');
@@ -13,8 +14,6 @@ export const SkinPage = () => {
   }
 
   const skin = state.skin as Skin;
-  useBackButton();
-
   return (
     <div className={styles.background}>
       <SkinInfo skin={skin} />

@@ -15,7 +15,7 @@ export const useTonPayment = () => {
     return Math.floor(ton * 1_000_000_000).toString();
   };
 
-  const payWithTon = async (id: string, tonAmount: number) => {
+  const payWithTon = async (id: string, payload: string, tonAmount: number) => {
     if (!tonConnectUI.connected) return;
 
     try {
@@ -26,6 +26,7 @@ export const useTonPayment = () => {
           {
             address: TON_WALLET_ADDRESS,
             amount: nanoAmount,
+            payload,
           },
         ],
         validUntil: validUntilTimestamp,
@@ -53,7 +54,7 @@ export const useTonPayment = () => {
         setStatus(TonPaymentStatus.Error);
         return false;
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('💥 Transaction error:', error);
       setStatus(TonPaymentStatus.Error);
 

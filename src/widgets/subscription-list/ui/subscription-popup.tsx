@@ -1,3 +1,4 @@
+import { useTonConnectUI } from '@tonconnect/ui-react';
 import { useCreateSubscription } from '../../../entities';
 import { useTonPayment } from '../../../features';
 import { Popup, PopupButton } from '../../../shared';
@@ -15,6 +16,7 @@ export const SubscriptionPopup = ({
   onClose,
 }: ISubscriptionPopupProps) => {
   const { payWithTon } = useTonPayment();
+  const [tonConnectUI] = useTonConnectUI();
   const { mutate, isPending } = useCreateSubscription(payWithTon);
 
   const handleTonPayment = () => {
@@ -58,7 +60,11 @@ export const SubscriptionPopup = ({
 
       {/* Button row */}
       <div className="grid grid-cols-[1fr_1fr] gap-3 w-full">
-        <PopupButton text="Pay with TON" onClick={handleTonPayment} />
+        <PopupButton
+          text="Pay with TON"
+          disabled={!tonConnectUI.connected}
+          onClick={handleTonPayment}
+        />
         <PopupButton text="Pay with Stars" onClick={handleTelegramPayment} />
       </div>
 
