@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRocket, useSuperRocket } from '../hooks';
 import { useAppSelector, useUser } from '../../../shared';
 import { useGameContext } from '../context';
-import { useActiveBoost } from '../../../entities';
 import { UpgradeButton } from './upgrade-button';
 import { SuperRocket } from './super-rocket';
 import { GameRocketIcon } from './game-rocket-icon';
@@ -18,8 +17,6 @@ export const GameWidget = () => {
     useRocket(gameRef);
   const { activeSuperRocket, superRocketIndicators, handleSuperRocketClick } =
     useSuperRocket();
-
-  useActiveBoost();
 
   const [timeLeft, setTimeLeft] = useState(
     isActive && endTime ? Math.max(0, endTime - Date.now()) : 0,

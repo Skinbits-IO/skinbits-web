@@ -11,6 +11,7 @@ export interface ReferralEntryDTO {
   referral_token: string;
   referral_date: string;
   status: string;
+  total_commission_awarded: number;
   referrer: {
     username: string | null;
     photo_url: string | null;
@@ -31,6 +32,7 @@ export interface ReferralEntry {
   date: Date;
   referrerId: string;
   referredUserId: string;
+  totalCommissionAwarded: number;
   referrer: {
     username: string | null;
     photoUrl: string | null;
@@ -45,7 +47,7 @@ export async function getReferrals(userId: number): Promise<ReferralEntry[]> {
   try {
     const resp = await api.get<{ data: ReferralEntryDTO[] }>(
       `/referral/referrer/${userId}`,
-      { headers: { 'Content-Type': 'application/json' } }
+      { headers: { 'Content-Type': 'application/json' } },
     );
     return resp.data.data.map((dto) => ({
       id: dto.referral_entry_id,
@@ -54,6 +56,7 @@ export async function getReferrals(userId: number): Promise<ReferralEntry[]> {
       token: dto.referral_token,
       date: new Date(dto.referral_date),
       status: dto.status as ReferralEntry['status'],
+      totalCommissionAwarded: dto.total_commission_awarded,
       referrer: {
         username: dto.referrer.username,
         photoUrl: dto.referrer.photo_url,

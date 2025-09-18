@@ -22,7 +22,7 @@ const farmSlice = createSlice({
     },
     setFarmingSession: (
       state,
-      action: PayloadAction<FarmingSession | null>
+      action: PayloadAction<FarmingSession | null>,
     ) => {
       state.session = action.payload;
     },

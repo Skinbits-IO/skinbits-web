@@ -1,21 +1,14 @@
 import { useNavigate } from 'react-router';
-import {
-  RocketIcon,
-  useAppDispatch,
-  useAppSelector,
-  useStatusNotification,
-  useUser,
-} from '../../../../shared';
-import styles from './FarmButton.module.css';
-import { useMutation } from '@tanstack/react-query';
+import { RocketIcon, useAppSelector, useUser } from '../../../shared';
 import { useEffect, useState } from 'react';
-import { setUser } from '../../../../entities';
-import { setFarmingSession, setFarmingStatus } from '../../model';
-import { claimFarmSession, startFarmSession } from '../../api';
-import { formatTimeRemaining, toIsoUtcNoMs } from '../../utils';
-import { FarmStatus } from '../../types';
-import { useFarmStatus } from '../../hooks';
-import { FarmButtonSkeleton } from '../farm-button-skeleton';
+import { formatTimeRemaining, toIsoUtcNoMs } from '../utils';
+import {
+  FarmStatus,
+  useClaimFarm,
+  useFarmStatus,
+  useStartFarm,
+} from '../../../entities';
+import { FarmButtonSkeleton } from './farm-button-skeleton';
 
 interface IFarmButtonProps {
   openPopup: () => void;
@@ -23,51 +16,20 @@ interface IFarmButtonProps {
 
 export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  const addNotification = useStatusNotification();
 
   const { user } = useUser();
   const { status, session } = useAppSelector((state) => state.farm);
-  const { isPendingClaim } = useFarmStatus();
+  const { isPending } = useFarmStatus();
+
+  const { mutate: startFarmMutation, isPending: isPendingStart } =
+    useStartFarm();
+  const { mutate: claimFarmMutation, isPending: isPendingClaim } =
+    useClaimFarm();
 
   const isFarmingAvailable = user?.farmLevel !== 0;
   const progress = 100 * (user!.balance / 250000);
   const [timeLeft, setTimeLeft] = useState<string>('');
 
-  const startFarmMutation = useMutation({
-    mutationFn: (data: { startTime: string }) =>
-      startFarmSession(data.startTime),
-    onSuccess: (data) => {
-      dispatch(setFarmingSession(data));
-      dispatch(setFarmingStatus(FarmStatus.Active));
-    },
-    onError: (err) => {
-      addNotification(
-        'error',
-        err.message || 'Failed to start farm session',
-        3000,
-      );
-    },
-  });
-
-  const claimFarmMutation = useMutation({
-    mutationFn: () => claimFarmSession(),
-    onSuccess: (data) => {
-      dispatch(setFarmingSession(null));
-      dispatch(setFarmingStatus(FarmStatus.Inactive));
-      dispatch(setUser(data));
-    },
-    onError: (err) => {
-      addNotification(
-        'error',
-        err.message || 'Failed to claim farm session',
-        3000,
-      );
-    },
-  });
-
-  // live countdown: recalc every minute while active
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
     if (session) {
@@ -83,7 +45,7 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
   const getButtonText = (): string => {
     switch (status) {
       case FarmStatus.Inactive:
-        return 'Start farming for 4h';
+        return 'Start farming for 6h';
       case FarmStatus.Active:
         return `Farming ends in ${timeLeft}`;
       case FarmStatus.Claim:
@@ -94,11 +56,11 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
     }
   };
 
-  return isPendingClaim ? (
+  return isPending ? (
     <FarmButtonSkeleton />
   ) : (
     <div
-      className={styles.background}
+      className={`relative h-[3.4375rem] w-full flex justify-between items-center rounded-[0.875rem] cursor-pointer`}
       style={
         isFarmingAvailable
           ? {
@@ -111,44 +73,45 @@ export const FarmButton = ({ openPopup }: IFarmButtonProps) => {
         if (status === FarmStatus.Active) {
           openPopup();
         } else if (status === FarmStatus.Inactive) {
-          startFarmMutation.mutate({
+          startFarmMutation({
             startTime: toIsoUtcNoMs(),
           });
         } else if (status === FarmStatus.Buy) {
           navigate('/upgrade');
         } else if (status === FarmStatus.Claim) {
-          claimFarmMutation.mutate();
+          claimFarmMutation();
         }
       }}
     >
       {status === FarmStatus.Buy && (
-        <div className={styles.progressBar} style={{ width: `${progress}%` }} />
+        <div
+          className="absolute h-full bg-[rgba(217,217,217,0.02)] rounded-[0.875rem] z-0"
+          style={{ width: `${progress}%` }}
+        />
       )}
-      <div className={styles.content}>
-        {startFarmMutation.isPending || claimFarmMutation.isPending ? (
-          <span className={styles.loader} />
+      <div className="w-full px-[0.9375rem] py-[0.625rem] bg-transparent flex justify-center items-center z-10">
+        {isPendingStart || isPendingClaim ? (
+          <span className="w-5 h-5 border-[3px] border-black border-t-[rgba(0,0,0,0.25)] rounded-full animate-spin" />
         ) : (
-          <div className={styles.spaceBetween}>
+          <div className="w-full flex justify-between items-center">
             <p
               className={
                 isFarmingAvailable
-                  ? styles.activeButtonText
-                  : styles.unavailableButtonText
+                  ? 'text-sm font-semibold text-black'
+                  : 'text-sm font-medium text-[#B1B1B1]'
               }
             >
               {getButtonText()}
             </p>
-            <div className={styles.rocketContainer}>
+            <div className="flex justify-center items-center gap-[0.625rem]">
               {(status === FarmStatus.Claim ||
                 status === FarmStatus.Active) && (
-                <p className={styles.rocketText}>
-                  {status === FarmStatus.Claim
-                    ? session?.amountFarmed
-                    : (user?.farmLevel ?? 1) * 100000}
+                <p className="text-sm font-extrabold text-black">
+                  {session?.amountFarmed}
                 </p>
               )}
               <div
-                className={styles.rocketIcon}
+                className="h-[2.3125rem] w-[2.3125rem] rounded-[1.1563rem] flex justify-center items-center"
                 style={
                   isFarmingAvailable
                     ? { backgroundColor: '#000000' }

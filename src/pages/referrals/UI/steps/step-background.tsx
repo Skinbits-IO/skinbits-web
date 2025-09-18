@@ -1,4 +1,3 @@
-// StepBackground.tsx
 import * as React from 'react';
 
 interface StepBackgroundProps extends React.SVGProps<SVGSVGElement> {

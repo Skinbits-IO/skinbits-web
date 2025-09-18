@@ -48,7 +48,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!isPending && !isSubscriptionPending && (tokens || !isWsTokenPending)) {
       if (user) {
-        console.log(user);
         dispatch(setUser(user));
         dispatch(setUserSubscription(subscription ?? null));
         if (wsToken) dispatch(setWsToken(wsToken));

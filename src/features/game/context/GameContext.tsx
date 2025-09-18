@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { ClientEvents, ServerEvents, useSocket } from '../../socket';
 import { Socket } from 'socket.io-client';
+import { useActiveBoost } from '../../../entities';
 
 type GameContextType = {
   amo: {
@@ -39,6 +40,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [hasTokenError, setHasTokenError] = useState<boolean>(false);
 
   const [buffer, setBuffer] = useState<number>(0);
+
+  useActiveBoost();
 
   return (
     <GameContext.Provider

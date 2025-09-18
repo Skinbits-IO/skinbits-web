@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { boostReducer, userReducer } from '../entities';
-import { farmReducer } from '../features';
+import { boostReducer, farmReducer, userReducer } from '../entities';
 import { notificationReducer, searchReducer } from '../widgets';
 import { statusNotificationsReducer } from '../shared';
 
