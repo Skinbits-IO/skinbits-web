@@ -30,8 +30,8 @@ export const DonationPopup = ({ onClose }: IDonationPopupProps) => {
   }, [tonConnectUI]);
 
   return (
-    <Popup onClose={onClose}>
-      <div className="space-y-5 w-full">
+    <Popup onClose={onClose} scrollable={false}>
+      <div className="max-h-[80vh] flex flex-col space-y-5 w-full">
         {/* Description header */}
         <div
           className="w-full p-6 rounded-2xl flex flex-col items-center justify-center gap-[10px] bg-center bg-cover bg-no-repeat"
@@ -47,7 +47,7 @@ export const DonationPopup = ({ onClose }: IDonationPopupProps) => {
         <Devider />
 
         {/* Card list */}
-        <div className="w-full flex-1 flex flex-col items-center gap-[15px] overflow-y-auto relative">
+        <div className="w-full flex-1 flex flex-col items-center gap-[15px] overflow-y-auto relative scrollbar">
           {(mode === 'ton' ? DONATIONS_PRICE.ton : DONATIONS_PRICE.star).map(
             (prices, index) => (
               <Card
@@ -64,7 +64,7 @@ export const DonationPopup = ({ onClose }: IDonationPopupProps) => {
                   });
                 }}
               />
-            )
+            ),
           )}
 
           {/* Spinner overlay */}

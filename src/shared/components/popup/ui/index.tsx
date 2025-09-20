@@ -4,10 +4,12 @@ import { PropsWithChildren } from 'react';
 
 interface IPopupProps {
   onClose: () => void;
+  scrollable?: boolean;
 }
 
 export const Popup = ({
   onClose,
+  scrollable = true,
   children,
 }: IPopupProps & PropsWithChildren) => {
   return (
@@ -19,7 +21,9 @@ export const Popup = ({
         exit={{ opacity: 0 }}
       />
       <motion.div
-        className="fixed left-0 right-0 bottom-0 w-full z-30 bg-background px-5 pt-5 pb-[calc(18px+var(--tg-safe-area-inset-bottom,0rem))] rounded-t-[24px] flex flex-col items-end justify-start gap-10"
+        className={
+          'fixed left-0 right-0 bottom-0 w-full z-30 bg-background px-5 pt-5 pb-[calc(18px+var(--tg-safe-area-inset-bottom,0rem))] rounded-t-[24px] flex flex-col items-end justify-start gap-10'
+        }
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
@@ -28,7 +32,14 @@ export const Popup = ({
         <div className="-mb-5">
           <CloseButton onTap={onClose} />
         </div>
-        {children}
+        <div
+          className={
+            'h-fit w-full flex flex-col items-center justify-start gap-10 ' +
+            (scrollable ? 'max-h-[90vh] overflow-y-auto scrollbar' : '')
+          }
+        >
+          {children}
+        </div>
       </motion.div>
     </>
   );
