@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getActiveNotifications } from '../api';
-import { setNotifications } from '../model';
-import { useAppDispatch } from '../../../shared';
 
 export function useActiveNotifications(limit = 10) {
-  const dispatch = useAppDispatch();
   const [page, setPage] = useState(0);
+  const [hasUnread, setHasUnread] = useState<boolean>(false);
   const skip = page * limit;
 
   const {
-    data = [],
+    data = { notifications: [], unreadCount: 0 },
     isLoading,
     isError,
     isFetching,
@@ -21,7 +19,7 @@ export function useActiveNotifications(limit = 10) {
     gcTime: 15 * (60 * 1000),
   });
 
-  const hasMore = data.length === limit;
+  const hasMore = data.notifications.length === limit;
 
   function loadMore() {
     if (!isFetching && hasMore) {
@@ -30,14 +28,16 @@ export function useActiveNotifications(limit = 10) {
   }
 
   useEffect(() => {
-    if (data) dispatch(setNotifications(data));
+    setHasUnread(data.unreadCount !== 0);
   }, [data]);
 
   return {
+    data,
     isLoading,
     isError,
     isFetching,
     hasMore,
     loadMore,
+    hasUnread,
   };
 }

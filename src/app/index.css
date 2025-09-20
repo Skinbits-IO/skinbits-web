@@ -36,6 +36,7 @@
     outline-color: var(--ring);
     box-sizing: border-box;
     flex-shrink: 0;
+    user-select: none;
   }
 
   html {

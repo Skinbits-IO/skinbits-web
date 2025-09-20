@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
 import './index.css';
 import WebApp from '@twa-dev/sdk';
-import { NavigationBar, NotificationWidget } from '../widgets';
+import { NavigationBar } from '../widgets';
 import { AuthProvider, GameProvider, TonPaymentProvider } from '../features';
-import { AnimatePresence } from 'framer-motion';
 import { Router } from './router';
-import { StatusNotifications, useAppSelector } from '../shared';
+import { StatusNotifications } from '../shared';
 
 function App() {
-  const notification = useAppSelector((state) => state.notification);
-
   useEffect(() => {
     WebApp.ready();
     WebApp.setHeaderColor('#000000');
@@ -46,9 +43,6 @@ function App() {
             </AuthProvider>
             <NavigationBar />
 
-            <AnimatePresence>
-              {notification.show && <NotificationWidget />}
-            </AnimatePresence>
             <StatusNotifications />
           </div>
         </div>

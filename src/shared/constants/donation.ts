@@ -3,15 +3,15 @@ export const DONATIONS_PRICE: Record<
   { rockets: number; price: number }[]
 > = {
   ton: [
-    { rockets: 1e6, price: 0.2 },
-    { rockets: 2 * 1e6, price: 0.5 },
-    { rockets: 5 * 1e6, price: 1 },
-    { rockets: 1e7, price: 2 },
-    { rockets: 2.5 * 1e7, price: 5 },
-    { rockets: 1e8, price: 20 },
+    { rockets: 1e6, price: 0.5 },
+    { rockets: 2 * 1e6, price: 1.5 },
+    { rockets: 5 * 1e6, price: 3 },
+    { rockets: 1e7, price: 7 },
+    { rockets: 2.5 * 1e7, price: 18 },
+    { rockets: 1e8, price: 70 },
   ],
   star: [
-    { rockets: 1e6, price: 1 },
+    { rockets: 1e6, price: 100 },
     { rockets: 2 * 1e6, price: 250 },
     { rockets: 5 * 1e6, price: 500 },
     { rockets: 1e7, price: 1000 },
@@ -44,26 +44,26 @@ export const PREMIUM_PLANS: Record<
   },
   gold: {
     price: {
-      ton: 0.2,
-      star: 1,
+      ton: 0.5,
+      star: 100,
     },
     bonuses: [
-      '+5 to your levels',
+      '+3 to your levels',
       'Max level - 20 lvl',
       'Unlimited referrals',
-      'x2 rewards for referrals',
+      'x5 rewards for referrals',
     ],
   },
   premium: {
     price: {
-      ton: 1,
-      star: 2,
+      ton: 1.5,
+      star: 250,
     },
     bonuses: [
-      '+10 to your levels',
+      '+5 to your levels',
       'Max level - 20 lvl',
       'VIP telegram channel',
-      'x5 rewards for referrals',
+      'x10 rewards for referrals',
     ],
   },
 };
