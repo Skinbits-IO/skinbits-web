@@ -1,4 +1,4 @@
-export type Notification = {
+export type ServerNotification = {
   id: number;
   name: string;
   type: string;
@@ -9,4 +9,5 @@ export type Notification = {
   expiresAt: Date | null;
   readAt: Date | null;
   isPermanent: boolean;
+  telegramId: number | null;
 };
