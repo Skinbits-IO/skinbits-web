@@ -38,7 +38,10 @@ export const Popup = ({
             (scrollable ? 'overflow-y-auto scrollbar' : '')
           }
           style={{
-            maxHeight: 'calc(var(--tg-viewport-stable-height, 100vh) * 0.8)',
+            maxHeight: `calc(
+            (var(--tg-viewport-stable-height, 100vh) * 0.8) -
+            (var(--tg-safe-area-inset-top, 0rem)) -
+            (var(--tg-safe-area-inset-bottom, 0rem)))`,
           }}
         >
           {children}
