@@ -35,8 +35,14 @@ export const Popup = ({
         <div
           className={
             'h-fit w-full flex flex-col items-center justify-start gap-10 ' +
-            (scrollable ? 'max-h-[90vh] overflow-y-auto scrollbar' : '')
+            (scrollable ? 'overflow-y-auto scrollbar' : '')
           }
+          style={{
+            maxHeight: `calc(
+            (var(--tg-viewport-stable-height, 100vh) * 0.8) -
+            (var(--tg-safe-area-inset-top, 0rem)) -
+            (var(--tg-safe-area-inset-bottom, 0rem)))`,
+          }}
         >
           {children}
         </div>
