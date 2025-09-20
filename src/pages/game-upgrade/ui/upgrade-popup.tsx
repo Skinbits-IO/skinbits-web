@@ -33,7 +33,7 @@ export const UpgradePopup = ({
         <img
           src={window.location.origin + card.photoUrl}
           alt={card.title}
-          className="absolute inset-0 m-auto h-full w-auto z-[2] rounded-[16px] object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover rounded-[16px] z-[2]"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.77)] z-[3] text-[32px] font-normal font-['Bebas_Neue'] text-white leading-none">
           {card.title}
