@@ -30,7 +30,7 @@ export const NotificationPopup = ({ onClose }: INotificationPopupProps) => {
         </div>
       )}
 
-      <div className="max-h-[80vh] h-full flex flex-col items-center justify-start gap-[15px] overflow-y-auto scrollbar">
+      <div className=" h-full flex flex-col items-center justify-start gap-[15px] overflow-y-auto scrollbar">
         {data.notifications.map((notification, idx) => (
           <NotificationCard key={idx} notification={notification} />
         ))}
