@@ -4,7 +4,18 @@ import WebApp from '@twa-dev/sdk';
 import { NavigationBar } from '../widgets';
 import { AuthProvider, GameProvider, TonPaymentProvider } from '../features';
 import { Router } from './router';
-import { StatusNotifications } from '../shared';
+import {
+  StatusNotifications,
+  TG_ANALYTICS_APP_NAME,
+  TG_ANALYTICS_TOKEN,
+} from '../shared';
+
+import telegramAnalytics from '@telegram-apps/analytics';
+
+telegramAnalytics.init({
+  token: TG_ANALYTICS_TOKEN,
+  appName: TG_ANALYTICS_APP_NAME,
+});
 
 function App() {
   useEffect(() => {
