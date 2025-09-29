@@ -15,14 +15,23 @@ export interface NotificationDTO {
   expires_at: string | null;
   read_at: string | null;
   is_permanent: boolean;
-  telegram_id: number | null; // <-- NEW
+  telegram_id: number | null;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  total_pages: number;
+  has_more: boolean;
 }
 
 /**
- * Response shape if you want unread count too
+ * Response shape from server
  */
 export interface NotificationResponse {
-  notifications: NotificationDTO[];
+  data: NotificationDTO[];
+  pagination: Pagination;
   unreadCount: number;
 }
 
@@ -30,15 +39,19 @@ export interface NotificationResponse {
  * Fetch a page of notifications
  */
 export async function getActiveNotifications(
-  skip: number,
+  page: number,
   limit: number,
-): Promise<{ notifications: ServerNotification[]; unreadCount: number }> {
+): Promise<{
+  notifications: ServerNotification[];
+  unreadCount: number;
+  pagination: Pagination;
+}> {
   const resp = await api.get<NotificationResponse>(`/notification`, {
-    params: { skip, limit },
+    params: { page, limit },
   });
 
   return {
-    notifications: resp.data.notifications.map((dto) => ({
+    notifications: resp.data.data.map((dto) => ({
       id: dto.notification_id,
       name: dto.notification_name,
       type: dto.notification_type,
@@ -49,8 +62,9 @@ export async function getActiveNotifications(
       expiresAt: dto.expires_at ? new Date(dto.expires_at) : null,
       readAt: dto.read_at ? new Date(dto.read_at) : null,
       isPermanent: dto.is_permanent,
-      telegramId: dto.telegram_id, // <-- map new field
+      telegramId: dto.telegram_id,
     })),
     unreadCount: resp.data.unreadCount,
+    pagination: resp.data.pagination,
   };
 }

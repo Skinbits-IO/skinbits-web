@@ -12,9 +12,19 @@ interface RawRankUser {
   total_taps: number;
 }
 
-/**
- * Convert one raw server object into your RankUser type
- */
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  total_pages: number;
+  has_more: boolean;
+}
+
+interface LeaderboardResponse {
+  data: RawRankUser[];
+  pagination: Pagination;
+}
+
 function parseRankUser(raw: RawRankUser): RankUser {
   return {
     telegramId: Number(raw.telegram_id),
@@ -30,13 +40,17 @@ function parseRankUser(raw: RawRankUser): RankUser {
 
 export async function getTopUsersByLeague(
   league: string,
-  skip: number,
-  limit: number
-): Promise<RankUser[]> {
-  const resp = await api.get<RawRankUser[]>(`/user/leaderboard`, {
-    params: { league: league.toUpperCase(), skip, limit },
+  page: number,
+  limit: number,
+): Promise<{ users: RankUser[]; pagination: Pagination }> {
+  const resp = await api.get<LeaderboardResponse>(`/user/leaderboard`, {
+    params: { league: league.toUpperCase(), page, limit },
   });
-  return resp.data.map(parseRankUser);
+
+  return {
+    users: resp.data.data.map(parseRankUser),
+    pagination: resp.data.pagination,
+  };
 }
 
 /**
